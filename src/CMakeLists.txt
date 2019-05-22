@@ -3,7 +3,7 @@ project(varAppName CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
-set(CMAKE_CXX_FLAGS_DEBUG "-g -coverage -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -coverage -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -MMD -w -DNDEBUG")
 set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")

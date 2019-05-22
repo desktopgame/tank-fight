@@ -1,4 +1,6 @@
 #include <GLFW/glfw3.h>
+#include "scene/SceneManager.hpp"
+#include "scene/TitleScene.hpp"
 
 int main(void) {
         GLFWwindow* window;
@@ -15,11 +17,16 @@ int main(void) {
 
         /* Make the window's context current */
         glfwMakeContextCurrent(window);
+        mygame::SceneManager sceneMgr;
+        sceneMgr.put("title", std::make_shared<mygame::TitleScene>());
+        sceneMgr.bind("title");
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window)) {
                 /* Render here */
                 glClear(GL_COLOR_BUFFER_BIT);
+                sceneMgr.update();
+                sceneMgr.draw();
 
                 /* Swap front and back buffers */
                 glfwSwapBuffers(window);
