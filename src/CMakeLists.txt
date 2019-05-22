@@ -9,6 +9,11 @@ set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
 set(varIgnoreCompile "CMakeCXXCompilerId.cpp" "feature_tests.cpp")
 set(varSrcRootDir "app")
+message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+find_package(OpenGL REQUIRED)
+find_package(GLFW REQUIRED)
 
 message(STATUS "varInstallDir=${varInstallDir}")
 message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
@@ -40,4 +45,22 @@ foreach(e IN LISTS SOURCES)
     endforeach()
 endforeach()
 
+link_directories (
+    ${OPENGL_LIBRARIES}
+    ${GLFW_LIBRARIES}
+)
 add_executable(${varExecutable} ${SOURCES})
+#add_definitions (${GLIB_CFLAGS_OTHER})
+target_include_directories(
+    ${varExecutable}
+    PRIVATE
+    ${OPENGL_INCLUDE_DIR}
+    ${OPENGL_EGL_INCLUDE_DIRS}
+    ${${GLFW_INCLUDE_DIR}}
+)
+target_link_libraries(
+    ${varExecutable}
+    PRIVATE
+    ${OPENGL_LIBRARIES}
+    ${GLFW_LIBRARIES}
+)
