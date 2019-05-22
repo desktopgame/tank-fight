@@ -43,6 +43,7 @@ message(STATUS "varInstallDir=${varInstallDir}")
 message(STATUS "HAVE_UNISTD=${HAVE_UNISTD}")
 message(STATUS "HAVE_DLFCN=${HAVE_DLFCN}")
 message(STATUS "HAVE_WINDOWS=${HAVE_WINDOWS}")
+message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 
 # enable_testing()
 # add_test(
