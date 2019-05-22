@@ -1,5 +1,5 @@
 # cmake-template
-this project is template of programming by c In particular,  
+this project is template of programming by c/c++ In particular,  
 specialized for cmake.
 
 # make
@@ -19,6 +19,14 @@ varIgnoreCompile
 varSrcRootDir
 ````
 
+# remote
+must be you fix remote url.
+````
+git remote -v
+> origin  git@github.com:desktopgame/cmake-template.git (fetch)
+> origin  git@github.com:desktopgame/cmake-template.git (push)
+git remote set-url origin your_url
+````
 
 # how to use in vscode
 first, install next plugin  
