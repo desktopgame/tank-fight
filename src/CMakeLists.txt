@@ -8,6 +8,7 @@ set(CMAKE_C_FLAGS_RELEASE "-g -O2 -MMD -w -DNDEBUG")
 set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
 set(varIgnoreCompile "CMakeCCompilerId.c" "feature_tests.c")
+set(varSrcRootDir "app")
 
 if (WIN32)
     set(GLIB_LIBRARY_DIRS "C:/msys64/mingw64/bin" CACHE PATH "glib library dirs")
@@ -23,13 +24,25 @@ else()
 
     pkg_check_modules(GLIB REQUIRED glib-2.0)
 endif (WIN32)
+
+include(CheckFunctionExists)
+include(CheckIncludeFile)
+include(CheckSymbolExists)
+
+CHECK_INCLUDE_FILE(unistd.h HAVE_UNISTD)
+CHECK_INCLUDE_FILE(dlfcn.h HAVE_DLFCN)
+CHECK_INCLUDE_FILE(windows.h HAVE_WINDOWS)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/${varSrcRootDir}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/${varSrcRootDir}/config.h)
+
 message(STATUS "GLIB_LIBRARY_DIRS=${GLIB_LIBRARY_DIRS}")
 message(STATUS "GLIB_INCLUDE_DIRS=${GLIB_INCLUDE_DIRS}")
 message(STATUS "GLIB_LIBRARIES=${GLIB_LIBRARIES}")
 message(STATUS "CUNIT_INCLUDE_DIR=${CUNIT_INCLUDE_DIR}")
 message(STATUS "CUNIT_LIBRARY=${CUNIT_LIBRARY}")
 message(STATUS "varInstallDir=${varInstallDir}")
-
+message(STATUS "HAVE_UNISTD=${HAVE_UNISTD}")
+message(STATUS "HAVE_DLFCN=${HAVE_DLFCN}")
+message(STATUS "HAVE_WINDOWS=${HAVE_WINDOWS}")
 
 # enable_testing()
 # add_test(

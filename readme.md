@@ -16,6 +16,7 @@ varAppName
 varExecutable
 varInstallDir
 varIgnoreCompile
+varSrcRootDir
 ````
 
 
