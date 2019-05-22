@@ -45,6 +45,7 @@ install(
     DESTINATION ${varInstallDir}
 )
 add_custom_target(_uninstall rm -r ${varInstallDir})
+add_custom_target(_clean rm -rf ./CMakeCache.txt && rm -r CMakeFiles)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "**/*.c")
 foreach(e IN LISTS SOURCES)
