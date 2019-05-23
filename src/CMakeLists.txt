@@ -15,6 +15,7 @@ set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(OpenGL REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(GLFW REQUIRED)
+find_package(PNG REQUIRED)
 
 message(STATUS "varInstallDir=${varInstallDir}")
 message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
@@ -50,6 +51,7 @@ link_directories (
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
+    ${PNG_LIBRARY}
 )
 add_executable(${varExecutable} ${SOURCES})
 #add_definitions (${GLIB_CFLAGS_OTHER})
@@ -60,6 +62,7 @@ target_include_directories(
     ${OPENGL_EGL_INCLUDE_DIRS}
     ${GLFW_INCLUDE_DIR}
     ${OPENAL_INCLUDE_DIR}
+    ${PNG_INCLUDE_DIR}
 )
 target_link_libraries(
     ${varExecutable}
@@ -67,4 +70,5 @@ target_link_libraries(
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
+    ${PNG_LIBRARY}
 )
