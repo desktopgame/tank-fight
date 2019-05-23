@@ -1,5 +1,5 @@
-#ifndef APP_MATH_VECTOR2_HPP
-#define APP_MATH_VECTOR2_HPP
+#ifndef APP_MODEL_VECTOR2_HPP
+#define APP_MODEL_VECTOR2_HPP
 namespace mygame {
 struct Vector2 {
         Vector2();
