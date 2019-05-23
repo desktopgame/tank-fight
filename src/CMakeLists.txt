@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(varAppName CXX)
+#
+#opengl
+#   glfw
+#   glew
+#   glut
+#openal
+#   alut
+#other
+#   png
+#   fbxsdk
+#
 
 if(APPLE)
     set(FBXSDK_ROOT "/Applications/Autodesk/FBX SDK/2019.2")
@@ -17,7 +28,6 @@ set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
 set(varIgnoreCompile "CMakeCXXCompilerId.cpp" "feature_tests.cpp")
 set(varSrcRootDir "app")
-message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(OpenGL REQUIRED)
@@ -25,8 +35,32 @@ find_package(OpenAL REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(PNG REQUIRED)
 find_package(ALUT REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(GLUT REQUIRED)
+
 
 message(STATUS "varInstallDir=${varInstallDir}")
+message(STATUS "OPENGL_INCLUDE_DIR=${OPENGL_INCLUDE_DIR}")
+message(STATUS "OPENGL_LIBRARIES=${OPENGL_LIBRARIES}")
+
+message(STATUS "OPENAL_INCLUDE_DIR=${OPENAL_INCLUDE_DIR}")
+message(STATUS "OPENAL_LIBRARY=${OPENAL_LIBRARY}")
+
+message(STATUS "GLFW_INCLUDE_DIR=${GLFW_INCLUDE_DIR}")
+message(STATUS "GLFW_LIBRARIES=${GLFW_LIBRARIES}")
+
+message(STATUS "PNG_INCLUDE_DIR=${PNG_INCLUDE_DIR}")
+message(STATUS "PNG_LIBRARY=${PNG_LIBRARY}")
+
+message(STATUS "ALUT_INCLUDE_DIR=${ALUT_INCLUDE_DIR}")
+message(STATUS "ALUT_LIBRARY=${ALUT_LIBRARY}")
+
+message(STATUS "GLEW_INCLUDE_DIRS=${GLEW_INCLUDE_DIRS}")
+message(STATUS "GLEW_LIBRARIES=${GLEW_LIBRARIES}")
+
+message(STATUS "GLUT_INCLUDE_DIR=${GLUT_INCLUDE_DIR}")
+message(STATUS "GLUT_LIBRARY=${GLUT_LIBRARY}")
+
 message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 
 # enable_testing()
@@ -62,10 +96,19 @@ link_directories (
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
     ${PNG_LIBRARY}
-    ${FBXSDK_ROOT}/lib
+    ${FBXSDK_ROOT}/lib/clang/debug/libfbxsdk.dylib
+    ${GLEW_LIBRARIES}
+    ${GLUT_LIBRARY}
+)
+add_definitions (
+    ${OpenGL_DEFINITIONS}
+    ${GLEW_DEFINITIONS}
+    ${GLUT_DEFINITIONS}
+    ${FBX_BUILD_DEFINES}
+    ${FBX_DEPENDENTS_DEFINES}
 )
 add_executable(${varExecutable} ${SOURCES})
-#add_definitions (${GLIB_CFLAGS_OTHER})
+
 if(APPLE)
     # for libpng
     target_include_directories(
@@ -76,9 +119,12 @@ if(APPLE)
         ${OPENGL_EGL_INCLUDE_DIRS}
         ${GLFW_INCLUDE_DIR}
         ${OPENAL_INCLUDE_DIR}
-        ${PNG_INCLUDE_DIR}
+        #${PNG_INCLUDE_DIR}
         /usr/local/include
         ${FBXSDK_ROOT}/include
+        ${FBX_REQUIRED_LIBS_DEPENDENCY}
+        ${GLEW_INCLUDE_DIRS}
+        ${GLUT_INCLUDE_DIR}
     )
 else()
     target_include_directories(
@@ -91,6 +137,8 @@ else()
         ${OPENAL_INCLUDE_DIR}
         ${PNG_INCLUDE_DIR}
         ${FBXSDK_ROOT}/include
+        ${GLEW_INCLUDE_DIRS}
+        ${GLUT_INCLUDE_DIR}
     )
 endif()
 
@@ -102,5 +150,8 @@ target_link_libraries(
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
     ${PNG_LIBRARY}
-    ${FBXSDK_ROOT}/lib
+    ${FBXSDK_ROOT}/lib/clang/debug/libfbxsdk.dylib
+    ${FBX_REQUIRED_LIBS_DEPENDENCY}
+    ${GLEW_LIBRARIES}
+    ${GLUT_LIBRARY}
 )
