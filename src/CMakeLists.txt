@@ -3,7 +3,7 @@ project(varAppName CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
-set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions -lalut")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -MMD -w -DNDEBUG")
 set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
@@ -49,7 +49,7 @@ endforeach()
 link_directories (
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
-    ${OPENAL_LIBRARIES}
+    ${OPENAL_LIBRARY}
 )
 add_executable(${varExecutable} ${SOURCES})
 #add_definitions (${GLIB_CFLAGS_OTHER})
@@ -66,5 +66,5 @@ target_link_libraries(
     PRIVATE
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
-    ${OPENAL_LIBRARIES}
+    ${OPENAL_LIBRARY}
 )

@@ -1,15 +1,19 @@
+#include <AL/alut.h>
 #include <GLFW/glfw3.h>
+#include "content/AudioPipeline.hpp"
 #include "content/ContentManager.hpp"
 #include "content/EchoPipeline.hpp"
 #include "content/ProxyPipeline.hpp"
+#include "device/AudioManager.hpp"
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
 
-int main(void) {
+int main(int argc, char* argv[]) {
         GLFWwindow* window;
 
         /* Initialize the library */
         if (!glfwInit()) return -1;
+        if (!alutInit(&argc, argv)) return -1;
 
         /* Create a windowed mode window and its OpenGL context */
         window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
@@ -20,11 +24,13 @@ int main(void) {
 
         /* Make the window's context current */
         glfwMakeContextCurrent(window);
+        auto audioMgr = std::make_shared<mygame::AudioManager>();
         mygame::ContentManager contentMgr = mygame::ContentManager("./assets");
         contentMgr.add(
-            std::make_shared<mygame::ProxyPipeline<mygame::EchoPipeline> >(
-                ".wav"));
+            std::make_shared<mygame::ProxyPipeline<mygame::AudioPipeline> >(
+                ".wav", audioMgr));
         contentMgr.load();
+        audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;
         sceneMgr.put("title", std::make_shared<mygame::TitleScene>());
         sceneMgr.bind("title");
@@ -43,6 +49,7 @@ int main(void) {
                 glfwPollEvents();
         }
 
+        alutExit();
         glfwTerminate();
         return 0;
 }
