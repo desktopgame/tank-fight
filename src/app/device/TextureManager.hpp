@@ -10,7 +10,7 @@ class TextureManager {
        public:
         TextureManager();
         void loadBmp(const std::string& path);
-        GLuint getTextureID(const std::string& path) const;
+        std::shared_ptr<ITexture> getTexture(const std::string& path);
         void unload(const std::string& path);
 
        private:

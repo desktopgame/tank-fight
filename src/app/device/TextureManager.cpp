@@ -10,9 +10,9 @@ void TextureManager::loadBmp(const std::string& path) {
         texMap[path] = bmp;
 }
 
-GLuint TextureManager::getTextureID(const std::string& path) const {
+std::shared_ptr<ITexture> TextureManager::getTexture(const std::string& path) {
         if (texMap.count(path)) {
-                return texMap.at(path)->getTextureID();
+                return texMap.at(path);
         }
         ::abort();
 }
