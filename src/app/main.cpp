@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
             std::make_shared<mygame::ProxyPipeline<mygame::AudioPipeline> >(
                 ".wav", audioMgr));
         contentMgr.load();
-        audioMgr->play("./assets/audio/se_maou_test.wav");
+        // audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;
         sceneMgr.put("title", std::make_shared<mygame::TitleScene>());
         sceneMgr.bind("title");
