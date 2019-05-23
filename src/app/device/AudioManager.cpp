@@ -3,7 +3,7 @@
 
 namespace mygame {
 AudioManager::AudioManager() : audioMap() {}
-void AudioManager::load(const std::string& path) {
+void AudioManager::loadWave(const std::string& path) {
         auto playable = std::make_shared<WaveAudio>();
         playable->load(path);
         audioMap[path] = playable;

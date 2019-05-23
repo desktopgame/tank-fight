@@ -10,7 +10,7 @@ class IPlayableAudio;
 class AudioManager {
        public:
         AudioManager();
-        void load(const std::string& path);
+        void loadWave(const std::string& path);
         void play(const std::string& path) const;
         GLuint getBuffer(const std::string& path) const;
         GLuint getSource(const std::string& path) const;

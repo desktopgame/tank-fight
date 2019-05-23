@@ -1,9 +1,9 @@
 #include <AL/alut.h>
 #include <GLFW/glfw3.h>
-#include "content/AudioPipeline.hpp"
 #include "content/ContentManager.hpp"
 #include "content/EchoPipeline.hpp"
 #include "content/ProxyPipeline.hpp"
+#include "content/WavePipeline.hpp"
 #include "device/AudioManager.hpp"
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
         auto audioMgr = std::make_shared<mygame::AudioManager>();
         mygame::ContentManager contentMgr = mygame::ContentManager("./assets");
         contentMgr.add(
-            std::make_shared<mygame::ProxyPipeline<mygame::AudioPipeline> >(
+            std::make_shared<mygame::ProxyPipeline<mygame::WavePipeline> >(
                 ".wav", audioMgr));
         contentMgr.load();
         // audioMgr->play("./assets/audio/se_maou_test.wav");
