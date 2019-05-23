@@ -1,4 +1,7 @@
 #include <GLFW/glfw3.h>
+#include "content/ContentManager.hpp"
+#include "content/EchoPipeline.hpp"
+#include "content/ProxyPipeline.hpp"
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
 
@@ -17,6 +20,11 @@ int main(void) {
 
         /* Make the window's context current */
         glfwMakeContextCurrent(window);
+        mygame::ContentManager contentMgr = mygame::ContentManager("./assets");
+        contentMgr.add(
+            std::make_shared<mygame::ProxyPipeline<mygame::EchoPipeline> >(
+                ".wav"));
+        contentMgr.load();
         mygame::SceneManager sceneMgr;
         sceneMgr.put("title", std::make_shared<mygame::TitleScene>());
         sceneMgr.bind("title");
