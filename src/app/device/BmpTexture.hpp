@@ -7,7 +7,7 @@ class BmpTexture : public ITexture {
         BmpTexture();
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
-        GLuint getTextureID() const override;
+        GLuint getID() const override;
         int getWidth() const override;
         int getHeight() const override;
 

@@ -12,7 +12,7 @@ void TitleScene::show() {}
 void TitleScene::update() {}
 
 void TitleScene::draw() {
-        auto tid = mTextureManager->getTexture("./assets/image/sample.bmp")->getTextureID();
+        auto tid = mTextureManager->getTexture("./assets/image/sample.bmp")->getID();
         Vector2 leftTop(0, 0);
         Vector2 leftBottom(0, 100);
         Vector2 rightTop(100, 0);

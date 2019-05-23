@@ -9,7 +9,7 @@ class ITexture {
         ~ITexture() = default;
         virtual void load(const std::string& path) = 0;
         virtual void unload(const std::string& path) = 0;
-        virtual GLuint getTextureID() const = 0;
+        virtual GLuint getID() const = 0;
         virtual int getWidth() const = 0;
         virtual int getHeight() const = 0;
 };
