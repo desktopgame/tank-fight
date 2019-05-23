@@ -31,7 +31,7 @@ void ModelManager::removeScene(const std::string& name) {
 
 void ModelManager::importFbx(const std::string& sceneName,
                              const std::string& path) {
-        if (sceneMap.count(sceneName)) {
+        if (!sceneMap.count(sceneName)) {
                 throw std::logic_error("fatal error: ModelManager#importFbx");
         }
         auto scene = sceneMap[sceneName];
