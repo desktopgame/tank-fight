@@ -3,7 +3,7 @@ project(varAppName CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
-set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions -lalut")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -MMD -w -DNDEBUG")
 set(varExecutable "varAppName" CACHE STRING "executable file name")
 set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
@@ -16,6 +16,7 @@ find_package(OpenGL REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(PNG REQUIRED)
+find_package(ALUT REQUIRED)
 
 message(STATUS "varInstallDir=${varInstallDir}")
 message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
@@ -48,6 +49,7 @@ foreach(e IN LISTS SOURCES)
 endforeach()
 
 link_directories (
+    ${ALUT_LIBRARY}
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
@@ -58,6 +60,7 @@ add_executable(${varExecutable} ${SOURCES})
 target_include_directories(
     ${varExecutable}
     PRIVATE
+    ${ALUT_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
     ${OPENGL_EGL_INCLUDE_DIRS}
     ${GLFW_INCLUDE_DIR}
@@ -67,6 +70,7 @@ target_include_directories(
 target_link_libraries(
     ${varExecutable}
     PRIVATE
+    ${ALUT_LIBRARY}
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
