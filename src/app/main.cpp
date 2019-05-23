@@ -1,10 +1,14 @@
 #include <AL/alut.h>
 #include <GLFW/glfw3.h>
+#include <memory>
+#include <string>
+#include "content/BmpPipeline.hpp"
 #include "content/ContentManager.hpp"
 #include "content/EchoPipeline.hpp"
 #include "content/ProxyPipeline.hpp"
 #include "content/WavePipeline.hpp"
 #include "device/AudioManager.hpp"
+#include "device/TextureManager.hpp"
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
 
@@ -24,11 +28,15 @@ int main(int argc, char* argv[]) {
 
         /* Make the window's context current */
         glfwMakeContextCurrent(window);
+        auto textureMgr = std::make_shared<mygame::TextureManager>();
         auto audioMgr = std::make_shared<mygame::AudioManager>();
         mygame::ContentManager contentMgr = mygame::ContentManager("./assets");
         contentMgr.add(
             std::make_shared<mygame::ProxyPipeline<mygame::WavePipeline> >(
                 ".wav", audioMgr));
+        contentMgr.add(
+            std::make_shared<mygame::ProxyPipeline<mygame::BmpPipeline> >(
+                ".bmp", textureMgr));
         contentMgr.load();
         // audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;
