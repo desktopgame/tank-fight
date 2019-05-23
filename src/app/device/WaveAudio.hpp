@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_WAVEAUDIO_HPP
-#define APP_CONTENT_WAVEAUDIO_HPP
+#ifndef APP_DEVICE_WAVEAUDIO_HPP
+#define APP_DEVICE_WAVEAUDIO_HPP
 #include <AL/alut.h>
 #include "IPlayableAudio.hpp"
 #include "WaveAudio.hpp"
@@ -9,6 +9,8 @@ class WaveAudio : public IPlayableAudio {
         WaveAudio() = default;
         void load(const std::string& path) override;
         void play() const override;
+        GLuint getBuffer() const override;
+        GLuint getSource() const override;
         void unload(const std::string& path) override;
 
        private:
