@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
 project(varAppName CXX)
 
+if(APPLE)
+    set(FBXSDK_ROOT "/Applications/Autodesk/FBX SDK/2019.2")
+else()
+    if(NOT FBXSDK_ROOT)
+        message(FATAL_ERROR "should be set a `FBXSDK_ROOT`")
+    endif()
+endif()
+
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
@@ -54,20 +62,38 @@ link_directories (
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
     ${PNG_LIBRARY}
+    ${FBXSDK_ROOT}/lib
 )
 add_executable(${varExecutable} ${SOURCES})
 #add_definitions (${GLIB_CFLAGS_OTHER})
-target_include_directories(
-    ${varExecutable}
-    PRIVATE
-    ${ALUT_INCLUDE_DIR}
-    ${OPENGL_INCLUDE_DIR}
-    ${OPENGL_EGL_INCLUDE_DIRS}
-    ${GLFW_INCLUDE_DIR}
-    ${OPENAL_INCLUDE_DIR}
-    ${PNG_INCLUDE_DIR}
-    /usr/local/include
-)
+if(APPLE)
+    # for libpng
+    target_include_directories(
+        ${varExecutable}
+        PRIVATE
+        ${ALUT_INCLUDE_DIR}
+        ${OPENGL_INCLUDE_DIR}
+        ${OPENGL_EGL_INCLUDE_DIRS}
+        ${GLFW_INCLUDE_DIR}
+        ${OPENAL_INCLUDE_DIR}
+        ${PNG_INCLUDE_DIR}
+        /usr/local/include
+        ${FBXSDK_ROOT}/include
+    )
+else()
+    target_include_directories(
+        ${varExecutable}
+        PRIVATE
+        ${ALUT_INCLUDE_DIR}
+        ${OPENGL_INCLUDE_DIR}
+        ${OPENGL_EGL_INCLUDE_DIRS}
+        ${GLFW_INCLUDE_DIR}
+        ${OPENAL_INCLUDE_DIR}
+        ${PNG_INCLUDE_DIR}
+        ${FBXSDK_ROOT}/include
+    )
+endif()
+
 target_link_libraries(
     ${varExecutable}
     PRIVATE
@@ -76,4 +102,5 @@ target_link_libraries(
     ${GLFW_LIBRARIES}
     ${OPENAL_LIBRARY}
     ${PNG_LIBRARY}
+    ${FBXSDK_ROOT}/lib
 )
