@@ -5,14 +5,14 @@ FbxModel::FbxModel(FbxManager* fbxManager, FbxScene* fbxScene)
     : fbxManager(fbxManager), fbxScene(fbxScene) {}
 
 void FbxModel::load(const std::string& path) {
-        FbxImporter* importer = FbxImporter::Create(this->fbxManager, "");
-        if (!importer->Initialize(path.c_str())) {
+        this->fbxImporter = FbxImporter::Create(this->fbxManager, "");
+        if (!fbxImporter->Initialize(path.c_str())) {
                 throw std::logic_error("fatal error: FbxImporter#Initialize");
         }
-        if (!importer->Import(fbxScene)) {
+        if (!fbxImporter->Import(fbxScene)) {
                 throw std::logic_error("fatal error: FbxImporter#Initialize");
         }
 }
 
-void FbxModel::unload(const std::string& path) {}
+void FbxModel::unload(const std::string& path) { fbxImporter->Destroy(); }
 }  // namespace mygame

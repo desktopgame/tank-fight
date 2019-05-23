@@ -17,6 +17,7 @@ class FbxModel : public IModel {
        private:
         FbxManager* fbxManager;
         FbxScene* fbxScene;
+        FbxImporter* fbxImporter;
         std::vector<Material> materials;
         std::vector<std::shared_ptr<PngTexture> > textures;
         std::vector<GLuint> texNov;
