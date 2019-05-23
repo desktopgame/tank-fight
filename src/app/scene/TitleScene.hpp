@@ -1,10 +1,12 @@
 #ifndef APP_SCENE_TITLESCENE_HPP
 #define APP_SCENE_TITLESCENE_HPP
+#include <memory>
 #include "IScene.hpp"
 namespace mygame {
+class TextureManager;
 class TitleScene : public IScene {
        public:
-        TitleScene();
+        TitleScene(const std::shared_ptr<TextureManager>& textureManager);
         void show() override;
         void update() override;
         void draw() override;
@@ -13,6 +15,7 @@ class TitleScene : public IScene {
         void hide() override;
 
        private:
+        std::shared_ptr<TextureManager> mTextureManager;
         bool mFinished;
 };
 }  // namespace mygame
