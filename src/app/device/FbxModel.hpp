@@ -10,9 +10,10 @@
 namespace mygame {
 class FbxModel : public IModel {
        public:
-        FbxModel(FbxManager* fbxManager, FbxScene* fbxScene);
+        FbxModel(FbxManager* fbxManager);
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
+        void draw();
 
        private:
         FbxManager* fbxManager;

@@ -12,14 +12,13 @@ class ModelManager {
        public:
         ModelManager();
         ~ModelManager();
-        void addScene(const std::string& name);
-        void removeScene(const std::string& name);
 
-        void importFbx(const std::string& sceneName, const std::string& path);
+        void loadFbx(const std::string& path);
+        void unload(const std::string& path);
+        std::shared_ptr<IModel> getModel(const std::string& path) const;
 
        private:
-        std::vector<std::shared_ptr<IModel> > models;
-        std::unordered_map<std::string, FbxScene*> sceneMap;
+        std::unordered_map<std::string, std::shared_ptr<IModel> > modelMap;
         FbxManager* fbxManager;
 };
 }  // namespace mygame
