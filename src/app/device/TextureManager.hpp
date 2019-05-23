@@ -9,7 +9,7 @@ class ITexture;
 class TextureManager {
        public:
         TextureManager();
-        void load(const std::string& path);
+        void loadBmp(const std::string& path);
         GLuint getTextureID(const std::string& path) const;
         void unload(const std::string& path);
 

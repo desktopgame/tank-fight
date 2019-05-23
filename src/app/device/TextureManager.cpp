@@ -4,7 +4,7 @@
 namespace mygame {
 TextureManager::TextureManager() : texMap() {}
 
-void TextureManager::load(const std::string& path) {
+void TextureManager::loadBmp(const std::string& path) {
         auto bmp = std::make_shared<BmpTexture>();
         bmp->load(path);
         texMap[path] = bmp;
