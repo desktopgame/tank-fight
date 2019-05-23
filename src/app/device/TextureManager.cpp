@@ -1,6 +1,7 @@
 #include "TextureManager.hpp"
 #include "BmpTexture.hpp"
 #include "ITexture.hpp"
+#include "PngTexture.hpp"
 namespace mygame {
 TextureManager::TextureManager() : texMap() {}
 
@@ -8,6 +9,12 @@ void TextureManager::loadBmp(const std::string& path) {
         auto bmp = std::make_shared<BmpTexture>();
         bmp->load(path);
         texMap[path] = bmp;
+}
+
+void TextureManager::loadPng(const std::string& path) {
+        auto png = std::make_shared<PngTexture>();
+        png->load(path);
+        texMap[path] = png;
 }
 
 std::shared_ptr<ITexture> TextureManager::getTexture(const std::string& path) {

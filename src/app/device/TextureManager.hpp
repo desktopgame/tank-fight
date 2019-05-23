@@ -10,6 +10,7 @@ class TextureManager {
        public:
         TextureManager();
         void loadBmp(const std::string& path);
+        void loadPng(const std::string& path);
         std::shared_ptr<ITexture> getTexture(const std::string& path);
         void unload(const std::string& path);
 

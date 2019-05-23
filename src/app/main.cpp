@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "content/BmpPipeline.hpp"
+#include "content/PngPipeline.hpp"
 #include "content/ContentManager.hpp"
 #include "content/EchoPipeline.hpp"
 #include "content/ProxyPipeline.hpp"
@@ -37,6 +38,9 @@ int main(int argc, char* argv[]) {
         contentMgr.add(
             std::make_shared<mygame::ProxyPipeline<mygame::BmpPipeline> >(
                 ".bmp", textureMgr));
+        contentMgr.add(
+            std::make_shared<mygame::ProxyPipeline<mygame::PngPipeline> >(
+                ".png", textureMgr));
         contentMgr.load();
         // audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;

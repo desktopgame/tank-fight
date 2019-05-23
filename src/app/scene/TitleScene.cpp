@@ -1,7 +1,7 @@
 #include "TitleScene.hpp"
 #include "../device/Graphics.hpp"
-#include "../device/TextureManager.hpp"
 #include "../device/ITexture.hpp"
+#include "../device/TextureManager.hpp"
 namespace mygame {
 
 TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager)
@@ -12,11 +12,12 @@ void TitleScene::show() {}
 void TitleScene::update() {}
 
 void TitleScene::draw() {
-        auto tid = mTextureManager->getTexture("./assets/image/sample.bmp")->getID();
+        auto tid =
+            mTextureManager->getTexture("./assets/image/sample.png")->getID();
         Vector2 leftTop(0, 0);
-        Vector2 leftBottom(0, 100);
-        Vector2 rightTop(100, 0);
-        Vector2 rightBottom(100, 100);
+        Vector2 leftBottom(0, 240);
+        Vector2 rightTop(320, 0);
+        Vector2 rightBottom(320, 240);
         mygame::drawTexture(leftBottom, leftTop, rightTop, rightBottom, tid);
 }
 

@@ -66,6 +66,7 @@ target_include_directories(
     ${GLFW_INCLUDE_DIR}
     ${OPENAL_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
+    /usr/local/include
 )
 target_link_libraries(
     ${varExecutable}
