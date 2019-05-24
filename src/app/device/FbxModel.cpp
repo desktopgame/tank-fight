@@ -162,6 +162,8 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
                                               .GetAt(i)[2];
                                 normal.push_back(Vector3(x, y, z));
                         }
+                } else {
+                        throw std::logic_error("unsupported file structure");
                 }
         } else if (elementNormal->GetMappingMode() ==
                    FbxLayerElement::eByControlPoint) {
@@ -178,7 +180,11 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
                                               .GetAt(i)[2];
                                 normal.push_back(Vector3(x, y, z));
                         }
+                } else {
+                        throw std::logic_error("unsupported file structure");
                 }
+        } else {
+                throw std::logic_error("unsupported file structure");
         }
 }
 FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
@@ -202,7 +208,11 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
                                 uv.push_back(
                                     UV((float)v2[0], 1.0f - (float)v2[1]));
                         }
+                } else {
+                        throw std::logic_error("unsupported file structure");
                 }
+        } else {
+                throw std::logic_error("unsupported file structure");
         }
 }
 FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
@@ -253,7 +263,8 @@ FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
                 FbxLayerElementMaterial* layerMat =
                     fbxMesh->GetLayer(0)->GetMaterials();
                 int matId = layerMat->GetIndexArray().GetAt(k);
-                if (fbxMesh->GetPolygonSize(k) == 3) {
+                int polygonSize = fbxMesh->GetPolygonSize(k);
+                if (polygonSize == 3) {
                         for (int j = 0; j < 3; j++) {
                                 Triangle tria;
                                 tria.ver =
@@ -263,8 +274,7 @@ FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
                                 materials[matId].triangles.push_back(tria);
                         }
                         count += 3;
-                }
-                if (fbxMesh->GetPolygonSize(k) == 4) {
+                } else if (polygonSize == 4) {
                         for (int j = 0; j < 4; j++) {
                                 Quadrangle quad;
                                 quad.ver =
@@ -274,6 +284,8 @@ FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
                                 materials[matId].quads.push_back(quad);
                         }
                         count += 4;
+                } else {
+                        throw std::logic_error("unsupported file structure");
                 }
         }
 }
