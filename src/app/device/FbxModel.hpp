@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <vector>
-#include "../model/Material.hpp"
+#include "FbxMaterial.hpp"
 #include "../model/Vector2.hpp"
 #include "../model/Vector3.hpp"
 #include "IModel.hpp"
@@ -32,7 +32,7 @@ class FbxModel : public IModel {
         std::vector<std::shared_ptr<PngTexture> > textures;
         std::vector<Vector3> vertex;
         std::vector<Vector3> normal;
-        std::vector<Material> materials;
+        std::vector<FbxMaterial> materials;
         std::vector<UV> uv;
         std::vector<int> vertexIndex;
         std::vector<int> texId;

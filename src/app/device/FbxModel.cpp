@@ -208,7 +208,7 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
 FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
         FbxNode* node = fbxMesh->GetNode();
         for (int i = 0; i < node->GetMaterialCount(); i++) {
-                Material mtl;
+                FbxMaterial mtl;
                 FbxSurfaceMaterial* material = node->GetMaterial(i);
                 FbxSurfacePhong* phong =
                     dynamic_cast<FbxSurfacePhong*>(material);

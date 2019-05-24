@@ -1,13 +1,13 @@
-#ifndef APP_MODEL_MATERIAL_HPP
-#define APP_MODEL_MATERIAL_HPP
+#ifndef APP_MODEL_FBXMATERIAL_HPP
+#define APP_MODEL_FBXMATERIAL_HPP
 #include <string>
 #include <vector>
-#include "Quadrangle.hpp"
-#include "Reflection4.hpp"
-#include "Triangle.hpp"
+#include "../model/Quadrangle.hpp"
+#include "../model/Reflection4.hpp"
+#include "../model/Triangle.hpp"
 namespace mygame {
-struct Material {
-        Material();
+struct FbxMaterial {
+        FbxMaterial();
         std::string name;
         Reflection4 color;
         float shininess;

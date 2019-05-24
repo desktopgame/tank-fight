@@ -1,6 +1,6 @@
-#include "Material.hpp"
+#include "FbxMaterial.hpp"
 namespace mygame {
-Material::Material()
+FbxMaterial::FbxMaterial()
     : name(),
       color(),
       shininess(),
