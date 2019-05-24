@@ -188,19 +188,23 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
         FbxLayerElementUV* uvs = fbxMesh->GetLayer(0)->GetUVs();
         int uvsize = std::max(uvs->GetIndexArray().GetCount(),
                               uvs->GetDirectArray().GetCount());
-        if (uvs->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
-                if (uvs->GetReferenceMode() == FbxLayerElement::eDirect) {
-                        for (int i = 0; i < fbxMesh->GetTextureUVCount(); i++) {
+        FbxLayerElement::EMappingMode map = uvs->GetMappingMode();
+        FbxLayerElement::EReferenceMode ref = uvs->GetReferenceMode();
+        if (map == FbxLayerElement::eByPolygonVertex) {
+                if (ref == FbxLayerElement::eDirect) {
+                        for (int i = 0; i < uvsize; i++) {
                                 FbxVector2 v2 = uvs->GetDirectArray().GetAt(i);
                                 uv.push_back(
                                     UV((float)v2[0], 1.0f - (float)v2[1]));
                         }
-                }
-        } else if (uvs->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
-                for (int i = 0; i < uvsize; i++) {
-                        int index = uvs->GetIndexArray().GetAt(i);
-                        FbxVector2 v2 = uvs->GetDirectArray().GetAt(index);
-                        uv.push_back(UV((float)v2[0], 1.0f - (float)v2[1]));
+                } else if (ref == FbxLayerElement::eIndexToDirect) {
+                        for (int i = 0; i < uvsize; i++) {
+                                int index = uvs->GetIndexArray().GetAt(i);
+                                FbxVector2 v2 =
+                                    uvs->GetDirectArray().GetAt(index);
+                                uv.push_back(
+                                    UV((float)v2[0], 1.0f - (float)v2[1]));
+                        }
                 }
         }
 }
@@ -247,20 +251,33 @@ FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
 }
 FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
         assert(!materials.empty());
+        int count = 0;
         for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
                 FbxLayerElementMaterial* layerMat =
                     fbxMesh->GetLayer(0)->GetMaterials();
                 int matId = layerMat->GetIndexArray().GetAt(k);
-                Triangle tria;
-                tria.ver = vertex[vertexIndex[k * 3]];
-                tria.nor = normal[k * 3];
-                materials[matId].triangles.push_back(tria);
-                tria.ver = vertex[vertexIndex[k * 3 + 1]];
-                tria.nor = normal[k * 3 + 1];
-                materials[matId].triangles.push_back(tria);
-                tria.ver = vertex[vertexIndex[k * 3 + 2]];
-                tria.nor = normal[k * 3 + 2];
-                materials[matId].triangles.push_back(tria);
+                if (fbxMesh->GetPolygonSize(k) == 3) {
+                        for (int j = 0; j < 3; j++) {
+                                Triangle tria;
+                                tria.ver =
+                                    vertex[fbxMesh->GetPolygonVertex(k, j)];
+                                tria.nor = normal[count + j];
+                                tria.uv = uv[count + j];
+                                materials[matId].triangles.push_back(tria);
+                        }
+                        count += 3;
+                }
+                if (fbxMesh->GetPolygonSize(k) == 4) {
+                        for (int j = 0; j < 4; j++) {
+                                Quadrangle quad;
+                                quad.ver =
+                                    vertex[fbxMesh->GetPolygonVertex(k, j)];
+                                quad.nor = normal[count + j];
+                                quad.uv = uv[count + j];
+                                materials[matId].quads.push_back(quad);
+                        }
+                        count += 4;
+                }
         }
 }
 }  // namespace mygame
