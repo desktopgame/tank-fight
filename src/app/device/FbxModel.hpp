@@ -24,6 +24,8 @@ class FbxModel : public IModel {
         FbxMesh* mapVertexIndex(FbxMesh* fbxMesh);
         FbxMesh* mapNormal(FbxMesh* fbxMesh);
         FbxMesh* mapUV(FbxMesh* fbxMesh);
+        FbxMesh* mapMaterial(FbxMesh* fbxMesh);
+        FbxMesh* mapSide(FbxMesh* fbxMesh);
         FbxManager* fbxManager;
         FbxScene* fbxScene;
         FbxImporter* fbxImporter;

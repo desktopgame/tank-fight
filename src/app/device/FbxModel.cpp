@@ -27,61 +27,8 @@ void FbxModel::load(const std::string& path) {
         mapVertexIndex(fbxMesh);
         mapNormal(fbxMesh);
         mapUV(fbxMesh);
-        FbxNode* node = fbxMesh->GetNode();
-        for (int i = 0; i < node->GetMaterialCount(); i++) {
-                Material mtl;
-                FbxSurfaceMaterial* material = node->GetMaterial(i);
-                FbxSurfacePhong* phong =
-                    dynamic_cast<FbxSurfacePhong*>(material);
-                FbxPropertyT<FbxDouble3> d3ambient = phong->Ambient;
-                mtl.color.ambient.r = (float)d3ambient.Get()[0];
-                mtl.color.ambient.g = (float)d3ambient.Get()[1];
-                mtl.color.ambient.b = (float)d3ambient.Get()[2];
-                mtl.color.ambient.a = 1;
-                FbxPropertyT<FbxDouble3> d3diffuse = phong->Diffuse;
-                mtl.color.diffuse.r = (float)d3diffuse.Get()[0];
-                mtl.color.diffuse.g = (float)d3diffuse.Get()[1];
-                mtl.color.diffuse.b = (float)d3diffuse.Get()[2];
-                mtl.color.diffuse.a = 1;
-                FbxPropertyT<FbxDouble3> d3specular = phong->Specular;
-                mtl.color.specular.r = (float)d3specular.Get()[0];
-                mtl.color.specular.g = (float)d3specular.Get()[1];
-                mtl.color.specular.b = (float)d3specular.Get()[2];
-                mtl.color.specular.a = 1;
-                mtl.shininess = 0.5f;
-                FbxProperty IProperty =
-                    material->FindProperty(FbxSurfaceMaterial::sDiffuse);
-                // FbxPropertyT<FbxDouble3> IProperty = phong->Diffuse;
-                // FbxTexture* tex = FbxCast<FbxTexture>(
-                // IProperty.GetSrcObject(FbxTexture::ClassId, 0));
-                FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
-                if (tex) {
-                        auto ptex = std::make_shared<PngTexture>();
-                        ptex->load(tex->GetFileName());
-                        textures.push_back(ptex);
-                        texId.push_back(ptex->getID());
-                        mtl.textureNo = texId.size();
-                        mtl.name = tex->GetFileName();
-                }
-                materials.push_back(mtl);
-                assert(!materials.empty());
-        }
-        assert(!materials.empty());
-        for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
-                FbxLayerElementMaterial* layerMat =
-                    fbxMesh->GetLayer(0)->GetMaterials();
-                int matId = layerMat->GetIndexArray().GetAt(k);
-                Triangle tria;
-                tria.ver = vertex[vertexIndex[k * 3]];
-                tria.nor = normal[k * 3];
-                materials[matId].triangles.push_back(tria);
-                tria.ver = vertex[vertexIndex[k * 3 + 1]];
-                tria.nor = normal[k * 3 + 1];
-                materials[matId].triangles.push_back(tria);
-                tria.ver = vertex[vertexIndex[k * 3 + 2]];
-                tria.nor = normal[k * 3 + 2];
-                materials[matId].triangles.push_back(tria);
-        }
+        mapMaterial(fbxMesh);
+        mapSide(fbxMesh);
         vertex.clear();
         normal.clear();
         uv.clear();
@@ -255,6 +202,65 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
                         FbxVector2 v2 = uvs->GetDirectArray().GetAt(index);
                         uv.push_back(UV((float)v2[0], 1.0f - (float)v2[1]));
                 }
+        }
+}
+FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
+        FbxNode* node = fbxMesh->GetNode();
+        for (int i = 0; i < node->GetMaterialCount(); i++) {
+                Material mtl;
+                FbxSurfaceMaterial* material = node->GetMaterial(i);
+                FbxSurfacePhong* phong =
+                    dynamic_cast<FbxSurfacePhong*>(material);
+                FbxPropertyT<FbxDouble3> d3ambient = phong->Ambient;
+                mtl.color.ambient.r = (float)d3ambient.Get()[0];
+                mtl.color.ambient.g = (float)d3ambient.Get()[1];
+                mtl.color.ambient.b = (float)d3ambient.Get()[2];
+                mtl.color.ambient.a = 1;
+                FbxPropertyT<FbxDouble3> d3diffuse = phong->Diffuse;
+                mtl.color.diffuse.r = (float)d3diffuse.Get()[0];
+                mtl.color.diffuse.g = (float)d3diffuse.Get()[1];
+                mtl.color.diffuse.b = (float)d3diffuse.Get()[2];
+                mtl.color.diffuse.a = 1;
+                FbxPropertyT<FbxDouble3> d3specular = phong->Specular;
+                mtl.color.specular.r = (float)d3specular.Get()[0];
+                mtl.color.specular.g = (float)d3specular.Get()[1];
+                mtl.color.specular.b = (float)d3specular.Get()[2];
+                mtl.color.specular.a = 1;
+                mtl.shininess = 0.5f;
+                FbxProperty IProperty =
+                    material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+                // FbxPropertyT<FbxDouble3> IProperty = phong->Diffuse;
+                // FbxTexture* tex = FbxCast<FbxTexture>(
+                // IProperty.GetSrcObject(FbxTexture::ClassId, 0));
+                FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
+                if (tex) {
+                        auto ptex = std::make_shared<PngTexture>();
+                        ptex->load(tex->GetFileName());
+                        textures.push_back(ptex);
+                        texId.push_back(ptex->getID());
+                        mtl.textureNo = texId.size();
+                        mtl.name = tex->GetFileName();
+                }
+                materials.push_back(mtl);
+                assert(!materials.empty());
+        }
+}
+FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
+        assert(!materials.empty());
+        for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
+                FbxLayerElementMaterial* layerMat =
+                    fbxMesh->GetLayer(0)->GetMaterials();
+                int matId = layerMat->GetIndexArray().GetAt(k);
+                Triangle tria;
+                tria.ver = vertex[vertexIndex[k * 3]];
+                tria.nor = normal[k * 3];
+                materials[matId].triangles.push_back(tria);
+                tria.ver = vertex[vertexIndex[k * 3 + 1]];
+                tria.nor = normal[k * 3 + 1];
+                materials[matId].triangles.push_back(tria);
+                tria.ver = vertex[vertexIndex[k * 3 + 2]];
+                tria.nor = normal[k * 3 + 2];
+                materials[matId].triangles.push_back(tria);
         }
 }
 }  // namespace mygame
