@@ -43,7 +43,8 @@ void FbxModel::unload(const std::string& path) {
 void FbxModel::draw() {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        for (int i = 0; i < (signed)materials.size(); i++) {
+        size_t size = materials.size();
+        for (int i = 0; i < (signed)size; i++) {
                 glPushMatrix();
                 glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
                              (const GLfloat*)&materials[i].color.ambient);
@@ -226,7 +227,7 @@ FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
                 mtl.color.specular.g = (float)d3specular.Get()[1];
                 mtl.color.specular.b = (float)d3specular.Get()[2];
                 mtl.color.specular.a = 1;
-                mtl.shininess = 0.5f;
+                mtl.shininess = phong->Shininess.Get();
                 FbxProperty IProperty =
                     material->FindProperty(FbxSurfaceMaterial::sDiffuse);
                 // FbxPropertyT<FbxDouble3> IProperty = phong->Diffuse;

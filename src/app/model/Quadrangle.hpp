@@ -4,6 +4,7 @@
 #include "Vector3.hpp"
 namespace mygame {
 struct Quadrangle {
+        Quadrangle();
         Vector3 ver;
         Vector3 nor;
         UV uv;

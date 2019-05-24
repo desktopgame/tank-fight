@@ -3,6 +3,7 @@
 #include "Color4.hpp"
 namespace mygame {
 struct Reflection4 {
+        Reflection4();
         Color4 diffuse;
         Color4 ambient;
         Color4 emission;

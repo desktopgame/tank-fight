@@ -7,6 +7,7 @@
 #include "Triangle.hpp"
 namespace mygame {
 struct Material {
+        Material();
         std::string name;
         Reflection4 color;
         float shininess;

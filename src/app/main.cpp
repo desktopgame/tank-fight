@@ -34,6 +34,17 @@ static void render_3d() {
         gluLookAt(0.0, 200.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
+static void init_gl() {
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+}
+
 int main(int argc, char* argv[]) {
         GLFWwindow* window;
 
@@ -72,6 +83,7 @@ int main(int argc, char* argv[]) {
         sceneMgr.put("title", std::make_shared<mygame::TitleScene>(textureMgr,
                                                                    modelMgr));
         sceneMgr.bind("title");
+        init_gl();
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window)) {
                 /* Render here */
