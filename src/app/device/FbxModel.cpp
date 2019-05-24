@@ -43,7 +43,7 @@ void FbxModel::unload(const std::string& path) {
 void FbxModel::draw() {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        for (int i = 0; i < materials.size(); i++) {
+        for (int i = 0; i < (signed)materials.size(); i++) {
                 glPushMatrix();
                 glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
                              (const GLfloat*)&materials[i].color.ambient);
@@ -91,10 +91,6 @@ void FbxModel::draw() {
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glDisable(GL_TEXTURE_2D);
-        GLenum error_code = glGetError();
-        if (error_code != GL_NO_ERROR) {
-                ::abort();
-        }
 }
 
 // private
