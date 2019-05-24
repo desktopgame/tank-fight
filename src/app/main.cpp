@@ -1,5 +1,6 @@
 #include <AL/alut.h>
 #include <GLFW/glfw3.h>
+#include <glut.h>
 #include <memory>
 #include <string>
 #include "content/BmpPipeline.hpp"
@@ -14,6 +15,24 @@
 #include "device/TextureManager.hpp"
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
+
+static void render_2d() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glOrtho(0.0, 640, 480, 0.0, -1.0, 1.0);
+}
+
+static void render_3d() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, 640, 480);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(30.0, 640 / 480, 0.1, 2000.0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        gluLookAt(0.0, 500.0, 500.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+}
 
 int main(int argc, char* argv[]) {
         GLFWwindow* window;
@@ -34,7 +53,6 @@ int main(int argc, char* argv[]) {
         auto modelMgr = std::make_shared<mygame::ModelManager>();
         auto textureMgr = std::make_shared<mygame::TextureManager>();
         auto audioMgr = std::make_shared<mygame::AudioManager>();
-        modelMgr->addScene("main");
         mygame::ContentManager contentMgr = mygame::ContentManager("./assets");
         contentMgr.add(
             std::make_shared<mygame::ProxyPipeline<mygame::WavePipeline> >(
@@ -47,20 +65,18 @@ int main(int argc, char* argv[]) {
                 ".png", textureMgr));
         contentMgr.add(
             std::make_shared<mygame::ProxyPipeline<mygame::FbxPipeline> >(
-                ".fbx", modelMgr, "main"));
+                ".fbx", modelMgr));
         contentMgr.load();
         // audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;
-        sceneMgr.put("title", std::make_shared<mygame::TitleScene>(textureMgr));
+        sceneMgr.put("title", std::make_shared<mygame::TitleScene>(textureMgr,
+                                                                   modelMgr));
         sceneMgr.bind("title");
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window)) {
                 /* Render here */
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                glMatrixMode(GL_MODELVIEW);
-                glLoadIdentity();
-                glOrtho(0.0, 640, 480, 0.0, -1.0, 1.0);
+                render_3d();
                 sceneMgr.update();
                 sceneMgr.draw();
 

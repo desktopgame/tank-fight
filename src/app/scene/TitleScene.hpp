@@ -4,9 +4,11 @@
 #include "IScene.hpp"
 namespace mygame {
 class TextureManager;
+class ModelManager;
 class TitleScene : public IScene {
        public:
-        TitleScene(const std::shared_ptr<TextureManager>& textureManager);
+        TitleScene(const std::shared_ptr<TextureManager>& textureManager,
+                   const std::shared_ptr<ModelManager>& modelManager);
         void show() override;
         void update() override;
         void draw() override;
@@ -16,6 +18,7 @@ class TitleScene : public IScene {
 
        private:
         std::shared_ptr<TextureManager> mTextureManager;
+        std::shared_ptr<ModelManager> mModelManager;
         bool mFinished;
 };
 }  // namespace mygame

@@ -55,6 +55,7 @@ void FbxModel::load(const std::string& path) {
                 // IProperty.GetSrcObject(FbxTexture::ClassId, 0));
                 FbxTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
                 if (tex) {
+                        mtl.textureNo = texId.size();
                         mtl.name = tex->GetName();
                         auto ptex = std::make_shared<PngTexture>();
                         ptex->load(mtl.name);
@@ -62,7 +63,9 @@ void FbxModel::load(const std::string& path) {
                         texId.push_back(ptex->getID());
                 }
                 materials.push_back(mtl);
+                assert(!materials.empty());
         }
+        assert(!materials.empty());
         for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
                 FbxLayerElementMaterial* layerMat =
                     fbxMesh->GetLayer(0)->GetMaterials();
