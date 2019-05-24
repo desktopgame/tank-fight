@@ -54,10 +54,14 @@ void PngTexture::load(const std::string& path) {
         // generate texture
         glGenTextures(1, &(this->textureId));
         glBindTexture(GL_TEXTURE_2D, this->textureId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0,
-                     GL_RGBA, GL_UNSIGNED_BYTE, this->data);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glEnable(GL_TEXTURE_2D);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0,
+                     GL_RGBA, GL_UNSIGNED_BYTE, this->data);
+        glDisable(GL_TEXTURE_2D);
         png_destroy_info_struct(pPng, &pInfo);
         png_destroy_read_struct(&pPng, NULL, NULL);
         fclose(fp);

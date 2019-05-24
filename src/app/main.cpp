@@ -31,7 +31,7 @@ static void render_3d() {
         gluPerspective(30.0, 640 / 480, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(0.0, 500.0, 500.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        gluLookAt(0.0, 200.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 int main(int argc, char* argv[]) {
@@ -72,7 +72,6 @@ int main(int argc, char* argv[]) {
         sceneMgr.put("title", std::make_shared<mygame::TitleScene>(textureMgr,
                                                                    modelMgr));
         sceneMgr.bind("title");
-
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window)) {
                 /* Render here */
