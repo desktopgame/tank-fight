@@ -239,9 +239,22 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
 }
 FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
         FbxLayerElementUV* uvs = fbxMesh->GetLayer(0)->GetUVs();
-        for (int i = 0; i < fbxMesh->GetTextureUVCount(); i++) {
-                FbxVector2 v2 = uvs->GetDirectArray().GetAt(i);
-                uv.push_back(UV((float)v2[0], 1.0f - (float)v2[1]));
+        int uvsize = std::max(uvs->GetIndexArray().GetCount(),
+                              uvs->GetDirectArray().GetCount());
+        if (uvs->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
+                if (uvs->GetReferenceMode() == FbxLayerElement::eDirect) {
+                        for (int i = 0; i < fbxMesh->GetTextureUVCount(); i++) {
+                                FbxVector2 v2 = uvs->GetDirectArray().GetAt(i);
+                                uv.push_back(
+                                    UV((float)v2[0], 1.0f - (float)v2[1]));
+                        }
+                }
+        } else if (uvs->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
+                for (int i = 0; i < uvsize; i++) {
+                        int index = uvs->GetIndexArray().GetAt(i);
+                        FbxVector2 v2 = uvs->GetDirectArray().GetAt(index);
+                        uv.push_back(UV((float)v2[0], 1.0f - (float)v2[1]));
+                }
         }
 }
 }  // namespace mygame
