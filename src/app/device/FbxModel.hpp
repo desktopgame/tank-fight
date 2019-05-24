@@ -3,9 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <vector>
-#include "FbxMaterial.hpp"
 #include "../model/Vector2.hpp"
 #include "../model/Vector3.hpp"
+#include "FbxMaterial.hpp"
 #include "IModel.hpp"
 #include "PngTexture.hpp"
 #include "fbxsdk.h"
@@ -15,7 +15,7 @@ class FbxModel : public IModel {
         FbxModel(FbxManager* fbxManager);
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
-        void draw();
+        void draw() override;
 
        private:
         FbxMesh* findRecMesh(FbxNode* rootNode);

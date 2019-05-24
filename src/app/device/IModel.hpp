@@ -9,6 +9,7 @@ class IModel {
         ~IModel() = default;
         virtual void load(const std::string& path) = 0;
         virtual void unload(const std::string& path) = 0;
+        virtual void draw() = 0;
 };
 }  // namespace mygame
 #endif

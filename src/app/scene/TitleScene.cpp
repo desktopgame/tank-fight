@@ -26,8 +26,7 @@ void TitleScene::draw() {
         Vector2 rightBottom(320, 240);
         // mygame::drawTexture(leftBottom, leftTop, rightTop, rightBottom, tid);
         auto model = mModelManager->getModel("./assets/model/Gun1028.fbx");
-        auto fbx = std::static_pointer_cast<FbxModel>(model);
-        fbx->draw();
+        model->draw();
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }
