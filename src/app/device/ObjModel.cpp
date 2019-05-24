@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "../model/Vector3.hpp"
 #include "../model/Vector4.hpp"
+#define BUFLEN (512)
 namespace mygame {
 ObjModel::ObjModel() : materials(), textures(), texId() {}
 
@@ -13,7 +14,7 @@ void ObjModel::load(const std::string& path) {
         Vector3 bufv3;
         UV bufuv;
         int matNo = 0;
-        char key[256] = {0};
+        char key[BUFLEN] = {0};
         FILE* fp = fopen(path.c_str(), "rt");
         if (fp == NULL) {
                 perror("ObjModel#load");
@@ -22,10 +23,11 @@ void ObjModel::load(const std::string& path) {
         fseek(fp, SEEK_SET, 0);
         while (!feof(fp)) {
                 // FIXME: buffer overflow.
-                memset(key, '\0', sizeof(char) * 256);
-                fscanf(fp, "%s", key);
+                memset(key, '\0', sizeof(char) * BUFLEN);
+                fscanf(fp, "%s ", key);
                 if (!::strcmp(key, "mtllib")) {
-                        fscanf(fp, "%s", key);
+                        fscanf(fp, "%s ", key);
+                        loadMaterialFromFile(pathToDir(path), key);
                 }
                 if (!::strcmp(key, "v")) {
                         fscanf(fp, "%f %f %f", &bufv3.x, &bufv3.y, &bufv3.z);
@@ -185,13 +187,14 @@ void ObjModel::draw() {
         glDisable(GL_TEXTURE_2D);
 }
 
-void ObjModel::loadMaterialFromFile(const char* path) {
-        FILE* fp = fopen(path, "rt");
+void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
+        std::string resolved = (dir + '/' + path);
+        FILE* fp = fopen(resolved.c_str(), "rt");
         if (fp == NULL) {
                 perror("ObjModel#loadMaterialFromFile");
                 return;
         }
-        char key[256] = {0};
+        char key[BUFLEN] = {0};
         Vector4 bufv4;
         bool flag = false, flag2 = false;
         bufv4.w = 1.0f;
@@ -229,6 +232,7 @@ void ObjModel::loadMaterialFromFile(const char* path) {
                         objMat.shininess = bufv4.x;
                 }
                 if (!::strcmp(key, "map_Kd")) {
+                        fscanf(fp, "%s ", key);
                         for (int i = 0; i < materials.size(); i++) {
                                 if (!::strcmp(key, materials[i].name.c_str())) {
                                         flag2 = true;
@@ -238,12 +242,13 @@ void ObjModel::loadMaterialFromFile(const char* path) {
                                 }
                         }
                         if (!flag2) {
-                                objMat.texture = key;
+                                auto texpath = (dir + '/' + key);
+                                objMat.texture = texpath;
                                 auto tex = std::make_shared<PngTexture>();
-                                tex->load(key);
+                                tex->load(texpath);
                                 textures.push_back(tex);
-                                objMat.textureNo = tex->getID();
                                 texId.push_back(tex->getID());
+                                objMat.textureNo = texId.size();
                         }
                 }
         }
@@ -251,5 +256,13 @@ void ObjModel::loadMaterialFromFile(const char* path) {
         if (flag) {
                 materials.push_back(objMat);
         }
+}
+
+std::string ObjModel::pathToDir(const std::string& path) {
+        std::string::size_type pos = path.rfind("/");
+        if (pos == std::string::npos) {
+                return ".";
+        }
+        return path.substr(0, pos);
 }
 }  // namespace mygame

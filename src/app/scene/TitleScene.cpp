@@ -25,7 +25,7 @@ void TitleScene::draw() {
         Vector2 rightTop(320, 0);
         Vector2 rightBottom(320, 240);
         // mygame::drawTexture(leftBottom, leftTop, rightTop, rightBottom, tid);
-        auto model = mModelManager->getModel("./assets/model/Gun1028.fbx");
+        auto model = mModelManager->getModel("./assets/model/Gun1028.obj");
         model->draw();
 }
 

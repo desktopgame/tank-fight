@@ -7,6 +7,7 @@
 #include "content/ContentManager.hpp"
 #include "content/EchoPipeline.hpp"
 #include "content/FbxPipeline.hpp"
+#include "content/ObjPipeline.hpp"
 #include "content/PngPipeline.hpp"
 #include "content/ProxyPipeline.hpp"
 #include "content/WavePipeline.hpp"
@@ -77,6 +78,9 @@ int main(int argc, char* argv[]) {
         contentMgr.add(
             std::make_shared<mygame::ProxyPipeline<mygame::FbxPipeline> >(
                 ".fbx", modelMgr));
+        contentMgr.add(
+            std::make_shared<mygame::ProxyPipeline<mygame::ObjPipeline> >(
+                ".obj", modelMgr));
         contentMgr.load();
         // audioMgr->play("./assets/audio/se_maou_test.wav");
         mygame::SceneManager sceneMgr;

@@ -14,6 +14,7 @@ class ModelManager {
         ~ModelManager();
 
         void loadFbx(const std::string& path);
+        void loadObj(const std::string& path);
         void unload(const std::string& path);
         std::shared_ptr<IModel> getModel(const std::string& path) const;
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdexcept>
 #include "FbxModel.hpp"
+#include "ObjModel.hpp"
 namespace mygame {
 ModelManager::ModelManager() : modelMap() {
         this->fbxManager = FbxManager::Create();
@@ -17,6 +18,12 @@ void ModelManager::loadFbx(const std::string& path) {
         auto fbxModel = std::make_shared<FbxModel>(this->fbxManager);
         fbxModel->load(path);
         modelMap[path] = fbxModel;
+}
+
+void ModelManager::loadObj(const std::string& path) {
+        auto objModel = std::make_shared<ObjModel>();
+        objModel->load(path);
+        modelMap[path] = objModel;
 }
 
 void ModelManager::unload(const std::string& path) {
