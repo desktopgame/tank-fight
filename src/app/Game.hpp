@@ -2,10 +2,26 @@
 #define APP_GAME_HPP
 #include <GLFW/glfw3.h>
 namespace mygame {
+/**
+ * Game is provide mainloop and many callback.
+ * client will be extend this class for game develop.
+ */
 class Game {
        public:
         explicit Game();
         virtual ~Game();
+        /**
+         * start a mainloop.
+         * [CAUTION]
+         * this method is NOT complete until finish game.
+         * should be called at last of main function.
+         * @param argc
+         * @param argv
+         * @param title
+         * @param width
+         * @param height
+         * @return [STATUS-CODE]
+         */
         int mainLoop(int argc, char* argv[], const char* title, int width,
                      int height);
         static Game* getInstance();
