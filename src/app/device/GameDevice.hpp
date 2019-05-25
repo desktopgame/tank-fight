@@ -6,15 +6,37 @@
 #include "ModelManager.hpp"
 #include "TextureManager.hpp"
 namespace mygame {
-
+/**
+ * GameDevice is object to reference a common game resources.
+ * in general, instance of one only.
+ */
 class GameDevice {
        public:
         explicit GameDevice(const std::string& assetRootDir);
         static std::shared_ptr<GameDevice> make_shared(
             const std::string& assetRootDir);
+        /**
+         * return a ContentManager.
+         * @return
+         */
         std::shared_ptr<ContentManager> getContentManager() const;
+
+        /**
+         * return a AudioManager.
+         * @return
+         */
         std::shared_ptr<AudioManager> getAudioManager() const;
+
+        /**
+         * return a ModelManager.
+         * @return
+         */
         std::shared_ptr<ModelManager> getModelManager() const;
+
+        /**
+         * return a TextureManager.
+         * @return
+         */
         std::shared_ptr<TextureManager> getTextureManager() const;
 
        private:
