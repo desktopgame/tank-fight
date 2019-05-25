@@ -6,7 +6,7 @@ namespace mygame {
 class IPlayableAudio {
        public:
         IPlayableAudio() = default;
-        ~IPlayableAudio() = default;
+        virtual ~IPlayableAudio() = default;
         virtual void load(const std::string& path) = 0;
         virtual void play() const = 0;
         virtual GLuint getBuffer() const = 0;
