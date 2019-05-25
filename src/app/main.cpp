@@ -33,10 +33,11 @@ static void render_3d() {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(0.0, 200.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        glRotatef(90.0f, 0, 1.0f, 0);
 }
 
 static void init_gl() {
-        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glClearColor(1.0, 1.0, 1.0, 1.0);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);

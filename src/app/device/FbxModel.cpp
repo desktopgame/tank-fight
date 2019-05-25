@@ -21,6 +21,8 @@ void FbxModel::load(const std::string& path) {
         if (!fbxImporter->Import(fbxScene)) {
                 throw std::logic_error("fatal error: FbxImporter#Initialize");
         }
+        FbxGeometryConverter geometryConverter(fbxManager);
+        geometryConverter.Triangulate(fbxScene, true);
         auto rootNode = fbxScene->GetRootNode();
         auto fbxMesh = findMesh(rootNode);
         mapVertex(fbxMesh);
