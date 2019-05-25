@@ -8,14 +8,38 @@
 
 namespace mygame {
 class IModel;
+/**
+ * ModelManager is manage a `IModel`.
+ * in now, supported .fbx and .obj
+ */
 class ModelManager {
        public:
         ModelManager();
         ~ModelManager();
 
+        /**
+         * load a .fbx file.
+         * @param path
+         */
         void loadFbx(const std::string& path);
+
+        /**
+         * load a .obj file.
+         * @param path
+         */
         void loadObj(const std::string& path);
+
+        /**
+         * unload model.
+         * @param path
+         */
         void unload(const std::string& path);
+
+        /**
+         * return a model.
+         * @param path
+         * @return
+         */
         std::shared_ptr<IModel> getModel(const std::string& path) const;
 
        private:
