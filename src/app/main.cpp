@@ -17,6 +17,9 @@
 #include "scene/SceneManager.hpp"
 #include "scene/TitleScene.hpp"
 
+static float gScrollX = 0;
+static float gScrollY = 0;
+
 static void render_2d() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
@@ -32,8 +35,9 @@ static void render_3d() {
         gluPerspective(30.0, 640 / 480, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(0.0, 200.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        glRotatef(90.0f, 0, 1.0f, 0);
+        gluLookAt(0.0, 0.1, -5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        glTranslatef(gScrollX, gScrollY, 0.0);
+        // glRotatef(90.0f, 0, 1.0f, 0);
 }
 
 static void init_gl() {
@@ -95,6 +99,17 @@ int main(int argc, char* argv[]) {
                 render_3d();
                 sceneMgr.update();
                 sceneMgr.draw();
+                float increase = 0.01f;
+                if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                        gScrollX -= increase;
+                } else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                        gScrollX += increase;
+                }
+                if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+                        gScrollY -= increase;
+                } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                        gScrollY += increase;
+                }
 
                 /* Swap front and back buffers */
                 glfwSwapBuffers(window);
