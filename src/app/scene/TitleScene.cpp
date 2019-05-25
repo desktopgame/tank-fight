@@ -19,7 +19,10 @@ void TitleScene::update() {}
 
 void TitleScene::draw() {
         auto model = mModelManager->getModel("./assets/model/Gun1028.fbx");
+        glPushMatrix();
+        glScalef(0.02f, 0.02f, 0.02f);
         model->draw();
+        glPopMatrix();
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }
