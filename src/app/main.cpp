@@ -19,6 +19,8 @@
 
 static float gScrollX = 0;
 static float gScrollY = 0;
+static float gScrollZ = 0;
+static float gRotateY = 0;
 
 static void render_2d() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -29,15 +31,15 @@ static void render_2d() {
 
 static void render_3d() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, 640, 480);
+        // glViewport(0, 0, 640, 480);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluPerspective(30.0, 640 / 480, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(0.0, 0.1, -5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        glTranslatef(gScrollX, gScrollY, 0.0);
-        // glRotatef(90.0f, 0, 1.0f, 0);
+        glTranslatef(gScrollX, gScrollY, gScrollZ);
+        glRotatef(gRotateY, 0, 1.0f, 0);
 }
 
 static void init_gl() {
@@ -109,6 +111,16 @@ int main(int argc, char* argv[]) {
                         gScrollY -= increase;
                 } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
                         gScrollY += increase;
+                }
+                if (glfwGetKey(window, 'S') == GLFW_PRESS) {
+                        gScrollZ -= increase;
+                } else if (glfwGetKey(window, 'W') == GLFW_PRESS) {
+                        gScrollZ += increase;
+                }
+                if (glfwGetKey(window, 'A') == GLFW_PRESS) {
+                        gRotateY -= increase;
+                } else if (glfwGetKey(window, 'D') == GLFW_PRESS) {
+                        gRotateY += increase;
                 }
 
                 /* Swap front and back buffers */
