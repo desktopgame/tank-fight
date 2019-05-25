@@ -6,12 +6,30 @@
 
 namespace mygame {
 class IContentPipeline;
+/**
+ * ContentManager is list of ContentPipeline.
+ */
 class ContentManager {
        public:
         ContentManager(const std::string& rootDir);
+        /**
+         * add pipeline.
+         * @param pipe
+         */
         void add(const std::shared_ptr<IContentPipeline>& pipe);
+        /**
+         * remove pipeline.
+         * @param pipe
+         */
         void remove(const std::shared_ptr<IContentPipeline>& pipe);
+
+        /**
+         * load a all asset.
+         */
         void load();
+        /**
+         * unload a all asset.
+         */
         void unload();
 
        private:
