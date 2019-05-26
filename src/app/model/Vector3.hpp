@@ -7,6 +7,20 @@ struct Vector3 {
         float x;
         float y;
         float z;
+        Vector3& operator*=(float scale);
+        Vector3& operator/=(float scale);
+        Vector3& operator*=(const Vector3& a);
+        Vector3& operator/=(const Vector3& a);
+        Vector3& operator+=(const Vector3& a);
+        Vector3& operator-=(const Vector3& a);
 };
+Vector3 operator*(const Vector3& t1, const Vector3& t2);
+Vector3 operator/(const Vector3& t1, const Vector3& t2);
+Vector3 operator+(const Vector3& t1, const Vector3& t2);
+Vector3 operator-(const Vector3& t1, const Vector3& t2);
+Vector3 operator*(const Vector3& t1, float scale);
+Vector3 operator*(float scale, const Vector3& t2);
+Vector3 operator/(const Vector3& t1, float scale);
+Vector3 operator/(float scale, const Vector3& t2);
 }  // namespace mygame
 #endif
