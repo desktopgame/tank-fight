@@ -154,7 +154,7 @@ Vector3 AABB::getSize() const {
         return Vector3(getSizeX(), getSizeY(), getSizeZ());
 }
 
-float AABB::getSizeX() const { return maxX - maxX; }
+float AABB::getSizeX() const { return maxX - minX; }
 
 float AABB::getSizeY() const { return maxY - minY; }
 
