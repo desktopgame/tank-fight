@@ -1,6 +1,8 @@
 #ifndef APP_SCENE_TITLESCENE_HPP
 #define APP_SCENE_TITLESCENE_HPP
 #include <memory>
+#include <vector>
+#include "../gsystem/Object.hpp"
 #include "IScene.hpp"
 namespace mygame {
 class TextureManager;
@@ -19,6 +21,7 @@ class TitleScene : public IScene {
        private:
         std::shared_ptr<TextureManager> mTextureManager;
         std::shared_ptr<ModelManager> mModelManager;
+        std::shared_ptr<Object> stage;
         bool mFinished;
 };
 }  // namespace mygame
