@@ -7,6 +7,10 @@ struct Vector3 {
         float x;
         float y;
         float z;
+        float length() const;
+        Vector3& normalize();
+        float dot(const Vector3& v) const;
+        Vector3 cross(const Vector3& v) const;
         Vector3& operator*=(float scale);
         Vector3& operator/=(float scale);
         Vector3& operator*=(const Vector3& a);

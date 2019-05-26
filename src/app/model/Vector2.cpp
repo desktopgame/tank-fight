@@ -1,9 +1,21 @@
 #include "Vector2.hpp"
-#include <math.h>
+#include <cmath>
 namespace mygame {
 Vector2::Vector2() : x(0), y(0) {}
 
 Vector2::Vector2(float x, float y) : x(x), y(y) {}
+
+float Vector2::length() const { return std::sqrt(x * x + y * y); }
+
+Vector2& Vector2::normalize() {
+        float len = length();
+        if (len != 0) {
+                return *this /= len;
+        }
+        return *this;
+}
+
+float Vector2::dot(const Vector2& v) const { return x * v.x + y * v.y; }
 
 Vector2& Vector2::operator*=(float scale) {
         this->x *= scale;
