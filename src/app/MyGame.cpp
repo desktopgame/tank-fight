@@ -18,33 +18,12 @@ void MyGame::init() {
         glEnable(GL_LIGHT0);
         glEnable(GL_LIGHTING);
         glEnable(GL_CULL_FACE);
+        Vector3 sun(0.0, 10, 0.0);
+        glLightfv(GL_LIGHT0, GL_POSITION, &sun.x);
         glCullFace(GL_BACK);
 }
 
-void MyGame::update() {
-        float increase = 0.001f;
-        if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                gScrollX -= increase;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                gScrollX += increase;
-        }
-        if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-                gScrollY -= increase;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                gScrollY += increase;
-        }
-        if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
-                gScrollZ -= increase;
-        } else if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
-                gScrollZ += increase;
-        }
-        if (glfwGetKey(mWindow, 'A') == GLFW_PRESS) {
-                gRotateY -= increase;
-        } else if (glfwGetKey(mWindow, 'D') == GLFW_PRESS) {
-                gRotateY += increase;
-        }
-        sceneManager.update();
-}
+void MyGame::update() { sceneManager.update(); }
 
 void MyGame::draw() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -55,8 +34,8 @@ void MyGame::draw() {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         gluLookAt(0.0, 0.1, -5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        glTranslatef(gScrollX, gScrollY, gScrollZ);
-        glRotatef(gRotateY, 0, 1.0f, 0);
+        // glTranslatef(gScrollX, gScrollY, gScrollZ);
+        // glRotatef(gRotateY, 0, 1.0f, 0);
         sceneManager.draw();
 
         glfwSwapBuffers(mWindow);

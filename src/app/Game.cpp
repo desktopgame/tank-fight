@@ -45,6 +45,8 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         return 0;
 }
 
+GLFWwindow* Game::getWindow() const { return this->mWindow; }
+
 Game* Game::getInstance() { return instance; }
 
 // protected

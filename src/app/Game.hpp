@@ -24,6 +24,7 @@ class Game {
          */
         int mainLoop(int argc, char* argv[], const char* title, int width,
                      int height);
+        GLFWwindow* getWindow() const;
         static Game* getInstance();
 
        protected:

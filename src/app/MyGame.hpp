@@ -12,10 +12,6 @@ class MyGame : public Game {
         void init() override;
         void update() override;
         void draw() override;
-        float gScrollX;
-        float gScrollY;
-        float gScrollZ;
-        float gRotateY;
         SceneManager sceneManager;
         std::shared_ptr<GameDevice> gameDevice;
 };

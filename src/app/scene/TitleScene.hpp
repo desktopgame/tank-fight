@@ -22,6 +22,7 @@ class TitleScene : public IScene {
         std::shared_ptr<TextureManager> mTextureManager;
         std::shared_ptr<ModelManager> mModelManager;
         std::shared_ptr<Object> stage;
+        std::shared_ptr<Object> camera;
         bool mFinished;
 };
 }  // namespace mygame

@@ -1,5 +1,6 @@
 #include "Object.hpp"
 #include <GLFW/glfw3.h>
+#include <cmath>
 #include "Context.hpp"
 #include "IComponent.hpp"
 namespace mygame {
@@ -12,7 +13,9 @@ Object::Object(const std::string& name)
       position(),
       scale(1, 1, 1),
       rotate(),
-      angle() {}
+      angleX(),
+      angleY(),
+      angleZ() {}
 
 void Object::setTag(const std::string& tag) { this->tag = tag; }
 
@@ -65,6 +68,27 @@ std::shared_ptr<IComponent> Object::getComponentAt(size_t index) {
 
 size_t Object::getComponentCount() const { return components.size(); }
 
+Vector3 Object::forward() const{
+        auto ax = -std::cos(angleY) * std::sin(angleX) * 1;
+        auto ay = std::sin(angleY);
+        auto az = std::cos(angleY) * std::cos(angleX) * 1;
+        return -Vector3(ax, ay, az);
+}
+
+Vector3 Object::backward() const{
+        return -forward();
+}
+
+Vector3 Object::left() const{
+        return -right();
+}
+
+Vector3 Object::right() const{
+        auto z = -std::cos(angleY)*std::sin(angleX)*1;
+        auto x = -std::cos(angleY)*std::cos(angleX)*1;
+        return -Vector3(x, 0, z);
+}
+
 void Object::onUpdate() {
         for (auto e : children) {
                 e->onUpdate();
@@ -78,7 +102,9 @@ void Object::onDraw() {
         ::glPushMatrix();
         ::glTranslatef(position.x, position.y, position.z);
         ::glScalef(scale.x, scale.y, scale.z);
-        ::glRotatef(angle, rotate.x, rotate.y, rotate.z);
+        ::glRotatef(angleZ, 0, 0, 1);
+        ::glRotatef(angleY, 0, 1, 0);
+        ::glRotatef(angleX, 1, 0, 0);
         for (auto e : children) {
                 e->onDraw();
         }

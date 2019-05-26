@@ -24,6 +24,11 @@ class Object : public std::enable_shared_from_this<Object> {
         std::shared_ptr<IComponent> getComponentAt(size_t index);
         size_t getComponentCount() const;
 
+        Vector3 forward() const;
+        Vector3 backward() const;
+        Vector3 left() const;
+        Vector3 right() const;
+
         void onUpdate();
         void onDraw();
         void onAwake();
@@ -33,7 +38,9 @@ class Object : public std::enable_shared_from_this<Object> {
         Vector3 position;
         Vector3 scale;
         Vector3 rotate;
-        float angle;
+        float angleX;
+        float angleY;
+        float angleZ;
 
        private:
         void removeChild(const std::shared_ptr<Object> child);

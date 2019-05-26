@@ -5,6 +5,7 @@
 #include "../device/ITexture.hpp"
 #include "../device/ModelManager.hpp"
 #include "../device/TextureManager.hpp"
+#include "../gsystem/CharacterController.hpp"
 #include "../gsystem/ModelRenderer.hpp"
 #include "../gsystem/Runtime.hpp"
 namespace mygame {
@@ -14,11 +15,13 @@ TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager,
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
-      stage(Runtime::create("Stage")) {
+      stage(Runtime::create("Stage")),
+      camera(Runtime::create("Camera")) {
+        camera->addComponent(std::make_shared<CharacterController>());
         auto path = "./assets/model/Block.fbx";
         auto msize = modelManager->getModel(path)->getAABB().getSize();
-        for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < 24; i++) {
+                for (int j = 0; j < 24; j++) {
                         auto obj = Runtime::create("Cell");
                         auto pos =
                             Vector3(msize.x * i * 0.1f, 0, msize.z * j * 0.1f);
@@ -30,13 +33,14 @@ TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager,
                         stage->addChild(obj);
                 }
         }
+        camera->addChild(stage);
 }
 
 void TitleScene::show() {}
 
-void TitleScene::update() { stage->onUpdate(); }
+void TitleScene::update() { camera->onUpdate(); }
 
-void TitleScene::draw() { stage->onDraw(); }
+void TitleScene::draw() { camera->onDraw(); }
 
 std::string TitleScene::getNextScene() const { return "play"; }
 
