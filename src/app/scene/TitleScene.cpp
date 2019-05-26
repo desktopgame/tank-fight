@@ -5,6 +5,7 @@
 #include "../device/ITexture.hpp"
 #include "../device/ModelManager.hpp"
 #include "../device/TextureManager.hpp"
+#include "../gsystem/ModelRenderer.hpp"
 #include "../gsystem/Runtime.hpp"
 namespace mygame {
 
@@ -13,29 +14,29 @@ TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager,
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
-      stage(Runtime::create("Stage")) {}
-
-void TitleScene::show() {}
-
-void TitleScene::update() {}
-
-void TitleScene::draw() {
-        auto model = mModelManager->getModel("./assets/model/Block.fbx");
-        auto aabb = model->getAABB();
-        auto size = aabb.getSize();
-        auto scale = 0.1f;
+      stage(Runtime::create("Stage")) {
+        auto path = "./assets/model/Block.fbx";
+        auto msize = modelManager->getModel(path)->getAABB().getSize();
         for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                        glPushMatrix();
-                        glTranslatef(size.x * i * scale, 0, size.z * j * scale);
-                        glScalef(scale, scale, scale);
-                        model->draw();
-                        glColor3f(1.0f, 0, 0);
-                        aabb.drawFrame();
-                        glPopMatrix();
+                        auto obj = Runtime::create("Cell");
+                        auto pos =
+                            Vector3(msize.x * i * 0.1f, 0, msize.z * j * 0.1f);
+                        auto modR =
+                            std::make_shared<ModelRenderer>(path, modelManager);
+                        obj->addComponent(modR);
+                        obj->scale = Vector3(0.1f, 0.1f, 0.1f);
+                        obj->position = pos;
+                        stage->addChild(obj);
                 }
         }
 }
+
+void TitleScene::show() {}
+
+void TitleScene::update() { stage->onUpdate(); }
+
+void TitleScene::draw() { stage->onDraw(); }
 
 std::string TitleScene::getNextScene() const { return "play"; }
 
