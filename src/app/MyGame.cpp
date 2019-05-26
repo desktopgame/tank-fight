@@ -22,7 +22,7 @@ void MyGame::init() {
 }
 
 void MyGame::update() {
-        float increase = 0.01f;
+        float increase = 0.001f;
         if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 gScrollX -= increase;
         } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
@@ -33,9 +33,9 @@ void MyGame::update() {
         } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
                 gScrollY += increase;
         }
-        if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
+        if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
                 gScrollZ -= increase;
-        } else if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
+        } else if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
                 gScrollZ += increase;
         }
         if (glfwGetKey(mWindow, 'A') == GLFW_PRESS) {

@@ -13,6 +13,7 @@ class ObjModel : public IModel {
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
         void draw() override;
+        AABB getAABB() const override;
 
        private:
         void loadMaterialFromFile(const std::string& dir, const char* path);
@@ -20,6 +21,7 @@ class ObjModel : public IModel {
         std::vector<ObjMaterial> materials;
         std::vector<std::shared_ptr<PngTexture> > textures;
         std::vector<GLuint> texId;
+        AABB aabb;
 };
 }  // namespace mygame
 #endif

@@ -127,6 +127,7 @@ void ObjModel::load(const std::string& path) {
                 materials[j].quadNorId.clear();
                 materials[j].quadUVId.clear();
         }
+        this->aabb = AABB(vertex);
         vertex.clear();
         normal.clear();
         uv.clear();
@@ -186,6 +187,8 @@ void ObjModel::draw() {
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glDisable(GL_TEXTURE_2D);
 }
+
+AABB ObjModel::getAABB() const { return aabb; }
 
 void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
         std::string resolved = (dir + '/' + path);

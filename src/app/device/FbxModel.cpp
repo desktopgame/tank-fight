@@ -31,6 +31,7 @@ void FbxModel::load(const std::string& path) {
         mapUV(fbxMesh);
         mapMaterial(fbxMesh);
         mapSide(fbxMesh);
+        this->aabb = AABB(vertex);
         vertex.clear();
         normal.clear();
         uv.clear();
@@ -95,6 +96,8 @@ void FbxModel::draw() {
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glDisable(GL_TEXTURE_2D);
 }
+
+AABB FbxModel::getAABB() const { return aabb; }
 
 // private
 FbxMesh* FbxModel::findRecMesh(FbxNode* rootNode) {

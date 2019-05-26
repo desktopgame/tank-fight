@@ -16,6 +16,7 @@ class FbxModel : public IModel {
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
         void draw() override;
+        AABB getAABB() const override;
 
        private:
         FbxMesh* findRecMesh(FbxNode* rootNode);
@@ -36,6 +37,7 @@ class FbxModel : public IModel {
         std::vector<UV> uv;
         std::vector<int> vertexIndex;
         std::vector<int> texId;
+        AABB aabb;
 };
 }  // namespace mygame
 #endif
