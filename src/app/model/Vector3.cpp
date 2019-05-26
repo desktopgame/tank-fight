@@ -25,6 +25,14 @@ Vector3 Vector3::cross(const Vector3& v) const {
                        (x * v.y - y * v.x));
 }
 
+Vector3 Vector3::operator-() const {
+        Vector3 v;
+        v.x = -x;
+        v.y = -y;
+        v.z = -z;
+        return v;
+}
+
 Vector3& Vector3::operator*=(float scale) {
         this->x *= scale;
         this->y *= scale;

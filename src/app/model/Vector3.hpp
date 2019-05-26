@@ -11,6 +11,7 @@ struct Vector3 {
         Vector3& normalize();
         float dot(const Vector3& v) const;
         Vector3 cross(const Vector3& v) const;
+        Vector3 operator-() const;
         Vector3& operator*=(float scale);
         Vector3& operator/=(float scale);
         Vector3& operator*=(const Vector3& a);

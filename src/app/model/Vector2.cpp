@@ -17,6 +17,13 @@ Vector2& Vector2::normalize() {
 
 float Vector2::dot(const Vector2& v) const { return x * v.x + y * v.y; }
 
+Vector2 Vector2::operator-() const {
+        Vector2 v;
+        v.x = -x;
+        v.y = -y;
+        return v;
+}
+
 Vector2& Vector2::operator*=(float scale) {
         this->x *= scale;
         this->y *= scale;
