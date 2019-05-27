@@ -12,7 +12,13 @@ TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager,
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
-      camera() {}
+      camera() {
+        auto path = "./assets/model/Block.fbx";
+        auto msize = mModelManager->getModel(path)->getAABB().getSize();
+        auto pos =
+            Vector3(msize.x * 24 * 0.1f, msize.y * 0.1f, msize.z * 24 * 0.1f);
+        camera.transform.position = pos;
+}
 
 void TitleScene::show() {}
 
@@ -22,8 +28,8 @@ void TitleScene::draw() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         camera.beginDraw();
-        for (int i = 0; i < 24; i++) {
-                for (int j = 0; j < 24; j++) {
+        for (int i = 0; i < 48; i++) {
+                for (int j = 0; j < 48; j++) {
                         auto model = mModelManager->getModel(path);
                         auto pos =
                             Vector3(msize.x * i * 0.1f, 0, msize.z * j * 0.1f);
@@ -33,6 +39,8 @@ void TitleScene::draw() {
                         model->draw();
                         ::glPopMatrix();
                 }
+        }
+        for (int i = 0; i < 10; i++) {
         }
         camera.endDraw();
 }
