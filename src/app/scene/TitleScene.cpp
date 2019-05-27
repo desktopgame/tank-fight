@@ -28,64 +28,8 @@ void TitleScene::draw() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         camera.beginDraw();
-        for (int i = 0; i < 48; i++) {
-                for (int j = 0; j < 48; j++) {
-                        auto model = mModelManager->getModel(path);
-                        auto pos =
-                            Vector3(msize.x * i * 0.1f, 0, msize.z * j * 0.1f);
-                        ::glPushMatrix();
-                        ::glTranslatef(pos.x, pos.y, pos.z);
-                        ::glScalef(0.1f, 0.1f, 0.1f);
-                        model->draw();
-                        ::glPopMatrix();
-                }
-        }
-        for (int y = 1; y < 5; y++) {
-                for (int i = 0; i < 48; i++) {
-                        auto model = mModelManager->getModel(path);
-                        auto pos =
-                            Vector3(msize.x * i * 0.1f, (msize.y * y) * 0.1,
-                                    msize.z * 48 * 0.1f);
-                        ::glPushMatrix();
-                        ::glTranslatef(pos.x, pos.y, pos.z);
-                        ::glScalef(0.1f, 0.1f, 0.1f);
-                        model->draw();
-                        ::glPopMatrix();
-                }
-                for (int i = 0; i < 48; i++) {
-                        auto model = mModelManager->getModel(path);
-                        auto pos =
-                            Vector3(msize.x * i * 0.1f, (msize.y * y) * 0.1,
-                                    msize.z * 0 * 0.1f);
-                        ::glPushMatrix();
-                        ::glTranslatef(pos.x, pos.y, pos.z);
-                        ::glScalef(0.1f, 0.1f, 0.1f);
-                        model->draw();
-                        ::glPopMatrix();
-                }
-                for (int i = 0; i < 48; i++) {
-                        auto model = mModelManager->getModel(path);
-                        auto pos =
-                            Vector3(msize.x * 48 * 0.1f, (msize.y * y) * 0.1,
-                                    msize.z * i * 0.1f);
-                        ::glPushMatrix();
-                        ::glTranslatef(pos.x, pos.y, pos.z);
-                        ::glScalef(0.1f, 0.1f, 0.1f);
-                        model->draw();
-                        ::glPopMatrix();
-                }
-                for (int i = 0; i < 48; i++) {
-                        auto model = mModelManager->getModel(path);
-                        auto pos =
-                            Vector3(msize.x * 0 * 0.1f, (msize.y * y) * 0.1,
-                                    msize.z * i * 0.1f);
-                        ::glPushMatrix();
-                        ::glTranslatef(pos.x, pos.y, pos.z);
-                        ::glScalef(0.1f, 0.1f, 0.1f);
-                        model->draw();
-                        ::glPopMatrix();
-                }
-        }
+        mygame::drawField(mModelManager->getModel(path),
+                          Vector3(0.1f, 0.1f, 0.1f), 48, 5);
         camera.endDraw();
 }
 

@@ -24,4 +24,62 @@ void drawTexture(Vector2 leftBottom, Vector2 leftTop, Vector2 rightTop,
         ::glDisable(GL_ALPHA_TEST);
         ::glDisable(GL_TEXTURE_2D);
 }
+
+void drawField(std::shared_ptr<IModel> model, Vector3 scale, int gridSize,
+               int height) {
+        auto msize = model->getAABB().getSize();
+        for (int i = 0; i < gridSize; i++) {
+                for (int j = 0; j < gridSize; j++) {
+                        auto pos = Vector3(msize.x * i * scale.x, 0,
+                                           msize.z * j * scale.z);
+                        ::glPushMatrix();
+                        ::glTranslatef(pos.x, pos.y, pos.z);
+                        ::glScalef(scale.x, scale.y, scale.z);
+                        model->draw();
+                        ::glPopMatrix();
+                }
+        }
+        for (int y = 1; y < height; y++) {
+                for (int i = 0; i < gridSize; i++) {
+                        auto pos = Vector3(msize.x * i * scale.x,
+                                           (msize.y * y) * scale.y,
+                                           msize.z * gridSize * scale.z);
+                        ::glPushMatrix();
+                        ::glTranslatef(pos.x, pos.y, pos.z);
+                        ::glScalef(scale.x, scale.y, scale.z);
+                        model->draw();
+                        ::glPopMatrix();
+                }
+                for (int i = 0; i < gridSize; i++) {
+                        auto pos = Vector3(msize.x * i * scale.x,
+                                           (msize.y * y) * scale.y,
+                                           msize.z * 0 * scale.z);
+                        ::glPushMatrix();
+                        ::glTranslatef(pos.x, pos.y, pos.z);
+                        ::glScalef(scale.x, scale.y, scale.z);
+                        model->draw();
+                        ::glPopMatrix();
+                }
+                for (int i = 0; i < gridSize; i++) {
+                        auto pos = Vector3(msize.x * gridSize * scale.x,
+                                           (msize.y * y) * scale.y,
+                                           msize.z * i * scale.z);
+                        ::glPushMatrix();
+                        ::glTranslatef(pos.x, pos.y, pos.z);
+                        ::glScalef(scale.x, scale.y, scale.z);
+                        model->draw();
+                        ::glPopMatrix();
+                }
+                for (int i = 0; i < gridSize; i++) {
+                        auto pos = Vector3(msize.x * 0 * scale.x,
+                                           (msize.y * y) * scale.y,
+                                           msize.z * i * scale.z);
+                        ::glPushMatrix();
+                        ::glTranslatef(pos.x, pos.y, pos.z);
+                        ::glScalef(scale.x, scale.y, scale.z);
+                        model->draw();
+                        ::glPopMatrix();
+                }
+        }
+}
 }  // namespace mygame
