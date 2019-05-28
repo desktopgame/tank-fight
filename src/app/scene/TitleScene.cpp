@@ -38,7 +38,7 @@ void TitleScene::draw() {
         ::glPushMatrix();
         ::glTranslatef(gunPos.x, gunPos.y, gunPos.z);
         ::glScalef(0.001f, 0.001f, 0.001f);
-        auto gunModel = mModelManager->getModel("./assets/model/TankCat.fbx");
+        auto gunModel = mModelManager->getModel("./assets/model/Tank.fbx");
         gunModel->draw();
         ::glPopMatrix();
         camera.endDraw();
