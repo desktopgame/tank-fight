@@ -3,11 +3,13 @@
 #define DEG2RAD (3.1415f / 180.0f)
 
 namespace gel {
-Transform::Transform() : position(), scale(), angleX(), angleY(), angleZ() {}
+Transform::Transform() : position(), scale(), rotation() {}
 Vector3 Transform::forward() const {
-        auto ax = std::sin(angleX * DEG2RAD) * std::cos(angleY * DEG2RAD) * 1;
-        auto ay = std::sin(angleY * DEG2RAD);
-        auto az = std::cos(angleX * DEG2RAD) * std::cos(angleY * DEG2RAD) * 1;
+        auto ax =
+            std::sin(rotation.x * DEG2RAD) * std::cos(rotation.y * DEG2RAD) * 1;
+        auto ay = std::sin(rotation.y * DEG2RAD);
+        auto az =
+            std::cos(rotation.x * DEG2RAD) * std::cos(rotation.y * DEG2RAD) * 1;
         return Vector3(ax, ay, az);
 }
 Vector3 Transform::backward() const { return -forward(); }

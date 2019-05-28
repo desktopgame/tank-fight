@@ -13,8 +13,8 @@ void Camera::beginDraw() const {
         auto pos = transform.position;
         auto lookat = pos + transform.forward();
         //::glTranslatef(pos.x, pos.y, pos.z);
-        //::glRotatef(transform.angleY, 0, 1, 0);
-        //::glRotatef(transform.angleX, 1, 0, 0);
+        //::glRotatef(transform.rotation.y, 0, 1, 0);
+        //::glRotatef(transform.rotation.x, 1, 0, 0);
         //::glRotatef(transform.angleZ, 0, 0, 1);
         //::glTranslatef(-pos.x, -pos.y, -pos.z);
         ::gluLookAt(pos.x, pos.y, pos.z, lookat.x, lookat.y, lookat.z, 0.0, 1.0,
@@ -30,14 +30,14 @@ void Camera::debugControl() {
                 increase = 0.5;
         }
         if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                transform.angleX += increase * 50;
+                transform.rotation.x += increase * 50;
         } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                transform.angleX -= increase * 50;
+                transform.rotation.x -= increase * 50;
         }
         if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-                transform.angleY += increase * 50;
+                transform.rotation.y += increase * 50;
         } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                transform.angleY -= increase * 50;
+                transform.rotation.y -= increase * 50;
         }
         if (glfwGetKey(mWindow, 'X') == GLFW_PRESS) {
                 transform.position.y -= 0.02f;
@@ -59,6 +59,7 @@ void Camera::debugControl() {
                 transform.position +=
                     Vector3(1, 0, 1) * transform.right() * 0.1f;
         }
-        transform.angleY = std::max(-90.f, std::min(90.f, transform.angleY));
+        transform.rotation.y =
+            std::max(-90.f, std::min(90.f, transform.rotation.y));
 }
 }  // namespace gel

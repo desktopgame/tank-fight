@@ -11,9 +11,7 @@ struct Transform {
 
         Vector3 position;
         Vector3 scale;
-        float angleX;
-        float angleY;
-        float angleZ;
+        Vector3 rotation;
 };
 }  // namespace gel
 #endif
