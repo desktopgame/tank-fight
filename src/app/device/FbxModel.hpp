@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <vector>
+#include "FbxMeshInfo.hpp"
 #include "../model/Vector2.hpp"
 #include "../model/Vector3.hpp"
 #include "FbxMaterial.hpp"
@@ -19,24 +20,19 @@ class FbxModel : public IModel {
         AABB getAABB() const override;
 
        private:
-        FbxMesh* findRecMesh(FbxNode* rootNode);
-        FbxMesh* findMesh(FbxNode* rootNode);
-        FbxMesh* mapVertex(FbxMesh* fbxMesh);
-        FbxMesh* mapVertexIndex(FbxMesh* fbxMesh);
-        FbxMesh* mapNormal(FbxMesh* fbxMesh);
-        FbxMesh* mapUV(FbxMesh* fbxMesh);
-        FbxMesh* mapMaterial(FbxMesh* fbxMesh);
-        FbxMesh* mapSide(FbxMesh* fbxMesh);
+        void drawMeshInfo(FbxMeshInfo& meshInfo);
+        void collectRecMesh(FbxNode* rootNode, std::vector<FbxMesh*>& dest);
+        void collectMesh(FbxNode* rootNode, std::vector<FbxMesh*>& dest);
+        FbxMesh* mapVertex(FbxMesh* fbxMesh, FbxMeshInfo& dest);
+        FbxMesh* mapVertexIndex(FbxMesh* fbxMesh, FbxMeshInfo& dest);
+        FbxMesh* mapNormal(FbxMesh* fbxMesh, FbxMeshInfo& dest);
+        FbxMesh* mapUV(FbxMesh* fbxMesh, FbxMeshInfo& dest);
+        FbxMesh* mapMaterial(FbxMesh* fbxMesh, FbxMeshInfo& dest);
+        FbxMesh* mapSide(FbxMesh* fbxMesh, FbxMeshInfo& dest);
         FbxManager* fbxManager;
         FbxScene* fbxScene;
         FbxImporter* fbxImporter;
-        std::vector<std::shared_ptr<PngTexture> > textures;
-        std::vector<Vector3> vertex;
-        std::vector<Vector3> normal;
-        std::vector<FbxMaterial> materials;
-        std::vector<UV> uv;
-        std::vector<int> vertexIndex;
-        std::vector<int> texId;
+        std::vector<FbxMeshInfo> vinfo;
         AABB aabb;
 };
 }  // namespace mygame

@@ -4,13 +4,8 @@ namespace mygame {
 FbxModel::FbxModel(FbxManager* fbxManager)
     : fbxManager(fbxManager),
       fbxScene(nullptr),
-      textures(),
-      materials(),
-      vertex(),
-      normal(),
-      uv(),
-      vertexIndex(),
-      texId() {}
+      vinfo(),
+      aabb() {}
 
 void FbxModel::load(const std::string& path) {
         this->fbxScene = FbxScene::Create(this->fbxManager, "");
@@ -24,18 +19,23 @@ void FbxModel::load(const std::string& path) {
         FbxGeometryConverter geometryConverter(fbxManager);
         geometryConverter.Triangulate(fbxScene, true);
         auto rootNode = fbxScene->GetRootNode();
-        auto fbxMesh = findMesh(rootNode);
-        mapVertex(fbxMesh);
-        mapVertexIndex(fbxMesh);
-        mapNormal(fbxMesh);
-        mapUV(fbxMesh);
-        mapMaterial(fbxMesh);
-        mapSide(fbxMesh);
-        this->aabb = AABB(vertex);
-        vertex.clear();
-        normal.clear();
-        uv.clear();
-        vertexIndex.clear();
+        std::vector<FbxMesh*> meshes;
+        std::vector<Vector3> vvertex;
+        collectMesh(rootNode, meshes);
+        for(int i=0; i<meshes.size(); i++) {
+                FbxMeshInfo meshInfo;
+                mapVertex(meshes[i], meshInfo);
+                mapVertexIndex(meshes[i], meshInfo);
+                mapNormal(meshes[i], meshInfo);
+                mapUV(meshes[i], meshInfo);
+                mapMaterial(meshes[i], meshInfo);
+                mapSide(meshes[i], meshInfo);
+                vinfo.push_back(meshInfo);
+                for(auto v3 : meshInfo.vertex) {
+                        vvertex.push_back(v3);
+                }
+        }
+        this->aabb = AABB(vvertex);
 }
 
 void FbxModel::unload(const std::string& path) {
@@ -44,50 +44,59 @@ void FbxModel::unload(const std::string& path) {
 }
 
 void FbxModel::draw() {
-        glEnableClientState(GL_VERTEX_ARRAY);
+        for(auto& meshInfo : vinfo) {
+                drawMeshInfo(meshInfo);
+        }
+}
+
+AABB FbxModel::getAABB() const { return aabb; }
+
+// private
+void FbxModel::drawMeshInfo(FbxMeshInfo& meshInfo) {
+glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        size_t size = materials.size();
+        size_t size = meshInfo.materials.size();
         for (int i = 0; i < (signed)size; i++) {
                 glPushMatrix();
                 glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
-                             (const GLfloat*)&materials[i].color.ambient);
+                             (const GLfloat*)&meshInfo.materials[i].color.ambient);
                 glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
-                             (const GLfloat*)&materials[i].color.diffuse);
+                             (const GLfloat*)&meshInfo.materials[i].color.diffuse);
                 glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                             (const GLfloat*)&materials[i].color.specular);
+                             (const GLfloat*)&meshInfo.materials[i].color.specular);
                 glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
-                            materials[i].shininess);
-                if (materials[i].textureNo > 0) {
+                            meshInfo.materials[i].shininess);
+                if (meshInfo.materials[i].textureNo > 0) {
                         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                         glEnable(GL_TEXTURE_2D);
                         glBindTexture(GL_TEXTURE_2D,
-                                      texId[materials[i].textureNo - 1]);
+                                      meshInfo.texId[meshInfo.materials[i].textureNo - 1]);
                 } else {
                         glDisable(GL_TEXTURE_2D);
                         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
                 }
-                if (materials[i].triangles.size() > 1) {
+                if (meshInfo.materials[i].triangles.size() > 1) {
                         glVertexPointer(3, GL_FLOAT, sizeof(Triangle),
-                                        &materials[i].triangles[0].ver.x);
+                                        &meshInfo.materials[i].triangles[0].ver.x);
                         glNormalPointer(GL_FLOAT, sizeof(Triangle),
-                                        &materials[i].triangles[0].nor.x);
-                        if (materials[i].textureNo > 0)
+                                        &meshInfo.materials[i].triangles[0].nor.x);
+                        if (meshInfo.materials[i].textureNo > 0)
                                 glTexCoordPointer(
                                     2, GL_FLOAT, sizeof(Triangle),
-                                    &materials[i].triangles[0].uv.u);
+                                    &meshInfo.materials[i].triangles[0].uv.u);
                         glDrawArrays(GL_TRIANGLES, 0,
-                                     materials[i].triangles.size());
+                                     meshInfo.materials[i].triangles.size());
                 }
-                if (materials[i].quads.size() > 1) {
+                if (meshInfo.materials[i].quads.size() > 1) {
                         glVertexPointer(3, GL_FLOAT, sizeof(Quadrangle),
-                                        &materials[i].quads[0].ver.x);
+                                        &meshInfo.materials[i].quads[0].ver.x);
                         glNormalPointer(GL_FLOAT, sizeof(Quadrangle),
-                                        &materials[i].quads[0].nor.x);
-                        if (materials[i].textureNo > 0)
+                                        &meshInfo.materials[i].quads[0].nor.x);
+                        if (meshInfo.materials[i].textureNo > 0)
                                 glTexCoordPointer(2, GL_FLOAT,
                                                   sizeof(Quadrangle),
-                                                  &materials[i].quads[0].uv.u);
-                        glDrawArrays(GL_QUADS, 0, materials[i].quads.size());
+                                                  &meshInfo.materials[i].quads[0].uv.u);
+                        glDrawArrays(GL_QUADS, 0, meshInfo.materials[i].quads.size());
                 }
                 glPopMatrix();
         }
@@ -97,10 +106,7 @@ void FbxModel::draw() {
         glDisable(GL_TEXTURE_2D);
 }
 
-AABB FbxModel::getAABB() const { return aabb; }
-
-// private
-FbxMesh* FbxModel::findRecMesh(FbxNode* rootNode) {
+void FbxModel::collectRecMesh(FbxNode* rootNode, std::vector<FbxMesh*>& dest) {
         FbxMesh* fbxMesh = NULL;
         FbxNodeAttribute::EType type;
         FbxNodeAttribute* attr = rootNode->GetNodeAttribute();
@@ -108,48 +114,45 @@ FbxMesh* FbxModel::findRecMesh(FbxNode* rootNode) {
                 type = attr->GetAttributeType();
                 if (type == FbxNodeAttribute::EType::eMesh) {
                         fbxMesh = rootNode->GetMesh();
+                        dest.push_back(fbxMesh);
                 } else {
-                        fbxMesh = findMesh(rootNode);
+                        collectMesh(rootNode, dest);
                 }
         } else {
-                fbxMesh = findMesh(rootNode);
+                collectMesh(rootNode, dest);
         }
-        return fbxMesh;
 }
-FbxMesh* FbxModel::findMesh(FbxNode* rootNode) {
+void FbxModel::collectMesh(FbxNode* rootNode, std::vector<FbxMesh*>& dest) {
         FbxMesh* fbxMesh = NULL;
         int childCount = rootNode->GetChildCount();
         for (int i = 0; i < childCount; i++) {
-                if (fbxMesh != NULL) {
-                        break;
-                }
                 FbxNode* childNode = rootNode->GetChild(i);
                 auto attr = childNode->GetNodeAttribute();
                 auto type = attr->GetAttributeType();
                 if (type == FbxNodeAttribute::EType::eMesh) {
                         fbxMesh = childNode->GetMesh();
+                        dest.push_back(fbxMesh);
                 } else {
-                        fbxMesh = findRecMesh(childNode);
+                        collectRecMesh(childNode, dest);
                 }
         }
-        return fbxMesh;
 }
-FbxMesh* FbxModel::mapVertex(FbxMesh* fbxMesh) {
+FbxMesh* FbxModel::mapVertex(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxVector4* coord = fbxMesh->GetControlPoints();
         for (int i = 0; i < fbxMesh->GetControlPointsCount(); i++) {
                 float x = (float)coord[i][0];
                 float y = (float)coord[i][1];
                 float z = (float)coord[i][2];
-                this->vertex.push_back(Vector3(x, y, z));
+                dest.vertex.push_back(Vector3(x, y, z));
         }
 }
-FbxMesh* FbxModel::mapVertexIndex(FbxMesh* fbxMesh) {
+FbxMesh* FbxModel::mapVertexIndex(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         int* vindex = fbxMesh->GetPolygonVertices();
         for (int i = 0; i < fbxMesh->GetPolygonCount() * 3; i++) {
-                this->vertexIndex.push_back(vindex[i]);
+                dest.vertexIndex.push_back(vindex[i]);
         }
 }
-FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
+FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxLayerElementNormal* elementNormal =
             fbxMesh->GetLayer(0)->GetNormals();
         if (elementNormal->GetMappingMode() ==
@@ -165,7 +168,7 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
                                               .GetAt(i)[1];
                                 float z = (float)elementNormal->GetDirectArray()
                                               .GetAt(i)[2];
-                                normal.push_back(Vector3(x, y, z));
+                                dest.normal.push_back(Vector3(x, y, z));
                         }
                 } else {
                         throw std::logic_error("unsupported file structure");
@@ -183,7 +186,7 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
                                               .GetAt(i)[1];
                                 float z = (float)elementNormal->GetDirectArray()
                                               .GetAt(i)[2];
-                                normal.push_back(Vector3(x, y, z));
+                                dest.normal.push_back(Vector3(x, y, z));
                         }
                 } else {
                         throw std::logic_error("unsupported file structure");
@@ -192,7 +195,7 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh) {
                 throw std::logic_error("unsupported file structure");
         }
 }
-FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
+FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxLayerElementUV* uvs = fbxMesh->GetLayer(0)->GetUVs();
         int uvsize = std::max(uvs->GetIndexArray().GetCount(),
                               uvs->GetDirectArray().GetCount());
@@ -202,7 +205,7 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
                 if (ref == FbxLayerElement::eDirect) {
                         for (int i = 0; i < uvsize; i++) {
                                 FbxVector2 v2 = uvs->GetDirectArray().GetAt(i);
-                                uv.push_back(
+                                dest.uv.push_back(
                                     UV((float)v2[0], 1.0f - (float)v2[1]));
                         }
                 } else if (ref == FbxLayerElement::eIndexToDirect) {
@@ -210,7 +213,7 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
                                 int index = uvs->GetIndexArray().GetAt(i);
                                 FbxVector2 v2 =
                                     uvs->GetDirectArray().GetAt(index);
-                                uv.push_back(
+                                dest.uv.push_back(
                                     UV((float)v2[0], 1.0f - (float)v2[1]));
                         }
                 } else {
@@ -220,7 +223,7 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh) {
                 throw std::logic_error("unsupported file structure");
         }
 }
-FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
+FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxNode* node = fbxMesh->GetNode();
         for (int i = 0; i < node->GetMaterialCount(); i++) {
                 FbxMaterial mtl;
@@ -252,17 +255,17 @@ FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh) {
                 if (tex) {
                         auto ptex = std::make_shared<PngTexture>();
                         ptex->load(tex->GetFileName());
-                        textures.push_back(ptex);
-                        texId.push_back(ptex->getID());
-                        mtl.textureNo = texId.size();
+                        dest.textures.push_back(ptex);
+                        dest.texId.push_back(ptex->getID());
+                        mtl.textureNo = dest.texId.size();
                         mtl.name = tex->GetFileName();
                 }
-                materials.push_back(mtl);
-                assert(!materials.empty());
+                dest.materials.push_back(mtl);
+                assert(!dest.materials.empty());
         }
 }
-FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
-        assert(!materials.empty());
+FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
+        assert(!dest.materials.empty());
         int count = 0;
         for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
                 FbxLayerElementMaterial* layerMat =
@@ -273,23 +276,23 @@ FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh) {
                         for (int j = 0; j < 3; j++) {
                                 Triangle tria;
                                 tria.ver =
-                                    vertex[fbxMesh->GetPolygonVertex(k, j)];
-                                tria.nor = normal[count + j];
-                                tria.uv = uv[count + j];
-                                materials[matId].triangles.push_back(tria);
+                                    dest.vertex[fbxMesh->GetPolygonVertex(k, j)];
+                                tria.nor = dest.normal[count + j];
+                                tria.uv = dest.uv[count + j];
+                                dest.materials[matId].triangles.push_back(tria);
                         }
                         count += 3;
                 } else if (polygonSize == 4) {
                         for (int j = 0; j < 4; j++) {
                                 Quadrangle quad;
                                 quad.ver =
-                                    vertex[fbxMesh->GetPolygonVertex(k, j)];
-                                quad.nor = normal[count + j];
-                                quad.uv = uv[count + j];
-                                materials[matId].quads.push_back(quad);
+                                    dest.vertex[fbxMesh->GetPolygonVertex(k, j)];
+                                quad.nor = dest.normal[count + j];
+                                quad.uv = dest.uv[count + j];
+                                dest.materials[matId].quads.push_back(quad);
                         }
                         count += 4;
-                } else {
+                     } else {
                         throw std::logic_error("unsupported file structure");
                 }
         }

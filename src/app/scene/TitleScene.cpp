@@ -31,14 +31,13 @@ void TitleScene::draw() {
                               msize.z * 24 * 0.1f);
         camera.beginDraw();
         ::glPushMatrix();
-        ::glScalef(19.f, 19.f, 19.f);
+        ::glScalef(1.f, 1.f, 1.f);
         ::glTranslatef(gunPos.x, gunPos.y, gunPos.z);
-        auto gunModel =
-            mModelManager->getModel("./assets/model/Gun1028Tri.obj");
+        auto gunModel = mModelManager->getModel("./assets/model/Tank.fbx");
         gunModel->draw();
         ::glPopMatrix();
-        // mygame::drawField(mModelManager->getModel(path),
-        //                          Vector3(0.1f, 0.1f, 0.1f), 48, 5);
+     //    mygame::drawField(mModelManager->getModel(path),
+       //  Vector3(0.1f, 0.1f, 0.1f), 48, 5);
         camera.endDraw();
 }
 
