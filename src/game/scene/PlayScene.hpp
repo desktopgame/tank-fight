@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "../../gel/gel.hpp"
+#include "../Spawner.hpp"
 class TextureManager;
 class ModelManager;
 class PlayScene : public gel::IScene {
@@ -17,6 +18,10 @@ class PlayScene : public gel::IScene {
         void hide() override;
 
        private:
+        static float BLOCK_SCALE;
+        static float TANK_SCALE;
+        void initSpawners(float blockScale);
+        std::vector<std::shared_ptr<Spawner> > spawners;
         std::shared_ptr<gel::TextureManager> mTextureManager;
         std::shared_ptr<gel::ModelManager> mModelManager;
         gel::Camera camera;
