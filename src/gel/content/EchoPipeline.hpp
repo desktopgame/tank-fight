@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_ECHOPIPELINE_HPP
-#define APP_CONTENT_ECHOPIPELINE_HPP
+#ifndef GEL_CONTENT_ECHOPIPELINE_HPP
+#define GEL_CONTENT_ECHOPIPELINE_HPP
 #include "IContentPipeline.hpp"
 namespace gel {
 

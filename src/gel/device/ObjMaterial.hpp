@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_OBJMATERIAL_HPP
-#define APP_DEVICE_OBJMATERIAL_HPP
+#ifndef GEL_DEVICE_OBJMATERIAL_HPP
+#define GEL_DEVICE_OBJMATERIAL_HPP
 
 #include <string>
 #include <vector>

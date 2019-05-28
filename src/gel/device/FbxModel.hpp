@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_FBXMODEL_HPP
-#define APP_DEVICE_FBXMODEL_HPP
+#ifndef GEL_DEVICE_FBXMODEL_HPP
+#define GEL_DEVICE_FBXMODEL_HPP
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <vector>

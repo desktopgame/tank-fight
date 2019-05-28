@@ -1,11 +1,5 @@
 #include "ModelDebugScene.hpp"
 #include <glut.h>
-#include "../device/FbxModel.hpp"
-#include "../device/Graphics.hpp"
-#include "../device/IModel.hpp"
-#include "../device/ITexture.hpp"
-#include "../device/ModelManager.hpp"
-#include "../device/TextureManager.hpp"
 namespace gel {
 ModelDebugScene::ModelDebugScene(
     const std::shared_ptr<TextureManager>& textureManager,

@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_FBXMATERIAL_HPP
-#define APP_MODEL_FBXMATERIAL_HPP
+#ifndef GEL_MODEL_FBXMATERIAL_HPP
+#define GEL_MODEL_FBXMATERIAL_HPP
 #include <string>
 #include <vector>
 #include "../model/Quadrangle.hpp"

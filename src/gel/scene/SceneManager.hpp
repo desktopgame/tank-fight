@@ -1,5 +1,5 @@
-#ifndef APP_SCENE_SCENEMANAGER_HPP
-#define APP_SCENE_SCENEMANAGER_HPP
+#ifndef GEL_SCENE_SCENEMANAGER_HPP
+#define GEL_SCENE_SCENEMANAGER_HPP
 #include <memory>
 #include <optional>
 #include <string>

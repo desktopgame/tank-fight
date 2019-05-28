@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_ICONTENTPIPELINE_HPP
-#define APP_CONTENT_ICONTENTPIPELINE_HPP
+#ifndef GEL_CONTENT_ICONTENTPIPELINE_HPP
+#define GEL_CONTENT_ICONTENTPIPELINE_HPP
 #include <string>
 namespace gel {
 class IContentPipeline {

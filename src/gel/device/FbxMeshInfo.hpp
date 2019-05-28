@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_FBXMESHINFO_HPP
-#define APP_DEVICE_FBXMESHINFO_HPP
+#ifndef GEL_DEVICE_FBXMESHINFO_HPP
+#define GEL_DEVICE_FBXMESHINFO_HPP
 #include "../model/Vector3.hpp"
 #include "../model/UV.hpp"
 #include "FbxMaterial.hpp"

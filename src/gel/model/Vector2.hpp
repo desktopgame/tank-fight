@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_VECVector2OR2_HPP
-#define APP_MODEL_VECVector2OR2_HPP
+#ifndef GEL_MODEL_VECVector2OR2_HPP
+#define GEL_MODEL_VECVector2OR2_HPP
 namespace gel {
 struct Vector2 {
         Vector2();

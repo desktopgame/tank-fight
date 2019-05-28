@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_IMODEL_HPP
-#define APP_DEVICE_IMODEL_HPP
+#ifndef GEL_DEVICE_IMODEL_HPP
+#define GEL_DEVICE_IMODEL_HPP
 #include <string>
 #include "../model/AABB.hpp"
 

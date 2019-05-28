@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_WAVEAUDIO_HPP
-#define APP_DEVICE_WAVEAUDIO_HPP
+#ifndef GEL_DEVICE_WAVEAUDIO_HPP
+#define GEL_DEVICE_WAVEAUDIO_HPP
 #include <AL/alut.h>
 #include "IPlayableAudio.hpp"
 #include "WaveAudio.hpp"

@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_QUADRANGLE_HPP
-#define APP_MODEL_QUADRANGLE_HPP
+#ifndef GEL_MODEL_QUADRANGLE_HPP
+#define GEL_MODEL_QUADRANGLE_HPP
 #include "UV.hpp"
 #include "Vector3.hpp"
 namespace gel {

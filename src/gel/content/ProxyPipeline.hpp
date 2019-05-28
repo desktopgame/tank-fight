@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_PROXYPIPELINE_H
-#define APP_CONTENT_PROXYPIPELINE_H
+#ifndef GEL_CONTENT_PROXYPIPELINE_H
+#define GEL_CONTENT_PROXYPIPELINE_H
 #include <memory>
 #include <string>
 #include "IContentPipeline.hpp"

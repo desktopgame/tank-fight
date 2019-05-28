@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_AABB_HPP
-#define APP_MODEL_AABB_HPP
+#ifndef GEL_MODEL_AABB_HPP
+#define GEL_MODEL_AABB_HPP
 #include <vector>
 #include "Vector3.hpp"
 namespace gel {

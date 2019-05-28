@@ -1,10 +1,4 @@
 #include "TitleScene.hpp"
-#include "../device/FbxModel.hpp"
-#include "../device/Graphics.hpp"
-#include "../device/IModel.hpp"
-#include "../device/ITexture.hpp"
-#include "../device/ModelManager.hpp"
-#include "../device/TextureManager.hpp"
 namespace gel {
 
 TitleScene::TitleScene(const std::shared_ptr<TextureManager>& textureManager,

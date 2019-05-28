@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_BMPPIPELINE_HPP
-#define APP_CONTENT_BMPPIPELINE_HPP
+#ifndef GEL_CONTENT_BMPPIPELINE_HPP
+#define GEL_CONTENT_BMPPIPELINE_HPP
 #include <memory>
 #include <string>
 #include "IContentPipeline.hpp"

@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_AUDIOMANAGER_HPP
-#define APP_DEVICE_AUDIOMANAGER_HPP
+#ifndef GEL_DEVICE_AUDIOMANAGER_HPP
+#define GEL_DEVICE_AUDIOMANAGER_HPP
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <string>

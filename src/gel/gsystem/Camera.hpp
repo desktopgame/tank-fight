@@ -1,5 +1,5 @@
-#ifndef APP_GSYSTEM_CAMERA_HPP
-#define APP_GSYSTEM_CAMERA_HPP
+#ifndef GEL_GSYSTEM_CAMERA_HPP
+#define GEL_GSYSTEM_CAMERA_HPP
 #include "Transform.hpp"
 namespace gel {
 class Camera {

@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_PNGPIPELINE_HPP
-#define APP_CONTENT_PNGPIPELINE_HPP
+#ifndef GEL_CONTENT_PNGPIPELINE_HPP
+#define GEL_CONTENT_PNGPIPELINE_HPP
 #include <memory>
 #include <string>
 #include "IContentPipeline.hpp"

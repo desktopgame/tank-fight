@@ -1,8 +1,6 @@
-#ifndef APP_MYGAME_HPP
-#define APP_MYGAME_HPP
-#include "Game.hpp"
-#include "device/GameDevice.hpp"
-#include "scene/SceneManager.hpp"
+#ifndef GAME_MYGAME_HPP
+#define GAME_MYGAME_HPP
+#include "../gel/gel.hpp"
 namespace gel {
 class MyGame : public Game {
        public:

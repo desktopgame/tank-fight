@@ -1,5 +1,5 @@
-#ifndef APP_GAME_HPP
-#define APP_GAME_HPP
+#ifndef GEL_GAME_HPP
+#define GEL_GAME_HPP
 #include <GLFW/glfw3.h>
 namespace gel {
 /**

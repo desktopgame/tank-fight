@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_OBJPIPELINE_HPP
-#define APP_CONTENT_OBJPIPELINE_HPP
+#ifndef GEL_CONTENT_OBJPIPELINE_HPP
+#define GEL_CONTENT_OBJPIPELINE_HPP
 #include "IContentPipeline.hpp"
 namespace gel {
 class ModelManager;

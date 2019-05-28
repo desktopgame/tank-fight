@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_ITEXTURE_HPP
-#define APP_DEVICE_ITEXTURE_HPP
+#ifndef GEL_DEVICE_ITEXTURE_HPP
+#define GEL_DEVICE_ITEXTURE_HPP
 #include <GLFW/glfw3.h>
 #include <string>
 namespace gel {

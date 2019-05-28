@@ -1,16 +1,15 @@
-#ifndef APP_SCENE_TITLESCENE_HPP
-#define APP_SCENE_TITLESCENE_HPP
+#ifndef GAME_SCENE_MODELDEBUGSCENE_HPP
+#define GAME_SCENE_MODELDEBUGSCENE_HPP
 #include <memory>
 #include <vector>
-#include "../gsystem/Camera.hpp"
-#include "IScene.hpp"
+#include "../../gel/gel.hpp"
 namespace gel {
 class TextureManager;
 class ModelManager;
-class TitleScene : public IScene {
+class ModelDebugScene : public IScene {
        public:
-        TitleScene(const std::shared_ptr<TextureManager>& textureManager,
-                   const std::shared_ptr<ModelManager>& modelManager);
+        ModelDebugScene(const std::shared_ptr<TextureManager>& textureManager,
+                        const std::shared_ptr<ModelManager>& modelManager);
         void show() override;
         void update() override;
         void draw() override;

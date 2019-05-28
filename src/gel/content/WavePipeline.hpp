@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_WAVEPIPELINE_HPP
-#define APP_CONTENT_WAVEPIPELINE_HPP
+#ifndef GEL_CONTENT_WAVEPIPELINE_HPP
+#define GEL_CONTENT_WAVEPIPELINE_HPP
 #include <memory>
 #include "../device/AudioManager.hpp"
 #include "IContentPipeline.hpp"

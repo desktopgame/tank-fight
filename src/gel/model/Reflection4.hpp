@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_REFLECTION_HPP
-#define APP_MODEL_REFLECTION_HPP
+#ifndef GEL_MODEL_REFLECTION_HPP
+#define GEL_MODEL_REFLECTION_HPP
 #include "Color4.hpp"
 namespace gel {
 struct Reflection4 {

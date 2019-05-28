@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_MODELMANAGER_HPP
-#define APP_DEVICE_MODELMANAGER_HPP
+#ifndef GEL_DEVICE_MODELMANAGER_HPP
+#define GEL_DEVICE_MODELMANAGER_HPP
 #include <memory>
 #include <string>
 #include <unordered_map>

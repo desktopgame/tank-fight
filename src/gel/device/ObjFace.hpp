@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_OBJFACE_HPP
-#define APP_DEVICE_OBJFACE_HPP
+#ifndef GEL_DEVICE_OBJFACE_HPP
+#define GEL_DEVICE_OBJFACE_HPP
 namespace gel {
 
 struct ObjFace {

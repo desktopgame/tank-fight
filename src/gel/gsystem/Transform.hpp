@@ -1,5 +1,5 @@
-#ifndef APP_GSYSTEM_TRANSFORM_HPP
-#define APP_GSYSTEM_TRANSFORM_HPP
+#ifndef GEL_GSYSTEM_TRANSFORM_HPP
+#define GEL_GSYSTEM_TRANSFORM_HPP
 #include "../model/Vector3.hpp"
 namespace gel {
 struct Transform {

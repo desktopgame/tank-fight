@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_GAMEDEVICE_HPP
-#define APP_DEVICE_GAMEDEVICE_HPP
+#ifndef GEL_DEVICE_GAMEDEVICE_HPP
+#define GEL_DEVICE_GAMEDEVICE_HPP
 #include <memory>
 #include "../content/ContentManager.hpp"
 #include "AudioManager.hpp"

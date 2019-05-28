@@ -1,5 +1,5 @@
-#ifndef APP_DEVICE_GRAPHICS_HPP
-#define APP_DEVICE_GRAPHICS_HPP
+#ifndef GEL_DEVICE_GRAPHICS_HPP
+#define GEL_DEVICE_GRAPHICS_HPP
 #include <memory>
 #include "../model/Vector2.hpp"
 #include "../model/Vector3.hpp"

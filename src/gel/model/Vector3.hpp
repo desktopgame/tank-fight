@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_VECTOR3_HPP
-#define APP_MODEL_VECTOR3_HPP
+#ifndef GEL_MODEL_VECTOR3_HPP
+#define GEL_MODEL_VECTOR3_HPP
 namespace gel {
 struct Vector3 {
         Vector3();

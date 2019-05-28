@@ -1,5 +1,5 @@
-#ifndef APP_CONTENT_CONTENTMANAGER_HPP
-#define APP_CONTENT_CONTENTMANAGER_HPP
+#ifndef GEL_CONTENT_CONTENTMANAGER_HPP
+#define GEL_CONTENT_CONTENTMANAGER_HPP
 #include <memory>
 #include <string>
 #include <vector>

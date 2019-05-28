@@ -1,5 +1,5 @@
-#ifndef APP_SCENE_ISCENE_HPP
-#define APP_SCENE_ISCENE_HPP
+#ifndef GEL_SCENE_ISCENE_HPP
+#define GEL_SCENE_ISCENE_HPP
 #include <string>
 namespace gel {
 /**

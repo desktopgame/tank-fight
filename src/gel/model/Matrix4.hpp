@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_MATRIX4_HPP
-#define APP_MODEL_MATRIX4_HPP
+#ifndef GEL_MODEL_MATRIX4_HPP
+#define GEL_MODEL_MATRIX4_HPP
 #include <array>
 #include "Vector3.hpp"
 namespace gel {

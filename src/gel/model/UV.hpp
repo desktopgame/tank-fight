@@ -1,5 +1,5 @@
-#ifndef APP_MODEL_UV_HPP
-#define APP_MODEL_UV_HPP
+#ifndef GEL_MODEL_UV_HPP
+#define GEL_MODEL_UV_HPP
 namespace gel {
 struct UV {
         UV();
