@@ -26,6 +26,9 @@ void Camera::endDraw() const { ::glPopMatrix(); }
 void Camera::debugControl() {
         float increase = 0.001f;
         GLFWwindow* mWindow = Game::getInstance()->getWindow();
+        if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT)) {
+                increase = 0.5;
+        }
         if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 transform.angleX += increase * 50;
         } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {

@@ -1,5 +1,6 @@
 #include "MyGame.hpp"
 #include <glut.h>
+#include "scene/ModelDebugScene.hpp"
 #include "scene/TitleScene.hpp"
 namespace mygame {
 MyGame::MyGame()
@@ -10,9 +11,15 @@ void MyGame::init() {
         sceneManager.put("title", std::make_shared<mygame::TitleScene>(
                                       gameDevice->getTextureManager(),
                                       gameDevice->getModelManager()));
+        sceneManager.put("modelDebug",
+                         std::make_shared<mygame::ModelDebugScene>(
+                             gameDevice->getTextureManager(),
+                             gameDevice->getModelManager()));
         sceneManager.bind("title");
-        glClearColor(1.0, 1.0, 1.0, 1.0);
-        //glClearColor(0.0, 0.0, 0.0, 1.0);
+#if DEBUG
+        // sceneManager.bind("modelDebug");
+#endif
+        glClearColor(0.0, 0.0, 0.0, 1.0);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
