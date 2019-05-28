@@ -5,10 +5,10 @@
 #include "../../gel/gel.hpp"
 class TextureManager;
 class ModelManager;
-class TitleScene : public gel::IScene {
+class PlayScene : public gel::IScene {
        public:
-        TitleScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                   const std::shared_ptr<gel::ModelManager>& modelManager);
+        PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
+                  const std::shared_ptr<gel::ModelManager>& modelManager);
         void show() override;
         void update() override;
         void draw() override;

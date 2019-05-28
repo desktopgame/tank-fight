@@ -1,8 +1,7 @@
-#include "TitleScene.hpp"
+#include "PlayScene.hpp"
 
-TitleScene::TitleScene(
-    const std::shared_ptr<gel::TextureManager>& textureManager,
-    const std::shared_ptr<gel::ModelManager>& modelManager)
+PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
+                     const std::shared_ptr<gel::ModelManager>& modelManager)
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
@@ -14,11 +13,11 @@ TitleScene::TitleScene(
         camera.transform.position = pos;
 }
 
-void TitleScene::show() {}
+void PlayScene::show() {}
 
-void TitleScene::update() { camera.debugControl(); }
+void PlayScene::update() { camera.debugControl(); }
 
-void TitleScene::draw() {
+void PlayScene::draw() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         auto gunPos = gel::Vector3(msize.x * 12 * 0.1f, (msize.y * 0.1f * 3),
@@ -69,7 +68,7 @@ void TitleScene::draw() {
         camera.endDraw();
 }
 
-std::string TitleScene::getNextScene() const { return "play"; }
+std::string PlayScene::getNextScene() const { return "play"; }
 
-bool TitleScene::isFinished() const { return mFinished; }
-void TitleScene::hide() {}
+bool PlayScene::isFinished() const { return mFinished; }
+void PlayScene::hide() {}

@@ -1,13 +1,13 @@
 #include "MyGame.hpp"
 #include <glut.h>
 #include "scene/ModelDebugScene.hpp"
-#include "scene/TitleScene.hpp"
+#include "scene/PlayScene.hpp"
 MyGame::MyGame()
     : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) {}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
-        sceneManager.put("title", std::make_shared<TitleScene>(
+        sceneManager.put("title", std::make_shared<PlayScene>(
                                       gameDevice->getTextureManager(),
                                       gameDevice->getModelManager()));
         sceneManager.put("modelDebug", std::make_shared<ModelDebugScene>(
