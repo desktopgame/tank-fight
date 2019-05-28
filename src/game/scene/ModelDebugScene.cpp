@@ -1,9 +1,9 @@
 #include "ModelDebugScene.hpp"
 #include <glut.h>
-namespace gel {
+
 ModelDebugScene::ModelDebugScene(
-    const std::shared_ptr<TextureManager>& textureManager,
-    const std::shared_ptr<ModelManager>& modelManager)
+    const std::shared_ptr<gel::TextureManager>& textureManager,
+    const std::shared_ptr<gel::ModelManager>& modelManager)
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
@@ -30,4 +30,3 @@ bool ModelDebugScene::isFinished() const { return false; }
 std::string ModelDebugScene::getNextScene() const { return "title"; }
 
 void ModelDebugScene::hide() {}
-}  // namespace gel

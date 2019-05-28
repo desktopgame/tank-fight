@@ -2,16 +2,15 @@
 #include <glut.h>
 #include "scene/ModelDebugScene.hpp"
 #include "scene/TitleScene.hpp"
-namespace gel {
 MyGame::MyGame()
-    : sceneManager(), gameDevice(GameDevice::make_shared("./assets")) {}
+    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) {}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
-        sceneManager.put("title", std::make_shared<gel::TitleScene>(
+        sceneManager.put("title", std::make_shared<TitleScene>(
                                       gameDevice->getTextureManager(),
                                       gameDevice->getModelManager()));
-        sceneManager.put("modelDebug", std::make_shared<gel::ModelDebugScene>(
+        sceneManager.put("modelDebug", std::make_shared<ModelDebugScene>(
                                            gameDevice->getTextureManager(),
                                            gameDevice->getModelManager()));
         sceneManager.bind("title");
@@ -26,7 +25,7 @@ void MyGame::init() {
         glEnable(GL_LIGHT1);
         glEnable(GL_LIGHTING);
         glEnable(GL_CULL_FACE);
-        Vector3 sun(0.0, 10, 0.0);
+        gel::Vector3 sun(0.0, 10, 0.0);
         glLightfv(GL_LIGHT0, GL_POSITION, &sun.x);
         float difLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
         glLightfv(GL_LIGHT1, GL_DIFFUSE, difLight0);
@@ -51,4 +50,3 @@ void MyGame::draw() {
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
 }
-}  // namespace gel

@@ -3,13 +3,13 @@
 #include <memory>
 #include <vector>
 #include "../../gel/gel.hpp"
-namespace gel {
 class TextureManager;
 class ModelManager;
-class ModelDebugScene : public IScene {
+class ModelDebugScene : public gel::IScene {
        public:
-        ModelDebugScene(const std::shared_ptr<TextureManager>& textureManager,
-                        const std::shared_ptr<ModelManager>& modelManager);
+        ModelDebugScene(
+            const std::shared_ptr<gel::TextureManager>& textureManager,
+            const std::shared_ptr<gel::ModelManager>& modelManager);
         void show() override;
         void update() override;
         void draw() override;
@@ -18,10 +18,9 @@ class ModelDebugScene : public IScene {
         void hide() override;
 
        private:
-        std::shared_ptr<TextureManager> mTextureManager;
-        std::shared_ptr<ModelManager> mModelManager;
-        Camera camera;
+        std::shared_ptr<gel::TextureManager> mTextureManager;
+        std::shared_ptr<gel::ModelManager> mModelManager;
+        gel::Camera camera;
         bool mFinished;
 };
-}  // namespace gel
 #endif
