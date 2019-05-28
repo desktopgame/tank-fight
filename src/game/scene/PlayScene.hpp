@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "../../gel/gel.hpp"
+#include "../Enemy.hpp"
 #include "../Spawner.hpp"
 class TextureManager;
 class ModelManager;
@@ -22,7 +23,10 @@ class PlayScene : public gel::IScene {
        private:
         void initSpawners(float blockScale);
         void spawn();
+        void spawn(int n);
+        gel::Random random;
         gel::Timer timer;
+        std::vector<std::shared_ptr<Enemy> > enemies;
         std::vector<std::shared_ptr<Spawner> > spawners;
         std::shared_ptr<gel::TextureManager> mTextureManager;
         std::shared_ptr<gel::ModelManager> mModelManager;

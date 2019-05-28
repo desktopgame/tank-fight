@@ -10,7 +10,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       mModelManager(modelManager),
       camera(),
       spawners(),
-      timer(3) {
+      enemies(),
+      timer(10),
+      random() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         auto pos =
@@ -18,7 +20,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                          msize.z * 24 * BLOCK_SCALE);
         camera.transform.position = pos;
         initSpawners(BLOCK_SCALE);
-        spawn();
+        spawn(5);
 }
 
 void PlayScene::show() {}
@@ -37,24 +39,13 @@ void PlayScene::draw() {
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
                        0);
         ::glPopMatrix();
-        auto tank = mModelManager->getModel("./assets/model/Tank.fbx");
-        for (int i = 0; i < spawners.size(); i++) {
-                auto spw = spawners[i];
-                auto pos = spw->getPosition();
-                auto rot = spw->getRotation();
-                ::glPushMatrix();
-                ::glTranslatef(pos.x, pos.y, pos.z);
-                ::glRotatef(rot.y, 0, 1, 0);
-                ::glRotatef(rot.x, 1, 0, 0);
-                ::glRotatef(rot.z, 0, 0, 1);
-                ::glScalef(TANK_SCALE, TANK_SCALE, TANK_SCALE);
-                tank->draw();
-                ::glPopMatrix();
+        for (int i = 0; i < enemies.size(); i++) {
+                enemies[i]->draw();
         }
         timer.update();
         if (timer.isElapsed()) {
                 timer.reset();
-                // spawn();
+                spawn(random.generate(1, 4));
         }
         camera.endDraw();
 }
@@ -96,4 +87,26 @@ void PlayScene::initSpawners(float blockScale) {
         }
 }
 
-void PlayScene::spawn() {}
+void PlayScene::spawn() {
+        while (enemies.size() < spawners.size()) {
+                auto i = random.generate(0, spawners.size() - 1);
+                if (spawners[i]->isUsed()) {
+                        continue;
+                }
+                spawners[i]->use();
+                auto enemy = std::make_shared<Enemy>(
+                    mModelManager->getModel("./assets/model/Tank.fbx"),
+                    spawners[i]->getPosition(), spawners[i]->getRotation());
+                enemies.push_back(enemy);
+                break;
+        }
+}
+
+void PlayScene::spawn(int n) {
+        if (n <= 0) {
+                return;
+        }
+        while (n--) {
+                spawn();
+        }
+}

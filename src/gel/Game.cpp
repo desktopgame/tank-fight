@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include <AL/alut.h>
 #include <glut.h>
+#include <iostream>
 #include <memory>
 #include <string>
 namespace gel {
@@ -36,12 +37,13 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         glfwSetKeyCallback(window, Game::bridgeKey);
         glfwSetCharCallback(window, Game::bridgeChar);
         init();
-        this->oldTime = glutGet(GLUT_ELAPSED_TIME);
+        glfwSetTime(0.0);
         while (!glfwWindowShouldClose(window)) {
+                this->oldTime = glfwGetTime();
                 update();
                 draw();
-                long nowTime = glutGet(GLUT_ELAPSED_TIME);
-                this->deltaTime = (nowTime - oldTime) / 1000.0;
+                double nowTime = glfwGetTime();
+                this->deltaTime = nowTime - oldTime;
                 this->oldTime = nowTime;
         }
         alutExit();

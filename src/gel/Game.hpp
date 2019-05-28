@@ -33,7 +33,7 @@ class Game {
         GLFWwindow* mWindow;
         int mWidth;
         int mHeight;
-        long oldTime;
+        double oldTime;
         float deltaTime;
         static void bridgeMouseButton(GLFWwindow* window, int button,
                                       int action, int mods);
