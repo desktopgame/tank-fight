@@ -27,18 +27,18 @@ void TitleScene::update() { camera.debugControl(); }
 void TitleScene::draw() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
-        auto gunPos =
-            Vector3(msize.x * 24 * 0.1f, msize.y * 0.1f, msize.z * 24 * 0.1f);
+        auto gunPos = Vector3(msize.x * 24 * 0.1f, (msize.y * 0.1f * 2),
+                              msize.z * 24 * 0.1f);
         camera.beginDraw();
         ::glPushMatrix();
-        ::glScalef(0.005f, 0.005f, 0.005f);
+        ::glScalef(19.f, 19.f, 19.f);
         ::glTranslatef(gunPos.x, gunPos.y, gunPos.z);
         auto gunModel =
             mModelManager->getModel("./assets/model/Gun1028Tri.obj");
         gunModel->draw();
         ::glPopMatrix();
-        mygame::drawField(mModelManager->getModel(path),
-                          Vector3(0.1f, 0.1f, 0.1f), 48, 5);
+        // mygame::drawField(mModelManager->getModel(path),
+        //                          Vector3(0.1f, 0.1f, 0.1f), 48, 5);
         camera.endDraw();
 }
 

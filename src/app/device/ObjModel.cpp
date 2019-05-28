@@ -5,6 +5,7 @@
 #include <string>
 #include "../model/Vector3.hpp"
 #include "../model/Vector4.hpp" #include < iostream >
+#include "ObjFace.hpp"
 #define BUFLEN (512)
 namespace mygame {
 ObjModel::ObjModel() : materials(), textures(), texId() {}
@@ -23,7 +24,6 @@ void ObjModel::load(const std::string& path) {
         }
         int lineno = 0;
         while (std::getline(ifs, line)) {
-                std::cout << line << std::endl;
                 line = trimLeft(line);
                 auto words = split(line, ' ');
                 // skip if empty line or commented
@@ -46,7 +46,7 @@ void ObjModel::load(const std::string& path) {
                         normal.push_back(bufv3);
                 } else if (code == "vt") {
                         bufuv.u = tofloat(words[1]);
-                        bufuv.v = tofloat(words[2]);
+                        bufuv.v = 1 - tofloat(words[2]);
                         uv.push_back(bufuv);
                 } else if (code == "usemtl") {
                         for (int i = 0; i < materials.size(); i++) {
@@ -55,68 +55,72 @@ void ObjModel::load(const std::string& path) {
                                 }
                         }
                 } else if (code == "f") {
-                        std::vector<Vector4> vface;
+                        std::vector<ObjFace> vface;
                         auto polys = words.size() - 1;
                         for (int i = 0; i < polys; i++) {
-                                Vector4 nface;
-                                nface.w = -1;
+                                ObjFace nface;
                                 auto v = words[1 + i];
                                 auto map = split(v, '/');
-                                nface.x = tofloat(map[0]);
-                                nface.y = tofloat(map[1]);
-                                nface.z = tofloat(map[2]);
+                                nface.vIndex = toint(map[0]);
+                                nface.uvIndex = toint(map[1]);
+                                nface.normalIndex = toint(map[2]);
                                 vface.push_back(nface);
                         }
+                        // xxx yyy zzz www
+                        // x   y   z   w
+                        // x   y   z   w
                         if (polys == 3) {
-                                materials[matNo].triVerId.push_back(vface[0].x -
-                                                                    1);
-                                materials[matNo].triVerId.push_back(vface[0].y -
-                                                                    1);
-                                materials[matNo].triVerId.push_back(vface[0].z -
-                                                                    1);
-                                materials[matNo].triUVId.push_back(vface[1].x -
-                                                                   1);
-                                materials[matNo].triUVId.push_back(vface[1].y -
-                                                                   1);
-                                materials[matNo].triUVId.push_back(vface[1].z -
-                                                                   1);
-                                materials[matNo].triNorId.push_back(vface[2].x -
-                                                                    1);
-                                materials[matNo].triNorId.push_back(vface[2].y -
-                                                                    1);
-                                materials[matNo].triNorId.push_back(vface[2].z -
-                                                                    1);
+                                materials[matNo].triVerId.push_back(
+                                    vface[0].vIndex - 1);
+                                materials[matNo].triVerId.push_back(
+                                    vface[1].vIndex - 1);
+                                materials[matNo].triVerId.push_back(
+                                    vface[2].vIndex - 1);
+                                materials[matNo].triUVId.push_back(
+                                    vface[0].uvIndex - 1);
+                                materials[matNo].triUVId.push_back(
+                                    vface[1].uvIndex - 1);
+                                materials[matNo].triUVId.push_back(
+                                    vface[2].uvIndex - 1);
+                                materials[matNo].triNorId.push_back(
+                                    vface[0].normalIndex - 1);
+                                materials[matNo].triNorId.push_back(
+                                    vface[1].normalIndex - 1);
+                                materials[matNo].triNorId.push_back(
+                                    vface[2].normalIndex - 1);
                         } else if (polys == 4) {
                                 materials[matNo].quadVerId.push_back(
-                                    vface[0].x - 1);
+                                    vface[0].vIndex - 1);
                                 materials[matNo].quadVerId.push_back(
-                                    vface[0].y - 1);
+                                    vface[1].vIndex - 1);
                                 materials[matNo].quadVerId.push_back(
-                                    vface[0].z - 1);
+                                    vface[2].vIndex - 1);
                                 materials[matNo].quadVerId.push_back(
-                                    vface[0].w - 1);
-                                materials[matNo].quadUVId.push_back(vface[1].x -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].y -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].z -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].w -
-                                                                    1);
+                                    vface[3].vIndex - 1);
+                                materials[matNo].quadUVId.push_back(
+                                    vface[0].uvIndex - 1);
+                                materials[matNo].quadUVId.push_back(
+                                    vface[1].uvIndex - 1);
+                                materials[matNo].quadUVId.push_back(
+                                    vface[2].uvIndex - 1);
+                                materials[matNo].quadUVId.push_back(
+                                    vface[3].uvIndex - 1);
                                 materials[matNo].quadNorId.push_back(
-                                    vface[2].x - 1);
+                                    vface[0].normalIndex - 1);
                                 materials[matNo].quadNorId.push_back(
-                                    vface[2].y - 1);
+                                    vface[1].normalIndex - 1);
                                 materials[matNo].quadNorId.push_back(
-                                    vface[2].z - 1);
+                                    vface[2].normalIndex - 1);
                                 materials[matNo].quadNorId.push_back(
-                                    vface[2].w - 1);
+                                    vface[3].normalIndex - 1);
                         } else {
                                 auto mseg =
                                     std::string("unsupported format: ") +
                                     std::to_string(lineno);
                                 throw std::logic_error(mseg);
                         }
+                } else {
+                        std::cout << "no operation: " << line << std::endl;
                 }
                 lineno++;
         }
@@ -254,6 +258,8 @@ float ObjModel::tofloat(const std::string& src) {
         return (float)::atof(src.c_str());
 }
 
+int ObjModel::toint(const std::string& src) { return ::atoi(src.c_str()); }
+
 void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
         std::string resolved = (dir + '/' + path);
         std::string line;
@@ -270,7 +276,6 @@ void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
         objMat.textureNo = 0;
         int lineno = 0;
         while (std::getline(ifs, line)) {
-                std::cout << line << std::endl;
                 line = trimLeft(line);
                 auto words = split(line, ' ');
                 if (words.empty() || words[0] == "#") {
@@ -285,29 +290,24 @@ void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
                         flag = true;
                         objMat.name = words[1];
                         flag2 = false;
-                }
-                if (code == "Ka") {
+                } else if (code == "Ka") {
                         bufv4.x = tofloat(words[1]);
                         bufv4.y = tofloat(words[2]);
                         bufv4.z = tofloat(words[3]);
                         objMat.color.ambient = (const Color4&)bufv4;
-                }
-                if (code == "Kd") {
+                } else if (code == "Kd") {
                         bufv4.x = tofloat(words[1]);
                         bufv4.y = tofloat(words[2]);
                         bufv4.z = tofloat(words[3]);
                         objMat.color.diffuse = (const Color4&)bufv4;
-                }
-                if (code == "Ks") {
+                } else if (code == "Ks") {
                         bufv4.x = tofloat(words[1]);
                         bufv4.y = tofloat(words[2]);
                         bufv4.z = tofloat(words[3]);
                         objMat.color.specular = (const Color4&)bufv4;
-                }
-                if (code == "Ns") {
+                } else if (code == "Ns") {
                         objMat.shininess = tofloat(words[1]);
-                }
-                if (code == "map_Kd") {
+                } else if (code == "map_Kd") {
                         for (int i = 0; i < materials.size(); i++) {
                                 if (words[1] == materials[i].texture) {
                                         flag2 = true;
@@ -319,13 +319,15 @@ void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
                         if (flag2) {
                         } else {
                                 auto texpath = (dir + '/' + words[1]);
-                                objMat.texture = texpath;
+                                objMat.texture = words[1];
                                 auto tex = std::make_shared<PngTexture>();
                                 tex->load(texpath);
                                 textures.push_back(tex);
                                 texId.push_back(tex->getID());
                                 objMat.textureNo = texId.size();
                         }
+                } else {
+                        std::cout << "no operation: " << line << std::endl;
                 }
         }
         if (flag) {
