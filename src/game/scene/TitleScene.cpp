@@ -29,12 +29,43 @@ void TitleScene::draw() {
                        gel::Vector3(0.1f, 0.1f, 0.1f), 48, 0);
         ::glPopMatrix();
 
-        ::glPushMatrix();
-        ::glTranslatef(gunPos.x, gunPos.y, gunPos.z);
-        ::glScalef(0.001f, 0.001f, 0.001f);
-        auto gunModel = mModelManager->getModel("./assets/model/Tank.fbx");
-        gunModel->draw();
-        ::glPopMatrix();
+        auto interval = (msize.x * 0.1f) * (48.f / 8.f);
+        for (int i = 1; i < 8; i++) {
+                ::glPushMatrix();
+                ::glTranslatef(interval * i, gunPos.y, 0);
+                ::glScalef(0.001f, 0.001f, 0.001f);
+                auto gunModel =
+                    mModelManager->getModel("./assets/model/Tank.fbx");
+                gunModel->draw();
+                ::glPopMatrix();
+        }
+        for (int i = 1; i < 8; i++) {
+                ::glPushMatrix();
+                ::glTranslatef(interval * i, gunPos.y, (msize.x * 0.1f) * 45);
+                ::glScalef(0.001f, 0.001f, 0.001f);
+                auto gunModel =
+                    mModelManager->getModel("./assets/model/Tank.fbx");
+                gunModel->draw();
+                ::glPopMatrix();
+        }
+        for (int i = 1; i < 8; i++) {
+                ::glPushMatrix();
+                ::glTranslatef((msize.x * 0.1f) * 2, gunPos.y, interval * i);
+                ::glScalef(0.001f, 0.001f, 0.001f);
+                auto gunModel =
+                    mModelManager->getModel("./assets/model/Tank.fbx");
+                gunModel->draw();
+                ::glPopMatrix();
+        }
+        for (int i = 1; i < 8; i++) {
+                ::glPushMatrix();
+                ::glTranslatef((msize.x * 0.1f) * 45, gunPos.y, interval * i);
+                ::glScalef(0.001f, 0.001f, 0.001f);
+                auto gunModel =
+                    mModelManager->getModel("./assets/model/Tank.fbx");
+                gunModel->draw();
+                ::glPopMatrix();
+        }
         camera.endDraw();
 }
 
