@@ -24,10 +24,13 @@ void MyGame::init() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
         glEnable(GL_LIGHTING);
         glEnable(GL_CULL_FACE);
         Vector3 sun(0.0, 10, 0.0);
         glLightfv(GL_LIGHT0, GL_POSITION, &sun.x);
+        float difLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, difLight0);
         glCullFace(GL_BACK);
 }
 
