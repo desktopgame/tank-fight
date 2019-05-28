@@ -25,7 +25,12 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
 
 void PlayScene::show() {}
 
-void PlayScene::update() { camera.debugControl(); }
+void PlayScene::update() {
+        for (int i = 0; i < enemies.size(); i++) {
+                enemies[i]->update();
+        }
+        camera.debugControl();
+}
 
 void PlayScene::draw() {
         auto path = "./assets/model/Block.fbx";
@@ -65,25 +70,29 @@ void PlayScene::initSpawners(float blockScale) {
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3(interval * i, baseY, 0);
                 auto rot = gel::Vector3(0, 270, 0);
-                spawners.push_back(std::make_shared<Spawner>(pos, rot));
+                auto dir = gel::Vector3(0, 0, 1);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot, dir));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3(interval * i, baseY,
                                         (msize.x * blockScale) * 45);
                 auto rot = gel::Vector3(0, 90, 0);
-                spawners.push_back(std::make_shared<Spawner>(pos, rot));
+                auto dir = gel::Vector3(0, 0, -1);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot, dir));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3((msize.x * blockScale) * 2, baseY,
                                         interval * i);
                 auto rot = gel::Vector3(0, 0, 0);
-                spawners.push_back(std::make_shared<Spawner>(pos, rot));
+                auto dir = gel::Vector3(1, 0, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot, dir));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3((msize.x * blockScale) * 45, baseY,
                                         interval * i);
                 auto rot = gel::Vector3(0, 180, 0);
-                spawners.push_back(std::make_shared<Spawner>(pos, rot));
+                auto dir = gel::Vector3(-1, 0, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot, dir));
         }
 }
 
@@ -96,7 +105,8 @@ void PlayScene::spawn() {
                 spawners[i]->use();
                 auto enemy = std::make_shared<Enemy>(
                     mModelManager->getModel("./assets/model/Tank.fbx"),
-                    spawners[i]->getPosition(), spawners[i]->getRotation());
+                    spawners[i]->getPosition(), spawners[i]->getRotation(),
+                    spawners[i]->getDirection());
                 enemies.push_back(enemy);
                 break;
         }
