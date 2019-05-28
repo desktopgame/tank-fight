@@ -1,109 +1,124 @@
 #include "ObjModel.hpp"
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <string>
 #include "../model/Vector3.hpp"
-#include "../model/Vector4.hpp"
+#include "../model/Vector4.hpp" #include < iostream >
 #define BUFLEN (512)
 namespace mygame {
 ObjModel::ObjModel() : materials(), textures(), texId() {}
 
 void ObjModel::load(const std::string& path) {
-        Vector4 face[3];
         std::vector<Vector3> vertex;
         std::vector<Vector3> normal;
         std::vector<UV> uv;
         Vector3 bufv3;
         UV bufuv;
         int matNo = 0;
-        char key[BUFLEN] = {0};
-        FILE* fp = fopen(path.c_str(), "rt");
-        if (fp == NULL) {
-                perror("ObjModel#load");
+        std::string line;
+        std::ifstream ifs(path.c_str());
+        if (!ifs.is_open()) {
                 return;
         }
-        fseek(fp, SEEK_SET, 0);
-        while (!feof(fp)) {
-                // FIXME: buffer overflow.
-                memset(key, '\0', sizeof(char) * BUFLEN);
-                fscanf(fp, "%s ", key);
-                if (!::strcmp(key, "mtllib")) {
-                        fscanf(fp, "%s ", key);
-                        loadMaterialFromFile(pathToDir(path), key);
+        int lineno = 0;
+        while (std::getline(ifs, line)) {
+                std::cout << line << std::endl;
+                line = trimLeft(line);
+                auto words = split(line, ' ');
+                // skip if empty line or commented
+                if (words.empty() || words[0] == "#") {
+                        lineno++;
+                        continue;
                 }
-                if (!::strcmp(key, "v")) {
-                        fscanf(fp, "%f %f %f", &bufv3.x, &bufv3.y, &bufv3.z);
+                auto code = words[0];
+                if (code == "mtllib") {
+                        loadMaterialFromFile(pathToDir(path), words[1].c_str());
+                } else if (code == "v") {
+                        bufv3.x = tofloat(words[1]);
+                        bufv3.y = tofloat(words[2]);
+                        bufv3.z = tofloat(words[3]);
                         vertex.push_back(bufv3);
-                }
-                if (!::strcmp(key, "vn")) {
-                        fscanf(fp, "%f %f %f", &bufv3.x, &bufv3.y, &bufv3.z);
+                } else if (code == "vn") {
+                        bufv3.x = tofloat(words[1]);
+                        bufv3.y = tofloat(words[2]);
+                        bufv3.z = tofloat(words[3]);
                         normal.push_back(bufv3);
-                }
-                if (!::strcmp(key, "vt")) {
-                        fscanf(fp, "%f %f", &bufuv.u, &bufuv.v);
+                } else if (code == "vt") {
+                        bufuv.u = tofloat(words[1]);
+                        bufuv.v = tofloat(words[2]);
                         uv.push_back(bufuv);
-                }
-                if (!::strcmp(key, "usemtl")) {
-                        fscanf(fp, "%s ", key);
+                } else if (code == "usemtl") {
                         for (int i = 0; i < materials.size(); i++) {
-                                if (!::strcmp(key, materials[i].name.c_str())) {
+                                if (words[1] == materials[i].name) {
                                         matNo = i;
                                 }
                         }
-                }
-                if (!::strcmp(key, "f")) {
-                        face[0].w = -1;
-                        face[1].w = -1;
-                        face[2].w = -1;
-                        fscanf(fp, "%f/%f/%f %f/%f/%f %f/%f/%f %f/%f/%f",
-                               &face[0].x, &face[1].x, &face[2].x, &face[0].y,
-                               &face[1].y, &face[2].y, &face[0].z, &face[1].z,
-                               &face[2].z, &face[0].w, &face[1].w, &face[2].w);
-                        if (face[0].w == -1 && face[1].w == -1 &&
-                            face[2].w == -1) {
-                                materials[matNo].triVerId.push_back(face[0].x -
+                } else if (code == "f") {
+                        std::vector<Vector4> vface;
+                        auto polys = words.size() - 1;
+                        for (int i = 0; i < polys; i++) {
+                                Vector4 nface;
+                                nface.w = -1;
+                                auto v = words[1 + i];
+                                auto map = split(v, '/');
+                                nface.x = tofloat(map[0]);
+                                nface.y = tofloat(map[1]);
+                                nface.z = tofloat(map[2]);
+                                vface.push_back(nface);
+                        }
+                        if (polys == 3) {
+                                materials[matNo].triVerId.push_back(vface[0].x -
                                                                     1);
-                                materials[matNo].triVerId.push_back(face[0].y -
+                                materials[matNo].triVerId.push_back(vface[0].y -
                                                                     1);
-                                materials[matNo].triVerId.push_back(face[0].z -
+                                materials[matNo].triVerId.push_back(vface[0].z -
                                                                     1);
-                                materials[matNo].triUVId.push_back(face[1].x -
+                                materials[matNo].triUVId.push_back(vface[1].x -
                                                                    1);
-                                materials[matNo].triUVId.push_back(face[1].y -
+                                materials[matNo].triUVId.push_back(vface[1].y -
                                                                    1);
-                                materials[matNo].triUVId.push_back(face[1].z -
+                                materials[matNo].triUVId.push_back(vface[1].z -
                                                                    1);
-                                materials[matNo].triNorId.push_back(face[2].x -
+                                materials[matNo].triNorId.push_back(vface[2].x -
                                                                     1);
-                                materials[matNo].triNorId.push_back(face[2].y -
+                                materials[matNo].triNorId.push_back(vface[2].y -
                                                                     1);
-                                materials[matNo].triNorId.push_back(face[2].z -
+                                materials[matNo].triNorId.push_back(vface[2].z -
                                                                     1);
+                        } else if (polys == 4) {
+                                materials[matNo].quadVerId.push_back(
+                                    vface[0].x - 1);
+                                materials[matNo].quadVerId.push_back(
+                                    vface[0].y - 1);
+                                materials[matNo].quadVerId.push_back(
+                                    vface[0].z - 1);
+                                materials[matNo].quadVerId.push_back(
+                                    vface[0].w - 1);
+                                materials[matNo].quadUVId.push_back(vface[1].x -
+                                                                    1);
+                                materials[matNo].quadUVId.push_back(vface[1].y -
+                                                                    1);
+                                materials[matNo].quadUVId.push_back(vface[1].z -
+                                                                    1);
+                                materials[matNo].quadUVId.push_back(vface[1].w -
+                                                                    1);
+                                materials[matNo].quadNorId.push_back(
+                                    vface[2].x - 1);
+                                materials[matNo].quadNorId.push_back(
+                                    vface[2].y - 1);
+                                materials[matNo].quadNorId.push_back(
+                                    vface[2].z - 1);
+                                materials[matNo].quadNorId.push_back(
+                                    vface[2].w - 1);
                         } else {
-                                materials[matNo].quadVerId.push_back(face[0].x -
-                                                                     1);
-                                materials[matNo].quadVerId.push_back(face[0].y -
-                                                                     1);
-                                materials[matNo].quadVerId.push_back(face[0].z -
-                                                                     1);
-                                materials[matNo].quadVerId.push_back(face[0].w -
-                                                                     1);
-                                materials[matNo].quadUVId.push_back(face[1].x -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(face[1].y -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(face[1].z -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(face[1].w -
-                                                                    1);
-                                materials[matNo].quadNorId.push_back(face[2].x -
-                                                                     1);
-                                materials[matNo].quadNorId.push_back(face[2].y -
-                                                                     1);
-                                materials[matNo].quadNorId.push_back(face[2].z -
-                                                                     1);
-                                materials[matNo].quadNorId.push_back(face[2].w -
-                                                                     1);
+                                auto mseg =
+                                    std::string("unsupported format: ") +
+                                    std::to_string(lineno);
+                                throw std::logic_error(mseg);
                         }
                 }
+                lineno++;
         }
         for (int j = 0; j < materials.size(); j++) {
                 for (int i = 0; i < materials[j].triVerId.size(); i++) {
@@ -190,14 +205,46 @@ void ObjModel::draw() {
 
 AABB ObjModel::getAABB() const { return aabb; }
 
+std::string ObjModel::trimLeft(const std::string& src) {
+        int pos = 0;
+        for (auto c : src) {
+                if (c != ' ' && c != '\t') {
+                        return src.substr(pos, src.size() - pos);
+                }
+                pos++;
+        }
+        return "";
+}
+
+std::vector<std::string> ObjModel::split(const std::string& src, char c) {
+        std::vector<std::string> a;
+        std::string buf;
+        for (int i = 0; i < src.size(); i++) {
+                auto e = src[i];
+                if (e != c) {
+                        buf += e;
+                } else if (e == c) {
+                        a.push_back(buf);
+                        buf.clear();
+                }
+        }
+        if (buf.size() > 0) {
+                a.push_back(buf);
+        }
+        return a;
+}
+
+float ObjModel::tofloat(const std::string& src) {
+        return (float)::atof(src.c_str());
+}
+
 void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
         std::string resolved = (dir + '/' + path);
-        FILE* fp = fopen(resolved.c_str(), "rt");
-        if (fp == NULL) {
-                perror("ObjModel#loadMaterialFromFile");
+        std::string line;
+        std::ifstream ifs(resolved.c_str());
+        if (!ifs.is_open()) {
                 return;
         }
-        char key[BUFLEN] = {0};
         Vector4 bufv4;
         bool flag = false, flag2 = false;
         bufv4.w = 1.0f;
@@ -205,47 +252,57 @@ void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
         objMat.color.emission = (const Color4&)bufv4;
         objMat.shininess = 0;
         objMat.textureNo = 0;
-        fseek(fp, SEEK_SET, 0);
-        while (!feof(fp)) {
-                fscanf(fp, "%s ", key);
-                if (!::strcmp(key, "newmtl")) {
+        int lineno = 0;
+        while (std::getline(ifs, line)) {
+                std::cout << line << std::endl;
+                line = trimLeft(line);
+                auto words = split(line, ' ');
+                if (words.empty() || words[0] == "#") {
+                        continue;
+                }
+                auto code = words[0];
+                if (code == "newmtl") {
                         if (flag) {
                                 materials.push_back(objMat);
                                 objMat.textureNo = 0;
                         }
                         flag = true;
-                        fscanf(fp, "%s ", key);
-                        objMat.name = key;
+                        objMat.name = words[1];
                         flag2 = false;
                 }
-                if (!::strcmp(key, "Ka")) {
-                        fscanf(fp, "%f %f %f", &bufv4.x, &bufv4.y, &bufv4.z);
+                if (code == "Ka") {
+                        bufv4.x = tofloat(words[1]);
+                        bufv4.y = tofloat(words[2]);
+                        bufv4.z = tofloat(words[3]);
                         objMat.color.ambient = (const Color4&)bufv4;
                 }
-                if (!::strcmp(key, "Kd")) {
-                        fscanf(fp, "%f %f %f", &bufv4.x, &bufv4.y, &bufv4.z);
+                if (code == "Kd") {
+                        bufv4.x = tofloat(words[1]);
+                        bufv4.y = tofloat(words[2]);
+                        bufv4.z = tofloat(words[3]);
                         objMat.color.diffuse = (const Color4&)bufv4;
                 }
-                if (!::strcmp(key, "Ks")) {
-                        fscanf(fp, "%f %f %f", &bufv4.x, &bufv4.y, &bufv4.z);
+                if (code == "Ks") {
+                        bufv4.x = tofloat(words[1]);
+                        bufv4.y = tofloat(words[2]);
+                        bufv4.z = tofloat(words[3]);
                         objMat.color.specular = (const Color4&)bufv4;
                 }
-                if (!::strcmp(key, "Ns")) {
-                        fscanf(fp, "%f", &bufv4.x);
-                        objMat.shininess = bufv4.x;
+                if (code == "Ns") {
+                        objMat.shininess = tofloat(words[1]);
                 }
-                if (!::strcmp(key, "map_Kd")) {
-                        fscanf(fp, "%s ", key);
+                if (code == "map_Kd") {
                         for (int i = 0; i < materials.size(); i++) {
-                                if (!::strcmp(key, materials[i].name.c_str())) {
+                                if (words[1] == materials[i].texture) {
                                         flag2 = true;
                                         objMat.textureNo =
                                             materials[i].textureNo;
                                         break;
                                 }
                         }
-                        if (!flag2) {
-                                auto texpath = (dir + '/' + key);
+                        if (flag2) {
+                        } else {
+                                auto texpath = (dir + '/' + words[1]);
                                 objMat.texture = texpath;
                                 auto tex = std::make_shared<PngTexture>();
                                 tex->load(texpath);
@@ -255,7 +312,6 @@ void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
                         }
                 }
         }
-        fclose(fp);
         if (flag) {
                 materials.push_back(objMat);
         }

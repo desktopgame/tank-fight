@@ -16,6 +16,9 @@ class ObjModel : public IModel {
         AABB getAABB() const override;
 
        private:
+        static std::string trimLeft(const std::string& src);
+        static std::vector<std::string> split(const std::string& src, char c);
+        static float tofloat(const std::string& src);
         void loadMaterialFromFile(const std::string& dir, const char* path);
         static std::string pathToDir(const std::string& path);
         std::vector<ObjMaterial> materials;
