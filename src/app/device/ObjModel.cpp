@@ -120,27 +120,43 @@ void ObjModel::load(const std::string& path) {
                 }
                 lineno++;
         }
+        auto vsize = vertex.size();
+        auto nsize = normal.size();
+        auto usize = uv.size();
         for (int j = 0; j < materials.size(); j++) {
-                for (int i = 0; i < materials[j].triVerId.size(); i++) {
+                auto& mat = materials[j];
+                for (int i = 0; i < mat.triVerId.size(); i++) {
                         Triangle tria;
-                        tria.ver = vertex[materials[j].triVerId[i]];
-                        tria.nor = normal[materials[j].triNorId[i]];
-                        tria.uv = uv[materials[j].triNorId[i]];
-                        materials[j].triangles.push_back(tria);
+                        auto vid = mat.triVerId[i];
+                        auto nid = mat.triNorId[i];
+                        auto uid = mat.triUVId[i];
+                        assert(vid >= 0 && vid < vsize);
+                        assert(nid >= 0 && nid < nsize);
+                        assert(uid >= 0 && uid < usize);
+                        tria.ver = vertex[vid];
+                        tria.nor = normal[nid];
+                        tria.uv = uv[uid];
+                        mat.triangles.push_back(tria);
                 }
-                for (int i = 0; i < materials[j].quadVerId.size(); i++) {
+                for (int i = 0; i < mat.quadVerId.size(); i++) {
                         Quadrangle quad;
-                        quad.ver = vertex[materials[j].quadVerId[i]];
-                        quad.nor = normal[materials[j].quadNorId[i]];
-                        quad.uv = uv[materials[j].quadUVId[i]];
-                        materials[j].quads.push_back(quad);
+                        auto vid = mat.quadVerId[i];
+                        auto nid = mat.quadNorId[i];
+                        auto uid = mat.quadUVId[i];
+                        assert(vid >= 0 && vid < vsize);
+                        assert(nid >= 0 && nid < nsize);
+                        assert(uid >= 0 && uid < usize);
+                        quad.ver = vertex[vid];
+                        quad.nor = normal[nid];
+                        quad.uv = uv[uid];
+                        mat.quads.push_back(quad);
                 }
-                materials[j].triVerId.clear();
-                materials[j].triNorId.clear();
-                materials[j].triUVId.clear();
-                materials[j].quadVerId.clear();
-                materials[j].quadNorId.clear();
-                materials[j].quadUVId.clear();
+                mat.triVerId.clear();
+                mat.triNorId.clear();
+                mat.triUVId.clear();
+                mat.quadVerId.clear();
+                mat.quadNorId.clear();
+                mat.quadUVId.clear();
         }
         this->aabb = AABB(vertex);
         vertex.clear();
