@@ -2,6 +2,9 @@
 #define GEL_GEL_HPP
 #include "Game.hpp"
 #include "content/ContentManager.hpp"
+#include "device/ITexture.hpp"
+#include "device/IModel.hpp"
+#include "device/IPlayableAudio.hpp"
 #include "device/AudioManager.hpp"
 #include "device/GameDevice.hpp"
 #include "device/Graphics.hpp"
@@ -9,6 +12,7 @@
 #include "device/TextureManager.hpp"
 #include "gsystem/Camera.hpp"
 #include "gsystem/Transform.hpp"
+#include "gsystem/Timer.hpp"
 #include "model/AABB.hpp"
 #include "model/Color4.hpp"
 #include "model/Matrix4.hpp"
