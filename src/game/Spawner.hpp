@@ -3,13 +3,16 @@
 #include "../gel/gel.hpp"
 class Spawner {
        public:
-        explicit Spawner(const gel::Vector3& position);
+        explicit Spawner(const gel::Vector3& position,
+                         const gel::Vector3& rotation);
         void use();
         void release();
+        gel::Vector3 getRotation() const;
         gel::Vector3 getPosition() const;
         bool isUsed() const;
 
        private:
+        gel::Vector3 rotation;
         gel::Vector3 position;
         bool used;
 };

@@ -9,7 +9,8 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       mTextureManager(textureManager),
       mModelManager(modelManager),
       camera(),
-      spawners() {
+      spawners(),
+      timer(3) {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         auto pos =
@@ -17,6 +18,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                          msize.z * 24 * BLOCK_SCALE);
         camera.transform.position = pos;
         initSpawners(BLOCK_SCALE);
+        spawn();
 }
 
 void PlayScene::show() {}
@@ -35,15 +37,24 @@ void PlayScene::draw() {
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
                        0);
         ::glPopMatrix();
-        auto tankModel = mModelManager->getModel("./assets/model/Tank.fbx");
-        for (int i = 0; i < this->spawners.size(); i++) {
+        auto tank = mModelManager->getModel("./assets/model/Tank.fbx");
+        for (int i = 0; i < spawners.size(); i++) {
                 auto spw = spawners[i];
                 auto pos = spw->getPosition();
+                auto rot = spw->getRotation();
                 ::glPushMatrix();
                 ::glTranslatef(pos.x, pos.y, pos.z);
+                ::glRotatef(rot.y, 0, 1, 0);
+                ::glRotatef(rot.x, 1, 0, 0);
+                ::glRotatef(rot.z, 0, 0, 1);
                 ::glScalef(TANK_SCALE, TANK_SCALE, TANK_SCALE);
-                tankModel->draw();
+                tank->draw();
                 ::glPopMatrix();
+        }
+        timer.update();
+        if (timer.isElapsed()) {
+                timer.reset();
+                // spawn();
         }
         camera.endDraw();
 }
@@ -62,21 +73,27 @@ void PlayScene::initSpawners(float blockScale) {
         auto baseY = (msize.y * blockScale * 3);
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3(interval * i, baseY, 0);
-                spawners.push_back(std::make_shared<Spawner>(pos));
+                auto rot = gel::Vector3(0, 270, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3(interval * i, baseY,
                                         (msize.x * blockScale) * 45);
-                spawners.push_back(std::make_shared<Spawner>(pos));
+                auto rot = gel::Vector3(0, 90, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3((msize.x * blockScale) * 2, baseY,
                                         interval * i);
-                spawners.push_back(std::make_shared<Spawner>(pos));
+                auto rot = gel::Vector3(0, 0, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot));
         }
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3((msize.x * blockScale) * 45, baseY,
                                         interval * i);
-                spawners.push_back(std::make_shared<Spawner>(pos));
+                auto rot = gel::Vector3(0, 180, 0);
+                spawners.push_back(std::make_shared<Spawner>(pos, rot));
         }
 }
+
+void PlayScene::spawn() {}
