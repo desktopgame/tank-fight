@@ -36,9 +36,13 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         glfwSetKeyCallback(window, Game::bridgeKey);
         glfwSetCharCallback(window, Game::bridgeChar);
         init();
+        this->oldTime = glutGet(GLUT_ELAPSED_TIME);
         while (!glfwWindowShouldClose(window)) {
                 update();
                 draw();
+                long nowTime = glutGet(GLUT_ELAPSED_TIME);
+                this->deltaTime = (nowTime - oldTime) / 1000.0;
+                this->oldTime = nowTime;
         }
         alutExit();
         glfwTerminate();
@@ -46,6 +50,8 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
 }
 
 GLFWwindow* Game::getWindow() const { return this->mWindow; }
+
+float Game::getDeltaTime() const { return this->deltaTime; }
 
 Game* Game::getInstance() { return instance; }
 

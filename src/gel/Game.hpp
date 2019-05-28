@@ -25,6 +25,7 @@ class Game {
         int mainLoop(int argc, char* argv[], const char* title, int width,
                      int height);
         GLFWwindow* getWindow() const;
+        float getDeltaTime() const;
         static Game* getInstance();
 
        protected:
@@ -32,6 +33,8 @@ class Game {
         GLFWwindow* mWindow;
         int mWidth;
         int mHeight;
+        long oldTime;
+        float deltaTime;
         static void bridgeMouseButton(GLFWwindow* window, int button,
                                       int action, int mods);
         static void bridgeCursorMove(GLFWwindow* window, double x, double y);
