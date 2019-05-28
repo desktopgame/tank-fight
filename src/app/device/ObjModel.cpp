@@ -4,324 +4,109 @@
 #include <iostream>
 #include <string>
 #include "../model/Vector3.hpp"
-#include "../model/Vector4.hpp" #include < iostream >
+#include "../model/Vector4.hpp"
 #define BUFLEN (512)
 namespace mygame {
-ObjModel::ObjModel() : materials(), textures(), texId() {}
+ObjModel::ObjModel()
+    : attrib(), shapes(), materials(), warn(), error(), aabb() {}
 
 void ObjModel::load(const std::string& path) {
-        std::vector<Vector3> vertex;
-        std::vector<Vector3> normal;
-        std::vector<UV> uv;
-        Vector3 bufv3;
-        UV bufuv;
-        int matNo = 0;
-        std::string line;
-        std::ifstream ifs(path.c_str());
-        if (!ifs.is_open()) {
-                return;
+        std::set<char> delims{'/'};
+        auto components = splitpath(path, delims);
+        auto fn = components.back();
+        components.pop_back();
+        std::string dir;
+        for (auto c : components) {
+                dir += (c + "/");
         }
-        int lineno = 0;
-        while (std::getline(ifs, line)) {
-                std::cout << line << std::endl;
-                line = trimLeft(line);
-                auto words = split(line, ' ');
-                // skip if empty line or commented
-                if (words.empty() || words[0] == "#") {
-                        lineno++;
-                        continue;
-                }
-                auto code = words[0];
-                if (code == "mtllib") {
-                        loadMaterialFromFile(pathToDir(path), words[1].c_str());
-                } else if (code == "v") {
-                        bufv3.x = tofloat(words[1]);
-                        bufv3.y = tofloat(words[2]);
-                        bufv3.z = tofloat(words[3]);
-                        vertex.push_back(bufv3);
-                } else if (code == "vn") {
-                        bufv3.x = tofloat(words[1]);
-                        bufv3.y = tofloat(words[2]);
-                        bufv3.z = tofloat(words[3]);
-                        normal.push_back(bufv3);
-                } else if (code == "vt") {
-                        bufuv.u = tofloat(words[1]);
-                        bufuv.v = tofloat(words[2]);
-                        uv.push_back(bufuv);
-                } else if (code == "usemtl") {
-                        for (int i = 0; i < materials.size(); i++) {
-                                if (words[1] == materials[i].name) {
-                                        matNo = i;
-                                }
-                        }
-                } else if (code == "f") {
-                        std::vector<Vector4> vface;
-                        auto polys = words.size() - 1;
-                        for (int i = 0; i < polys; i++) {
-                                Vector4 nface;
-                                nface.w = -1;
-                                auto v = words[1 + i];
-                                auto map = split(v, '/');
-                                nface.x = tofloat(map[0]);
-                                nface.y = tofloat(map[1]);
-                                nface.z = tofloat(map[2]);
-                                vface.push_back(nface);
-                        }
-                        if (polys == 3) {
-                                materials[matNo].triVerId.push_back(vface[0].x -
-                                                                    1);
-                                materials[matNo].triVerId.push_back(vface[0].y -
-                                                                    1);
-                                materials[matNo].triVerId.push_back(vface[0].z -
-                                                                    1);
-                                materials[matNo].triUVId.push_back(vface[1].x -
-                                                                   1);
-                                materials[matNo].triUVId.push_back(vface[1].y -
-                                                                   1);
-                                materials[matNo].triUVId.push_back(vface[1].z -
-                                                                   1);
-                                materials[matNo].triNorId.push_back(vface[2].x -
-                                                                    1);
-                                materials[matNo].triNorId.push_back(vface[2].y -
-                                                                    1);
-                                materials[matNo].triNorId.push_back(vface[2].z -
-                                                                    1);
-                        } else if (polys == 4) {
-                                materials[matNo].quadVerId.push_back(
-                                    vface[0].x - 1);
-                                materials[matNo].quadVerId.push_back(
-                                    vface[0].y - 1);
-                                materials[matNo].quadVerId.push_back(
-                                    vface[0].z - 1);
-                                materials[matNo].quadVerId.push_back(
-                                    vface[0].w - 1);
-                                materials[matNo].quadUVId.push_back(vface[1].x -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].y -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].z -
-                                                                    1);
-                                materials[matNo].quadUVId.push_back(vface[1].w -
-                                                                    1);
-                                materials[matNo].quadNorId.push_back(
-                                    vface[2].x - 1);
-                                materials[matNo].quadNorId.push_back(
-                                    vface[2].y - 1);
-                                materials[matNo].quadNorId.push_back(
-                                    vface[2].z - 1);
-                                materials[matNo].quadNorId.push_back(
-                                    vface[2].w - 1);
-                        } else {
-                                auto mseg =
-                                    std::string("unsupported format: ") +
-                                    std::to_string(lineno);
-                                throw std::logic_error(mseg);
-                        }
-                }
-                lineno++;
-        }
-        for (int j = 0; j < materials.size(); j++) {
-                for (int i = 0; i < materials[j].triVerId.size(); i++) {
-                        Triangle tria;
-                        tria.ver = vertex[materials[j].triVerId[i]];
-                        tria.nor = normal[materials[j].triNorId[i]];
-                        tria.uv = uv[materials[j].triNorId[i]];
-                        materials[j].triangles.push_back(tria);
-                }
-                for (int i = 0; i < materials[j].quadVerId.size(); i++) {
-                        Quadrangle quad;
-                        quad.ver = vertex[materials[j].quadVerId[i]];
-                        quad.nor = normal[materials[j].quadNorId[i]];
-                        quad.uv = uv[materials[j].quadUVId[i]];
-                        materials[j].quads.push_back(quad);
-                }
-                materials[j].triVerId.clear();
-                materials[j].triNorId.clear();
-                materials[j].triUVId.clear();
-                materials[j].quadVerId.clear();
-                materials[j].quadNorId.clear();
-                materials[j].quadUVId.clear();
-        }
-        this->aabb = AABB(vertex);
-        vertex.clear();
-        normal.clear();
-        uv.clear();
+        bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &error,
+                                    path.c_str());
+
+        if (!error.empty()) std::cerr << error << std::endl;
+
+        if (!ret) exit(1);
 }
 
 void ObjModel::unload(const std::string& path) {}
 
 void ObjModel::draw() {
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        for (int i = 0; i < (signed)materials.size(); i++) {
-                glPushMatrix();
-                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,
-                             (const GLfloat*)&materials[i].color.ambient);
-                glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,
-                             (const GLfloat*)&materials[i].color.diffuse);
-                glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,
-                             (const GLfloat*)&materials[i].color.specular);
-                glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
-                            materials[i].shininess);
-                if (materials[i].textureNo > 0) {
-                        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                        glEnable(GL_TEXTURE_2D);
-                        glBindTexture(GL_TEXTURE_2D,
-                                      texId[materials[i].textureNo - 1]);
-                } else {
-                        glDisable(GL_TEXTURE_2D);
-                        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        for (const auto& shape : shapes) {
+                // shape の名前
+                std::cout << shape.name << std::endl;
+
+                size_t index_offset = 0;  // インデントのオフセット
+                for (size_t f = 0; f < shape.mesh.num_face_vertices.size();
+                     f++) {
+                        // 面 f を構成sする頂点の数
+                        int num_vertices = shape.mesh.num_face_vertices[f];
+
+                        glBegin(GL_TRIANGLES);
+                        for (size_t v = 0; v < num_vertices; v++) {
+                                // access to vertex
+                                tinyobj::index_t idx =
+                                    shape.mesh.indices[index_offset + v];
+
+                                // 頂点の座標
+                                float vx =
+                                    attrib.vertices[3 * idx.vertex_index + 0];
+                                float vy =
+                                    attrib.vertices[3 * idx.vertex_index + 1];
+                                float vz =
+                                    attrib.vertices[3 * idx.vertex_index + 2];
+
+                                // 頂点の法線
+                                float nx =
+                                    attrib.normals[3 * idx.normal_index + 0];
+                                float ny =
+                                    attrib.normals[3 * idx.normal_index + 1];
+                                float nz =
+                                    attrib.normals[3 * idx.normal_index + 2];
+
+                                // 頂点のテクスチャ座標
+                                tinyobj::real_t tx =
+                                    attrib
+                                        .texcoords[2 * idx.texcoord_index + 0];
+                                tinyobj::real_t ty =
+                                    attrib
+                                        .texcoords[2 * idx.texcoord_index + 1];
+
+                                // 頂点の色
+                                float red =
+                                    attrib.colors[3 * idx.vertex_index + 0];
+                                float green =
+                                    attrib.colors[3 * idx.vertex_index + 1];
+                                float blue =
+                                    attrib.colors[3 * idx.vertex_index + 2];
+                        }
+                        index_offset += num_vertices;
+
+                        // per-face material
+                        shape.mesh.material_ids[f];
                 }
-                if (materials[i].triangles.size() > 1) {
-                        glVertexPointer(3, GL_FLOAT, sizeof(Triangle),
-                                        &materials[i].triangles[0].ver.x);
-                        glNormalPointer(GL_FLOAT, sizeof(Triangle),
-                                        &materials[i].triangles[0].nor.x);
-                        if (materials[i].textureNo > 0)
-                                glTexCoordPointer(
-                                    2, GL_FLOAT, sizeof(Triangle),
-                                    &materials[i].triangles[0].uv.u);
-                        glDrawArrays(GL_TRIANGLES, 0,
-                                     materials[i].triangles.size());
-                }
-                if (materials[i].quads.size() > 1) {
-                        glVertexPointer(3, GL_FLOAT, sizeof(Quadrangle),
-                                        &materials[i].quads[0].ver.x);
-                        glNormalPointer(GL_FLOAT, sizeof(Quadrangle),
-                                        &materials[i].quads[0].nor.x);
-                        if (materials[i].textureNo > 0)
-                                glTexCoordPointer(2, GL_FLOAT,
-                                                  sizeof(Quadrangle),
-                                                  &materials[i].quads[0].uv.u);
-                        glDrawArrays(GL_QUADS, 0, materials[i].quads.size());
-                }
-                glPopMatrix();
         }
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisable(GL_TEXTURE_2D);
 }
 
 AABB ObjModel::getAABB() const { return aabb; }
 
-std::string ObjModel::trimLeft(const std::string& src) {
-        int pos = 0;
-        for (auto c : src) {
-                if (c != ' ' && c != '\t') {
-                        return src.substr(pos, src.size() - pos);
-                }
-                pos++;
-        }
-        return "";
-}
+std::vector<std::string> ObjModel::splitpath(const std::string& str,
+                                             const std::set<char> delimiters) {
+        std::vector<std::string> result;
 
-std::vector<std::string> ObjModel::split(const std::string& src, char c) {
-        std::vector<std::string> a;
-        std::string buf;
-        for (int i = 0; i < src.size(); i++) {
-                auto e = src[i];
-                if (e != c) {
-                        buf += e;
-                } else if (e == c) {
-                        a.push_back(buf);
-                        buf.clear();
-                }
-        }
-        if (buf.size() > 0) {
-                a.push_back(buf);
-        }
-        return a;
-}
-
-float ObjModel::tofloat(const std::string& src) {
-        return (float)::atof(src.c_str());
-}
-
-void ObjModel::loadMaterialFromFile(const std::string& dir, const char* path) {
-        std::string resolved = (dir + '/' + path);
-        std::string line;
-        std::ifstream ifs(resolved.c_str());
-        if (!ifs.is_open()) {
-                return;
-        }
-        Vector4 bufv4;
-        bool flag = false, flag2 = false;
-        bufv4.w = 1.0f;
-        ObjMaterial objMat;
-        objMat.color.emission = (const Color4&)bufv4;
-        objMat.shininess = 0;
-        objMat.textureNo = 0;
-        int lineno = 0;
-        while (std::getline(ifs, line)) {
-                std::cout << line << std::endl;
-                line = trimLeft(line);
-                auto words = split(line, ' ');
-                if (words.empty() || words[0] == "#") {
-                        continue;
-                }
-                auto code = words[0];
-                if (code == "newmtl") {
-                        if (flag) {
-                                materials.push_back(objMat);
-                                objMat.textureNo = 0;
-                        }
-                        flag = true;
-                        objMat.name = words[1];
-                        flag2 = false;
-                }
-                if (code == "Ka") {
-                        bufv4.x = tofloat(words[1]);
-                        bufv4.y = tofloat(words[2]);
-                        bufv4.z = tofloat(words[3]);
-                        objMat.color.ambient = (const Color4&)bufv4;
-                }
-                if (code == "Kd") {
-                        bufv4.x = tofloat(words[1]);
-                        bufv4.y = tofloat(words[2]);
-                        bufv4.z = tofloat(words[3]);
-                        objMat.color.diffuse = (const Color4&)bufv4;
-                }
-                if (code == "Ks") {
-                        bufv4.x = tofloat(words[1]);
-                        bufv4.y = tofloat(words[2]);
-                        bufv4.z = tofloat(words[3]);
-                        objMat.color.specular = (const Color4&)bufv4;
-                }
-                if (code == "Ns") {
-                        objMat.shininess = tofloat(words[1]);
-                }
-                if (code == "map_Kd") {
-                        for (int i = 0; i < materials.size(); i++) {
-                                if (words[1] == materials[i].texture) {
-                                        flag2 = true;
-                                        objMat.textureNo =
-                                            materials[i].textureNo;
-                                        break;
-                                }
-                        }
-                        if (flag2) {
+        char const* pch = str.c_str();
+        char const* start = pch;
+        for (; *pch; ++pch) {
+                if (delimiters.find(*pch) != delimiters.end()) {
+                        if (start != pch) {
+                                std::string str(start, pch);
+                                result.push_back(str);
                         } else {
-                                auto texpath = (dir + '/' + words[1]);
-                                objMat.texture = texpath;
-                                auto tex = std::make_shared<PngTexture>();
-                                tex->load(texpath);
-                                textures.push_back(tex);
-                                texId.push_back(tex->getID());
-                                objMat.textureNo = texId.size();
+                                result.push_back("");
                         }
+                        start = pch + 1;
                 }
         }
-        if (flag) {
-                materials.push_back(objMat);
-        }
-}
+        result.push_back(start);
 
-std::string ObjModel::pathToDir(const std::string& path) {
-        std::string::size_type pos = path.rfind("/");
-        if (pos == std::string::npos) {
-                return ".";
-        }
-        return path.substr(0, pos);
+        return result;
 }
 }  // namespace mygame
