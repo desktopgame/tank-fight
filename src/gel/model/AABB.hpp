@@ -12,9 +12,24 @@ class AABB {
         explicit AABB(float minX, float minY, float minZ, float maxX,
                       float maxY, float maxZ);
         explicit AABB(std::vector<Vector3> vertexes);
+        /**
+         * return a all points.
+         * @return
+         */
         std::vector<Vector3> points() const;
+        /**
+         * draw a quad of AABB.
+         */
         void drawQuad() const;
+        /**
+         * draw a frame of AABB.
+         * @param lineWidth
+         */
         void drawFrame(int lineWidth = 10) const;
+        /**
+         * return a size of AABB.
+         * @return
+         */
         Vector3 getSize() const;
         float getSizeX() const;
         float getSizeY() const;
