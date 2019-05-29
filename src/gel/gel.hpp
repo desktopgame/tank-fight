@@ -25,4 +25,5 @@
 #include "model/Vector4.hpp"
 #include "scene/IScene.hpp"
 #include "scene/SceneManager.hpp"
+#include "ui/imgui/imgui.h"
 #endif
