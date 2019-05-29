@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(varAppName CXX)
+project(TankFight CXX)
 #
 #opengl
 #   glfw
@@ -10,25 +10,25 @@ project(varAppName CXX)
 #other
 #   png
 #   fbxsdk
-#obj-loader
 #
 
 if(APPLE)
-    set(FBXSDK_ROOT "/Applications/Autodesk/FBX SDK/2019.2")
+    set(FBXSDK_ROOT "/Applications/Autodesk/FBX SDK/2019.2" CACHE PATH "Path to FBXSDK")
 else()
-    if(NOT FBXSDK_ROOT)
-        message(FATAL_ERROR "should be set a `FBXSDK_ROOT`")
-    endif()
+    set(FBXSDK_ROOT "YOUR_FBXSDK" CACHE PATH "Path to FBXSDK")
 endif()
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
-set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
+if(APPLE)
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
+else()
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -MMD -Wall -lstdc++ -std=c++17 -Wc++11-extensions")
+endif()
 set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -MMD -w -DNDEBUG")
-set(varExecutable "varAppName" CACHE STRING "executable file name")
-set(varInstallDir ${CMAKE_INSTALL_PREFIX}/varAppName CACHE PATH "Path to install")
-set(varIgnoreCompile "CMakeCXXCompilerId.cpp" "feature_tests.cpp")
-set(varSrcRootDir "app")
+set(TF_EXECUTABLE "TankFight" CACHE STRING "executable file name")
+set(TF_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/TankFight CACHE PATH "Path to install")
+set(TF_IGNORE_COMPILE "CMakeCXXCompilerId.cpp" "feature_tests.cpp")
 
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(OpenGL REQUIRED)
@@ -40,7 +40,7 @@ find_package(GLEW REQUIRED)
 find_package(GLUT REQUIRED)
 
 
-message(STATUS "varInstallDir=${varInstallDir}")
+message(STATUS "TF_INSTALL_DIR=${TF_INSTALL_DIR}")
 message(STATUS "OPENGL_INCLUDE_DIR=${OPENGL_INCLUDE_DIR}")
 message(STATUS "OPENGL_LIBRARIES=${OPENGL_LIBRARIES}")
 
@@ -72,17 +72,17 @@ message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 #     WORKING_DIRECTORY .
 # )
 
-install(DIRECTORY DESTINATION ${varInstallDir})
+install(DIRECTORY DESTINATION ${TF_INSTALL_DIR})
 install(
     DIRECTORY ./../bin
-    DESTINATION ${varInstallDir}
+    DESTINATION ${TF_INSTALL_DIR}
 )
-add_custom_target(_uninstall rm -r ${varInstallDir})
+add_custom_target(_uninstall rm -r ${TF_INSTALL_DIR})
 add_custom_target(_clean rm -rf ./CMakeCache.txt && rm -r CMakeFiles)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "**/*.cpp")
 foreach(e IN LISTS SOURCES)
-    foreach(pat IN LISTS varIgnoreCompile)
+    foreach(pat IN LISTS TF_IGNORE_COMPILE)
         if(${e} MATCHES ${pat})
             message("remove compile target: ${e}")
             list(REMOVE_ITEM SOURCES ${e})
@@ -108,12 +108,12 @@ add_definitions (
     ${FBX_BUILD_DEFINES}
     ${FBX_DEPENDENTS_DEFINES}
 )
-add_executable(${varExecutable} ${SOURCES})
+add_executable(${TF_EXECUTABLE} ${SOURCES})
 
 if(APPLE)
     # for libpng
     target_include_directories(
-        ${varExecutable}
+        ${TF_EXECUTABLE}
         PRIVATE
         ${ALUT_INCLUDE_DIR}
         ${OPENGL_INCLUDE_DIR}
@@ -129,7 +129,7 @@ if(APPLE)
     )
 else()
     target_include_directories(
-        ${varExecutable}
+        ${TF_EXECUTABLE}
         PRIVATE
         ${ALUT_INCLUDE_DIR}
         ${OPENGL_INCLUDE_DIR}
@@ -144,7 +144,7 @@ else()
 endif()
 
 target_link_libraries(
-    ${varExecutable}
+    ${TF_EXECUTABLE}
     PRIVATE
     ${ALUT_LIBRARY}
     ${OPENGL_LIBRARIES}
