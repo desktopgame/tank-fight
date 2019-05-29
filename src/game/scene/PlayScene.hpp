@@ -27,6 +27,7 @@ class PlayScene : public gel::IScene {
         void drawIMGUI();
         gel::Random random;
         gel::Timer timer;
+        gel::Vector3 blockAABBSize;
         std::vector<std::shared_ptr<Enemy> > enemies;
         std::vector<std::shared_ptr<Spawner> > spawners;
         std::shared_ptr<gel::TextureManager> mTextureManager;

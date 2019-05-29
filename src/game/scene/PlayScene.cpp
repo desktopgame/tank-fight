@@ -15,11 +15,13 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       enemies(),
       timer(10),
       random() {
-        auto path = "./assets/model/Block.fbx";
-        auto msize = mModelManager->getModel(path)->getAABB().getSize();
-        auto pos =
-            gel::Vector3(msize.x * 24 * BLOCK_SCALE, msize.y * BLOCK_SCALE,
-                         msize.z * 24 * BLOCK_SCALE);
+        this->blockAABBSize =
+            mModelManager->getModel("./assets/model/Block.fbx")
+                ->getAABB()
+                .getSize();
+        auto pos = gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE,
+                                blockAABBSize.y * BLOCK_SCALE,
+                                blockAABBSize.z * 24 * BLOCK_SCALE);
         camera.transform.position = pos;
         initSpawners(BLOCK_SCALE);
         spawn(5);
@@ -31,6 +33,14 @@ void PlayScene::update() {
         for (int i = 0; i < enemies.size(); i++) {
                 enemies[i]->update();
         }
+        auto end = std::remove_if(enemies.begin(), enemies.end(), [&](auto& e) {
+                auto pos = e->getPosition();
+                return pos.x < (-2 * blockAABBSize.x * BLOCK_SCALE) ||
+                       pos.x > (46 * blockAABBSize.x * BLOCK_SCALE) ||
+                       pos.z < (-2 * blockAABBSize.z * BLOCK_SCALE) ||
+                       pos.z > (46 * blockAABBSize.z * BLOCK_SCALE);
+        });
+        enemies.erase(end, enemies.end());
         camera.debugControl();
 }
 

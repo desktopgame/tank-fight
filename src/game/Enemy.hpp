@@ -9,11 +9,13 @@ class Enemy {
                        const gel::Vector3& direction);
         void update();
         void draw();
+        gel::Vector3 getPosition() const;
 
        private:
         std::shared_ptr<gel::IModel> model;
         gel::Transform transform;
         gel::Vector3 direction;
+        gel::AABB aabb;
         float speed;
 };
 #endif

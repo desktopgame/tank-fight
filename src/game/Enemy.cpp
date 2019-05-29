@@ -4,12 +4,13 @@
 Enemy::Enemy(const std::shared_ptr<gel::IModel>& model,
              const gel::Vector3& position, const gel::Vector3& rotation,
              const gel::Vector3& direction)
-    : model(model), transform(), direction(direction), speed(1) {
+    : model(model), transform(), direction(direction), speed(1), aabb() {
         transform.position = position;
         transform.rotation = rotation;
         transform.scale =
             gel::Vector3(PlayScene::TANK_SCALE, PlayScene::TANK_SCALE,
                          PlayScene::TANK_SCALE);
+        this->aabb = model->getAABB();
 }
 
 void Enemy::update() {
@@ -27,5 +28,12 @@ void Enemy::draw() {
         ::glScalef(PlayScene::TANK_SCALE, PlayScene::TANK_SCALE,
                    PlayScene::TANK_SCALE);
         model->draw();
+#if DEBUG
+        aabb.drawFrame();
+#endif
         ::glPopMatrix();
+}
+
+gel::Vector3 Enemy::getPosition() const  {
+    return transform.position;
 }
