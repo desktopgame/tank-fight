@@ -124,22 +124,4 @@ void PlayScene::spawn(int n) {
         }
 }
 
-void PlayScene::drawIMGUI() {
-        ImGui_ImplOpenGL2_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
-                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
-
-        ImGui::Begin("config 1");
-
-        ImGui::End();
-
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
-        ImGui::Render();
-        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-}
+void PlayScene::drawIMGUI() {}

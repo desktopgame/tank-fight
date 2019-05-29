@@ -42,23 +42,36 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         init();
         glfwSetTime(0.0);
         // init Imgui
+#if DEBUG
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
         (void)io;
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL2_Init();
+#endif
         // start mainloop
         while (!glfwWindowShouldClose(window)) {
+#if DEBUG
+                ImGui_ImplOpenGL2_NewFrame();
+                ImGui_ImplGlfw_NewFrame();
+                ImGui::NewFrame();
+#endif
                 this->oldTime = glfwGetTime();
                 update();
                 draw();
                 double nowTime = glfwGetTime();
                 this->deltaTime = nowTime - oldTime;
                 this->oldTime = nowTime;
+
+#if DEBUG
+                ImGui::EndFrame();
+#endif
         }
+#if DEBUG
         ImGui_ImplOpenGL2_Shutdown();
         ImGui_ImplGlfw_Shutdown();
+#endif
         alutExit();
         glfwTerminate();
         return 0;
