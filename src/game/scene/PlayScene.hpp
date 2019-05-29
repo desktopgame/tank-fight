@@ -24,6 +24,7 @@ class PlayScene : public gel::IScene {
         void initSpawners(float blockScale);
         void spawn();
         void spawn(int n);
+        void drawIMGUI();
         gel::Random random;
         gel::Timer timer;
         std::vector<std::shared_ptr<Enemy> > enemies;
