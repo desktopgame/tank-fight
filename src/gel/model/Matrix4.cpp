@@ -57,26 +57,13 @@ Matrix4& Matrix4::setPerspective(float fov, float aspect, float near,
 
 Matrix4& Matrix4::setLookAt(const Vector3& eye, const Vector3& at,
                             const Vector3& up) {
-        /*
-                auto e = (eye - at) / (eye - at).length();
-                auto v = up.cross(e) / (up.cross(e)).length();
-                auto u = e.cross(v);
-                reset(
-                        v.x, u.x, e.x, 0,
-                        v.y, u.y, e.y, 0,
-                        v.z, u.z, e.z, 0,
-                        (-eye.dot(v)), (-eye.dot(u)), (-eye.dot(e)), 1
-                );
-        //*/
-        //*
-        Vector3 e(eye - at);  // e:zaxis
+        Vector3 e(eye - at);
         e.normalize();
-        Vector3 v(up.cross(e));  // v:xaxis
+        Vector3 v(up.cross(e));
         v.normalize();
-        Vector3 u(e.cross(v));  // u:yaxis
+        Vector3 u(e.cross(v));
         reset(v.x, u.x, e.x, 0, v.y, u.y, e.y, 0, v.z, u.z, e.z, 0,
               (-eye.dot(v)), (-eye.dot(u)), (-eye.dot(e)), 1);
-        //*/
         return *this;
 }
 
@@ -103,22 +90,18 @@ Vector3 Matrix4::transformNormal(const Vector3& v) const {
 void Matrix4::reset(float a1, float a2, float a3, float a4, float b1, float b2,
                     float b3, float b4, float c1, float c2, float c3, float c4,
                     float d1, float d2, float d3, float d4) {
-        // 0行目
         float line0[4] = {a1, a2, a3, a4};
         for (int i = 0; i < 4; i++) {
                 m[0][i] = line0[i];
         }
-        // 1行目
         float line1[4] = {b1, b2, b3, b4};
         for (int i = 0; i < 4; i++) {
                 m[1][i] = line1[i];
         }
-        // 2行目
         float line2[4] = {c1, c2, c3, c4};
         for (int i = 0; i < 4; i++) {
                 m[2][i] = line2[i];
         }
-        // 3行目
         float line3[4] = {d1, d2, d3, d4};
         for (int i = 0; i < 4; i++) {
                 m[3][i] = line3[i];
@@ -133,13 +116,11 @@ float* Matrix4::toPtr(float buf[16]) const {
         }
         return buf;
 }
-//代入演算
 Matrix4& Matrix4::operator*=(const Matrix4& m2) {
         auto ret = Matrix4::Multiply(*this, m2);
         this->m = ret;
         return *this;
 }
-//二項演算
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2) {
         return Matrix4(Matrix4::Multiply(m1, m2));
 }
