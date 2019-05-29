@@ -24,8 +24,20 @@ class Game {
          */
         int mainLoop(int argc, char* argv[], const char* title, int width,
                      int height);
+        /**
+         * return a game window.
+         * @return
+         */
         GLFWwindow* getWindow() const;
+        /**
+         * return a delta time.
+         * @return
+         */
         float getDeltaTime() const;
+        /**
+         * return a unique instance.
+         * @return
+         */
         static Game* getInstance();
 
        protected:
