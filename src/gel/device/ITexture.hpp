@@ -10,6 +10,7 @@ class ITexture {
         virtual void load(const std::string& path) = 0;
         virtual void unload(const std::string& path) = 0;
         virtual GLuint getID() const = 0;
+        virtual unsigned char* getData() const = 0;
         virtual int getWidth() const = 0;
         virtual int getHeight() const = 0;
 };

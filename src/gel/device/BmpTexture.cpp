@@ -17,6 +17,8 @@ void BmpTexture::unload(const std::string& path) { delete[] data; }
 
 GLuint BmpTexture::getID() const { return this->tid; }
 
+unsigned char* BmpTexture::getData() const { return data; }
+
 int BmpTexture::getWidth() const { return this->width; }
 
 int BmpTexture::getHeight() const { return this->height; }

@@ -71,6 +71,8 @@ void PngTexture::unload(const std::string& path) { ::free(this->data); }
 
 GLuint PngTexture::getID() const { return textureId; }
 
+unsigned char* PngTexture::getData() const { return data; }
+
 int PngTexture::getWidth() const { return width; }
 
 int PngTexture::getHeight() const { return height; }
