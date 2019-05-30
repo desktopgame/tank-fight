@@ -4,6 +4,7 @@
 
 float PlayScene::BLOCK_SCALE = 0.1f;
 float PlayScene::TANK_SCALE = 0.001f;
+float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
 float PlayScene::MOVE_SPEED = 0.009f;
 float PlayScene::ROTATE_SPEED = 2.0f;
 
@@ -40,6 +41,9 @@ void PlayScene::update() {
         }
         for (int i = 0; i < bullets.size(); i++) {
                 bullets[i]->update();
+        }
+        for(int i=0; i<bullets.size(); i++) {
+                auto a = bullets[i];
         }
         remove_if(enemies);
         remove_if(bullets);
