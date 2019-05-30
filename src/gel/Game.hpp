@@ -57,6 +57,7 @@ class Game {
                               int mods);
         static void bridgeChar(GLFWwindow* window, unsigned int codePoint);
         static void bridgeError(int error, const char* description);
+        static void bridgeResize(GLFWwindow* window, int width, int height);
 
         virtual void onMouseButton(GLFWwindow* window, int button, int action,
                                    int mods);
@@ -68,6 +69,7 @@ class Game {
                            int mods);
         virtual void onChar(GLFWwindow* window, unsigned int codePoint);
         virtual void onError(int error, const char* description);
+        virtual void onResize(GLFWwindow* window, int width, int height);
         virtual void init();
         virtual void update();
         virtual void draw();

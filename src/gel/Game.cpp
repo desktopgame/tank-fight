@@ -128,6 +128,10 @@ void Game::bridgeError(int error, const char* description) {
         Game::instance->onError(error, description);
 }
 
+void Game::bridgeResize(GLFWwindow* window, int width, int height) {
+        Game::instance->onResize(window, width, height);
+}
+
 void Game::onMouseButton(GLFWwindow* window, int button, int action, int mods) {
 }
 
@@ -142,4 +146,6 @@ void Game::onKey(GLFWwindow* window, int key, int scan, int action, int mods) {}
 void Game::onChar(GLFWwindow* window, unsigned int codePoint) {}
 
 void Game::onError(int error, const char* description) {}
+
+void Game::onResize(GLFWwindow* window, int width, int height) {}
 }  // namespace  gel
