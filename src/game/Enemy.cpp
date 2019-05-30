@@ -4,7 +4,7 @@
 Enemy::Enemy(const std::shared_ptr<gel::IModel>& model,
              const gel::Vector3& position, const gel::Vector3& rotation,
              const gel::Vector3& direction)
-    : model(model), transform(), direction(direction), speed(1), aabb() {
+    : Actor(model, position, rotation, direction), speed(1) {
         transform.position = position;
         transform.rotation = rotation;
         transform.scale =
@@ -33,5 +33,3 @@ void Enemy::draw() {
 #endif
         ::glPopMatrix();
 }
-
-gel::Vector3 Enemy::getPosition() const { return transform.position; }

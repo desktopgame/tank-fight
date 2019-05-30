@@ -3,7 +3,7 @@
 Bullet::Bullet(const std::shared_ptr<gel::IModel>& model,
                const gel::Vector3& position, const gel::Vector3& rotation,
                const gel::Vector3& direction)
-    : speed(1), model(model), transform(), direction(direction), aabb() {
+    : Actor(model, position, rotation, direction), speed(1) {
         transform.position = position;
         transform.rotation = rotation;
         transform.scale = gel::Vector3(PlayScene::TANK_SCALE * 0.1f,
@@ -31,5 +31,3 @@ void Bullet::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
 }
-
-gel::Vector3 Bullet::getPosition() const { return transform.position; }

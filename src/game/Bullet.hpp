@@ -2,20 +2,16 @@
 #define GAME_BULLET_HPP
 #include <memory>
 #include "../gel/gel.hpp"
-class Bullet {
+#include "Actor.hpp"
+class Bullet : public Actor {
        public:
         Bullet(const std::shared_ptr<gel::IModel>& model,
                const gel::Vector3& position, const gel::Vector3& rotation,
                const gel::Vector3& direction);
-        void update();
-        void draw();
-        gel::Vector3 getPosition() const;
+        void update() override;
+        void draw() override;
 
        private:
         float speed;
-        std::shared_ptr<gel::IModel> model;
-        gel::Transform transform;
-        gel::Vector3 direction;
-        gel::AABB aabb;
 };
 #endif
