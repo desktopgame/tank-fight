@@ -15,7 +15,10 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       camera(),
       spawners(),
       enemies(),
-      timer(10),
+      spawnTimer(10),
+      fireTimer(1),
+      fired(false),
+      bullets(),
       random() {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
@@ -35,15 +38,13 @@ void PlayScene::update() {
         for (int i = 0; i < enemies.size(); i++) {
                 enemies[i]->update();
         }
-        auto end = std::remove_if(enemies.begin(), enemies.end(), [&](auto& e) {
-                auto pos = e->getPosition();
-                return pos.x < (-2 * blockAABBSize.x * BLOCK_SCALE) ||
-                       pos.x > (46 * blockAABBSize.x * BLOCK_SCALE) ||
-                       pos.z < (-2 * blockAABBSize.z * BLOCK_SCALE) ||
-                       pos.z > (46 * blockAABBSize.z * BLOCK_SCALE);
-        });
-        enemies.erase(end, enemies.end());
+        for (int i = 0; i < bullets.size(); i++) {
+                bullets[i]->update();
+        }
+        remove_if(enemies);
+        remove_if(bullets);
         movePlayer();
+        fireBullet();
 }
 
 void PlayScene::draw() {
@@ -61,9 +62,12 @@ void PlayScene::draw() {
         for (int i = 0; i < enemies.size(); i++) {
                 enemies[i]->draw();
         }
-        timer.update();
-        if (timer.isElapsed()) {
-                timer.reset();
+        for (int i = 0; i < bullets.size(); i++) {
+                bullets[i]->draw();
+        }
+        spawnTimer.update();
+        if (spawnTimer.isElapsed()) {
+                spawnTimer.reset();
                 spawn(random.generate(1, 4));
         }
         camera.endDraw();
@@ -166,6 +170,31 @@ void PlayScene::movePlayer() {
                                              camera.transform.right() *
                                              MOVE_SPEED;
         }
+}
+
+void PlayScene::fireBullet() {
+        auto mWindow = gel::Game::getInstance()->getWindow();
+        if (fired) {
+                fireTimer.update();
+                if (fireTimer.isElapsed()) {
+                        this->fired = false;
+                        fireTimer.reset();
+                }
+                return;
+        }
+        if (glfwGetKey(mWindow, 'Z') == GLFW_PRESS) {
+                this->fired = true;
+                auto bullet = newBullet();
+                bullets.push_back(bullet);
+        }
+}
+
+std::shared_ptr<Bullet> PlayScene::newBullet() {
+        auto model = mModelManager->getModel("./assets/model/Bullet.fbx");
+        auto bullet = std::make_shared<Bullet>(
+            model, camera.transform.position, camera.transform.rotation,
+            gel::Vector3(1, 0, 1) * camera.transform.forward());
+        return bullet;
 }
 
 void PlayScene::drawIMGUI() {}
