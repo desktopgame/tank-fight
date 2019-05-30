@@ -14,6 +14,7 @@ class TitleScene : public gel::IScene {
         void hide() override;
 
        private:
+        float tankRotate;
         bool finished;
         std::shared_ptr<gel::TextureManager> textureManager;
         std::shared_ptr<gel::ModelManager> modelManager;
