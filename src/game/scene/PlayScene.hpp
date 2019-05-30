@@ -1,5 +1,5 @@
-#ifndef GAME_SCENE_TITLESCENE_HPP
-#define GAME_SCENE_TITLESCENE_HPP
+#ifndef GAME_SCENE_PLAYSCENE_HPP
+#define GAME_SCENE_PLAYSCENE_HPP
 #include <memory>
 #include <vector>
 #include "../../gel/gel.hpp"

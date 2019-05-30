@@ -2,21 +2,20 @@
 #include <glut.h>
 #include "scene/ModelDebugScene.hpp"
 #include "scene/PlayScene.hpp"
+#include "scene/TitleScene.hpp"
 MyGame::MyGame()
     : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) {}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
-        sceneManager.put("title", std::make_shared<PlayScene>(
+        sceneManager.put("title", std::make_shared<TitleScene>(
                                       gameDevice->getTextureManager(),
                                       gameDevice->getModelManager()));
-        sceneManager.put("modelDebug", std::make_shared<ModelDebugScene>(
-                                           gameDevice->getTextureManager(),
-                                           gameDevice->getModelManager()));
+        sceneManager.put(
+            "play", std::make_shared<PlayScene>(gameDevice->getTextureManager(),
+                                                gameDevice->getModelManager()));
         sceneManager.bind("title");
-#if DEBUG
-        // sceneManager.bind("modelDebug");
-#endif
+
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
