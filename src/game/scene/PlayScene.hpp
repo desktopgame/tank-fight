@@ -5,6 +5,7 @@
 #include "../../gel/gel.hpp"
 #include "../Bullet.hpp"
 #include "../Enemy.hpp"
+#include "../HitCache.hpp"
 #include "../Spawner.hpp"
 class TextureManager;
 class ModelManager;
@@ -44,6 +45,10 @@ class PlayScene : public gel::IScene {
         void fireBullet();
         std::shared_ptr<Bullet> newBullet();
         void drawIMGUI();
+
+        static std::vector<HitCache> actorToCache(
+            const std::vector<std::shared_ptr<Actor> > actors, float scale);
+
         bool fired;
         gel::Random random;
         gel::Timer spawnTimer;

@@ -42,8 +42,29 @@ void PlayScene::update() {
         for (int i = 0; i < bullets.size(); i++) {
                 bullets[i]->update();
         }
-        for(int i=0; i<bullets.size(); i++) {
-                auto a = bullets[i];
+        auto ec = actorToCache(std::vector<std::shared_ptr<Actor> >(
+                                   enemies.begin(), enemies.end()),
+                               TANK_SCALE);
+        auto bc = actorToCache(std::vector<std::shared_ptr<Actor> >(
+                                   bullets.begin(), bullets.end()),
+                               BULLET_SCALE);
+        for (int i = 0; i < ec.size(); i++) {
+                auto eCache = ec[i];
+                if (eCache.actor->isDestroyed()) {
+                        continue;
+                }
+                for (int j = 0; j < bc.size(); j++) {
+                        auto bCache = bc[j];
+                        if (bCache.actor->isDestroyed()) {
+                                continue;
+                        }
+                        if (!gel::AABB::isIntersects(eCache.aabb,
+                                                     bCache.aabb)) {
+                                continue;
+                        }
+                        eCache.actor->destroy();
+                        bCache.actor->destroy();
+                }
         }
         remove_if(enemies);
         remove_if(bullets);
@@ -202,3 +223,20 @@ std::shared_ptr<Bullet> PlayScene::newBullet() {
 }
 
 void PlayScene::drawIMGUI() {}
+
+std::vector<HitCache> PlayScene::actorToCache(
+    const std::vector<std::shared_ptr<Actor> > actors, float scale) {
+        std::vector<HitCache> v;
+        for (int i = 0; i < actors.size(); i++) {
+                auto act = actors[i];
+                auto actAABB = act->getAABB();
+                auto actMoveMat = gel::Matrix4();
+                actMoveMat.setTranslate(act->getPosition());
+                auto actScaleMat = gel::Matrix4();
+                actScaleMat.setScale(gel::Vector3::one() * scale);
+                auto actMat = actMoveMat * actScaleMat;
+                actAABB = actAABB.transform(actMat);
+                v.push_back(HitCache(act, actAABB));
+        }
+        return v;
+}

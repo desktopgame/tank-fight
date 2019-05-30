@@ -1,6 +1,7 @@
 #ifndef GEL_MODEL_AABB_HPP
 #define GEL_MODEL_AABB_HPP
 #include <vector>
+#include "Matrix4.hpp"
 #include "Vector3.hpp"
 namespace gel {
 /**
@@ -35,6 +36,7 @@ class AABB {
         float getSizeY() const;
         float getSizeZ() const;
         AABB scaled(const Vector3& scale) const;
+        AABB transform(const Matrix4& m) const;
         static bool isIntersects(const AABB& a, const AABB& b);
         Vector3 center;
         Vector3 radius;

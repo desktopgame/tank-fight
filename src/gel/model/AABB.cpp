@@ -171,6 +171,19 @@ AABB AABB::scaled(const Vector3& scale) const {
         return ret;
 }
 
+AABB AABB::transform(const Matrix4& m) const {
+        std::vector<Vector3> v;
+        v.push_back(Vector3(minX, minY, minZ) * m);
+        v.push_back(Vector3(maxX, maxY, minZ) * m);
+        v.push_back(Vector3(minX, minY, maxZ) * m);
+        v.push_back(Vector3(maxX, maxY, maxZ) * m);
+        v.push_back(Vector3(minX, maxY, minZ) * m);
+        v.push_back(Vector3(maxX, minY, minZ) * m);
+        v.push_back(Vector3(minX, maxY, maxZ) * m);
+        v.push_back(Vector3(maxX, minY, maxZ) * m);
+        return AABB(v);
+}
+
 bool AABB::isIntersects(const AABB& a, const AABB& b) {
         return (a.minX <= b.maxX && a.maxX >= b.minX) &&
                (a.minY <= b.maxY && a.maxY >= b.minY) &&
