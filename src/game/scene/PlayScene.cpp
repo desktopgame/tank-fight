@@ -4,6 +4,8 @@
 
 float PlayScene::BLOCK_SCALE = 0.1f;
 float PlayScene::TANK_SCALE = 0.001f;
+float PlayScene::MOVE_SPEED = 0.009f;
+float PlayScene::ROTATE_SPEED = 2.0f;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                      const std::shared_ptr<gel::ModelManager>& modelManager)
@@ -41,7 +43,7 @@ void PlayScene::update() {
                        pos.z > (46 * blockAABBSize.z * BLOCK_SCALE);
         });
         enemies.erase(end, enemies.end());
-        camera.debugControl();
+        movePlayer();
 }
 
 void PlayScene::draw() {
@@ -131,6 +133,38 @@ void PlayScene::spawn(int n) {
         }
         while (n--) {
                 spawn();
+        }
+}
+
+void PlayScene::movePlayer() {
+        auto mWindow = gel::Game::getInstance()->getWindow();
+        if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                camera.transform.rotation.x += ROTATE_SPEED;
+        } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                camera.transform.rotation.x -= ROTATE_SPEED;
+        }
+        if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
+                camera.transform.rotation.y += ROTATE_SPEED;
+        } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                camera.transform.rotation.y -= ROTATE_SPEED;
+        }
+        if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
+                camera.transform.position += gel::Vector3(1, 0, 1) *
+                                             camera.transform.forward() *
+                                             MOVE_SPEED;
+        } else if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
+                camera.transform.position += gel::Vector3(1, 0, 1) *
+                                             camera.transform.backward() *
+                                             MOVE_SPEED;
+        }
+        if (glfwGetKey(mWindow, 'A') == GLFW_PRESS) {
+                camera.transform.position += gel::Vector3(1, 0, 1) *
+                                             camera.transform.left() *
+                                             MOVE_SPEED;
+        } else if (glfwGetKey(mWindow, 'D') == GLFW_PRESS) {
+                camera.transform.position += gel::Vector3(1, 0, 1) *
+                                             camera.transform.right() *
+                                             MOVE_SPEED;
         }
 }
 

@@ -11,6 +11,8 @@ class PlayScene : public gel::IScene {
        public:
         static float BLOCK_SCALE;
         static float TANK_SCALE;
+        static float MOVE_SPEED;
+        static float ROTATE_SPEED;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                   const std::shared_ptr<gel::ModelManager>& modelManager);
         void show() override;
@@ -24,6 +26,7 @@ class PlayScene : public gel::IScene {
         void initSpawners(float blockScale);
         void spawn();
         void spawn(int n);
+        void movePlayer();
         void drawIMGUI();
         gel::Random random;
         gel::Timer timer;
