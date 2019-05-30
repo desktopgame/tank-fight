@@ -15,6 +15,8 @@ void Actor::draw() {}
 
 gel::Vector3 Actor::getPosition() const { return transform.position; }
 
+gel::Vector3 Actor::getRotation() const { return transform.rotation; }
+
 gel::AABB Actor::getAABB() const { return aabb; }
 
 void Actor::destroy() { this->destroyed = true; }

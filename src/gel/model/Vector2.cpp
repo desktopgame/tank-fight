@@ -19,6 +19,12 @@ float Vector2::dot(const Vector2& v) const { return x * v.x + y * v.y; }
 
 Vector2 Vector2::one() { return Vector2(1, 1); }
 
+float Vector2::distance(const Vector2& a, const Vector2& b) {
+        float dx = a.x - b.x;
+        float dy = a.y - b.y;
+        return (float)::sqrt(dx * dx + dy * dy);
+}
+
 Vector2 Vector2::operator-() const {
         Vector2 v;
         v.x = -x;

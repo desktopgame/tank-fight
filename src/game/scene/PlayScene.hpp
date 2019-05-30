@@ -30,7 +30,8 @@ class PlayScene : public gel::IScene {
         inline void remove_if(std::vector<T>& v) {
                 auto end = std::remove_if(v.begin(), v.end(), [&](auto& e) {
                         auto pos = e->getPosition();
-                        return (pos.x < (-2 * blockAABBSize.x * BLOCK_SCALE) ||
+                        return e->isDestroyed() ||
+                               (pos.x < (-2 * blockAABBSize.x * BLOCK_SCALE) ||
                                 pos.x > (46 * blockAABBSize.x * BLOCK_SCALE) ||
                                 pos.z < (-2 * blockAABBSize.z * BLOCK_SCALE) ||
                                 pos.z > (46 * blockAABBSize.z * BLOCK_SCALE));

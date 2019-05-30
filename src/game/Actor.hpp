@@ -13,6 +13,7 @@ class Actor {
         virtual void draw();
 
         gel::Vector3 getPosition() const;
+        gel::Vector3 getRotation() const;
         gel::AABB getAABB() const;
         void destroy();
         bool isDestroyed() const;

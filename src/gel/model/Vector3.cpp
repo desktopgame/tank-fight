@@ -27,6 +27,13 @@ Vector3 Vector3::cross(const Vector3& v) const {
 
 Vector3 Vector3::one() { return Vector3(1, 1, 1); }
 
+float Vector3::distance(const Vector3& a, const Vector3& b) {
+        float dx = a.x - b.x;
+        float dy = a.y - b.y;
+        float dz = a.z - b.z;
+        return (float)::sqrt(dx * dx + dy * dy + dz * dz);
+}
+
 Vector3 Vector3::operator-() const {
         Vector3 v;
         v.x = -x;

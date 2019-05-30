@@ -29,6 +29,13 @@ struct Vector2 {
          */
         static Vector2 one();
 
+        /**
+         * @param a
+         * @param b
+         * @return
+         */
+        static float distance(const Vector2& a, const Vector2& b);
+
         Vector2 operator-() const;
         Vector2& operator*=(float scale);
         Vector2& operator/=(float scale);

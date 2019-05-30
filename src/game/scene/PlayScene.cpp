@@ -26,7 +26,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                 ->getAABB()
                 .getSize();
         auto pos = gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE,
-                                blockAABBSize.y * BLOCK_SCALE,
+                                blockAABBSize.y * BLOCK_SCALE * 2,
                                 blockAABBSize.z * 24 * BLOCK_SCALE);
         camera.transform.position = pos;
         initSpawners(BLOCK_SCALE);
@@ -53,15 +53,22 @@ void PlayScene::update() {
                 if (eCache.actor->isDestroyed()) {
                         continue;
                 }
+                auto ePos = eCache.actor->getPosition();
                 for (int j = 0; j < bc.size(); j++) {
                         auto bCache = bc[j];
                         if (bCache.actor->isDestroyed()) {
                                 continue;
                         }
+                        auto bPos = bCache.actor->getPosition();
+                        if (!(gel::Vector3::distance(ePos, bPos) < 1.0f)) {
+                                continue;
+                        }
+                        /*
                         if (!gel::AABB::isIntersects(eCache.aabb,
                                                      bCache.aabb)) {
                                 continue;
                         }
+                        */
                         eCache.actor->destroy();
                         bCache.actor->destroy();
                 }
@@ -234,7 +241,14 @@ std::vector<HitCache> PlayScene::actorToCache(
                 actMoveMat.setTranslate(act->getPosition());
                 auto actScaleMat = gel::Matrix4();
                 actScaleMat.setScale(gel::Vector3::one() * scale);
-                auto actMat = actMoveMat * actScaleMat;
+                auto actRotMat = gel::Matrix4();
+                actRotMat.setRotateX(act->getRotation().x);
+                actRotMat.setRotateY(act->getRotation().y);
+                actRotMat.setRotateZ(act->getRotation().z);
+                auto actRMoveMat = gel::Matrix4();
+                actRMoveMat.setTranslate(-act->getPosition());
+                auto actMat =
+                    actMoveMat * actRotMat * actScaleMat * actRMoveMat;
                 actAABB = actAABB.transform(actMat);
                 v.push_back(HitCache(act, actAABB));
         }

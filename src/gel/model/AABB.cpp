@@ -172,16 +172,14 @@ AABB AABB::scaled(const Vector3& scale) const {
 }
 
 AABB AABB::transform(const Matrix4& m) const {
-        std::vector<Vector3> v;
-        v.push_back(Vector3(minX, minY, minZ) * m);
-        v.push_back(Vector3(maxX, maxY, minZ) * m);
-        v.push_back(Vector3(minX, minY, maxZ) * m);
-        v.push_back(Vector3(maxX, maxY, maxZ) * m);
-        v.push_back(Vector3(minX, maxY, minZ) * m);
-        v.push_back(Vector3(maxX, minY, minZ) * m);
-        v.push_back(Vector3(minX, maxY, maxZ) * m);
-        v.push_back(Vector3(maxX, minY, maxZ) * m);
-        return AABB(v);
+        auto v = points();
+        auto iter = v.begin();
+        std::vector<Vector3> d;
+        while (iter != v.end()) {
+                d.push_back((*iter) * m);
+                ++iter;
+        }
+        return AABB(d);
 }
 
 bool AABB::isIntersects(const AABB& a, const AABB& b) {

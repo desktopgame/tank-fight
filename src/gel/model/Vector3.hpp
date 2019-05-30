@@ -33,6 +33,13 @@ struct Vector3 {
          * @return
          */
         static Vector3 one();
+
+        /**
+         * @param a
+         * @param b
+         * @return
+         */
+        static float distance(const Vector3& a, const Vector3& b);
         Vector3 operator-() const;
         Vector3& operator*=(float scale);
         Vector3& operator/=(float scale);
