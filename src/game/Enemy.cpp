@@ -34,6 +34,4 @@ void Enemy::draw() {
         ::glPopMatrix();
 }
 
-gel::Vector3 Enemy::getPosition() const  {
-    return transform.position;
-}
+gel::Vector3 Enemy::getPosition() const { return transform.position; }

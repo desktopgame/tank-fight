@@ -190,7 +190,7 @@ void PlayScene::fireBullet() {
 }
 
 std::shared_ptr<Bullet> PlayScene::newBullet() {
-        auto model = mModelManager->getModel("./assets/model/Bullet.fbx");
+        auto model = mModelManager->getModel("./assets/model/Ball.fbx");
         auto bullet = std::make_shared<Bullet>(
             model, camera.transform.position, camera.transform.rotation,
             gel::Vector3(1, 0, 1) * camera.transform.forward());
