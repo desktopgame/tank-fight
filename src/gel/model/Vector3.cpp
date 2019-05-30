@@ -25,6 +25,8 @@ Vector3 Vector3::cross(const Vector3& v) const {
                        (x * v.y - y * v.x));
 }
 
+Vector3 Vector3::one() { return Vector3(1, 1, 1); }
+
 Vector3 Vector3::operator-() const {
         Vector3 v;
         v.x = -x;

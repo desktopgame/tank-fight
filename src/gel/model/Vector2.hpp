@@ -22,6 +22,13 @@ struct Vector2 {
          * @return
          */
         float dot(const Vector2& v) const;
+
+        /**
+         * return (1, 1)
+         * @return
+         */
+        static Vector2 one();
+
         Vector2 operator-() const;
         Vector2& operator*=(float scale);
         Vector2& operator/=(float scale);

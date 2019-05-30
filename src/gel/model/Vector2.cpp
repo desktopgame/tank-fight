@@ -17,6 +17,8 @@ Vector2& Vector2::normalize() {
 
 float Vector2::dot(const Vector2& v) const { return x * v.x + y * v.y; }
 
+Vector2 Vector2::one() { return Vector2(1, 1); }
+
 Vector2 Vector2::operator-() const {
         Vector2 v;
         v.x = -x;

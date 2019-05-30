@@ -28,6 +28,11 @@ struct Vector3 {
          * @return
          */
         Vector3 cross(const Vector3& v) const;
+        /**
+         * return a (1, 1, 1)
+         * @return
+         */
+        static Vector3 one();
         Vector3 operator-() const;
         Vector3& operator*=(float scale);
         Vector3& operator/=(float scale);
