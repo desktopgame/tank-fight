@@ -147,5 +147,8 @@ void Game::onChar(GLFWwindow* window, unsigned int codePoint) {}
 
 void Game::onError(int error, const char* description) {}
 
-void Game::onResize(GLFWwindow* window, int width, int height) {}
+void Game::onResize(GLFWwindow* window, int width, int height) {
+        this->mWidth = width;
+        this->mHeight = height;
+}
 }  // namespace  gel
