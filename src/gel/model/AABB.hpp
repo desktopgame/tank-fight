@@ -34,6 +34,8 @@ class AABB {
         float getSizeX() const;
         float getSizeY() const;
         float getSizeZ() const;
+        AABB scaled(const Vector3& scale) const;
+        static bool isIntersects(const AABB& a, const AABB& b);
         Vector3 center;
         Vector3 radius;
         float minX;

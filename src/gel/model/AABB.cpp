@@ -160,6 +160,23 @@ float AABB::getSizeY() const { return maxY - minY; }
 
 float AABB::getSizeZ() const { return maxZ - minZ; }
 
+AABB AABB::scaled(const Vector3& scale) const {
+        AABB ret;
+        ret.minX = minX * scale.x;
+        ret.maxX = maxX * scale.x;
+        ret.minY = minY * scale.y;
+        ret.maxY = maxY * scale.y;
+        ret.minZ = minZ * scale.z;
+        ret.maxZ = maxZ * scale.z;
+        return ret;
+}
+
+bool AABB::isIntersects(const AABB& a, const AABB& b) {
+        return (a.minX <= b.maxX && a.maxX >= b.minX) &&
+               (a.minY <= b.maxY && a.maxY >= b.minY) &&
+               (a.minZ <= b.maxZ && a.maxZ >= b.minZ);
+}
+
 void AABB::init() {
         this->center =
             Vector3(minX + (maxX - minX) / 2, minY + (maxY - minY) / 2,
