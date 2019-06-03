@@ -47,7 +47,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         // start mainloop
         while (!glfwWindowShouldClose(window)) {
 #if DEBUG
-                gui::newFrame();
+                gui::internal::newFrame();
 #endif
                 this->oldTime = glfwGetTime();
                 update();
@@ -57,7 +57,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                 this->oldTime = nowTime;
 
 #if DEBUG
-                gui::endFrame();
+                gui::internal::endFrame();
 #endif
         }
 #if DEBUG

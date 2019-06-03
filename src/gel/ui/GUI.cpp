@@ -15,12 +15,12 @@ void gui::internal::destroy() {
         ImGui_ImplOpenGL2_Shutdown();
         ImGui_ImplGlfw_Shutdown();
 }
-void gui::newFrame() {
+void gui::internal::newFrame() {
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 }
-void gui::endFrame() { ImGui::EndFrame(); }
+void gui::internal::endFrame() { ImGui::EndFrame(); }
 void gui::render() {
         ImGui::Render();
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
