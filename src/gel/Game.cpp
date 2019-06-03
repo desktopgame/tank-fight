@@ -74,6 +74,10 @@ float Game::getDeltaTime() const { return this->deltaTime; }
 
 Game* Game::getInstance() { return instance; }
 
+int Game::getWindowWidth() const { return mWidth; }
+
+int Game::getWindowHeight() const { return mHeight; }
+
 // protected
 void Game::init() {
         glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -141,5 +145,11 @@ void Game::onError(int error, const char* description) {}
 void Game::onResize(GLFWwindow* window, int width, int height) {
         this->mWidth = width;
         this->mHeight = height;
+        glViewport(0, 0, width, height);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-1.0, 1.0, -1.0, 0.0, 1.0, -1.0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 }
 }  // namespace  gel

@@ -29,6 +29,19 @@ class Game {
          * @return
          */
         GLFWwindow* getWindow() const;
+
+        /**
+         * return a window width.
+         * @return
+         */
+        int getWindowWidth() const;
+
+        /**
+         * return a window height;
+         * @return
+         */
+        int getWindowHeight() const;
+
         /**
          * return a delta time.
          * @return
