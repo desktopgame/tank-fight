@@ -5,8 +5,7 @@
 #include <memory>
 #include <string>
 #include "gel.hpp"
-#include "ui/imgui/imgui_impl_glfw.h"
-#include "ui/imgui/imgui_impl_opengl2.h"
+#include "ui/GUI.hpp"
 namespace gel {
 Game* Game::instance = nullptr;
 
@@ -43,19 +42,12 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         glfwSetTime(0.0);
         // init Imgui
 #if DEBUG
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        (void)io;
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL2_Init();
+        gui::internal::init(window);
 #endif
         // start mainloop
         while (!glfwWindowShouldClose(window)) {
 #if DEBUG
-                ImGui_ImplOpenGL2_NewFrame();
-                ImGui_ImplGlfw_NewFrame();
-                ImGui::NewFrame();
+                gui::newFrame();
 #endif
                 this->oldTime = glfwGetTime();
                 update();
@@ -65,12 +57,11 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                 this->oldTime = nowTime;
 
 #if DEBUG
-                ImGui::EndFrame();
+                gui::endFrame();
 #endif
         }
 #if DEBUG
-        ImGui_ImplOpenGL2_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
+        gui::internal::destroy();
 #endif
         alutExit();
         glfwTerminate();
