@@ -5,6 +5,7 @@
 float PlayScene::BLOCK_SCALE = 0.1f;
 float PlayScene::TANK_SCALE = 0.001f;
 float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
+float PlayScene::BULLET_SPEED = 2;
 float PlayScene::MOVE_SPEED = 0.009f;
 float PlayScene::ROTATE_SPEED = 2.0f;
 
@@ -226,6 +227,7 @@ std::shared_ptr<Bullet> PlayScene::newBullet() {
         auto bullet = std::make_shared<Bullet>(
             model, camera.transform.position, camera.transform.rotation,
             gel::Vector3(1, 0, 1) * camera.transform.forward());
+        bullet->setSpeed(BULLET_SPEED);
         return bullet;
 }
 

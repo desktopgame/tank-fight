@@ -11,6 +11,9 @@ class Bullet : public Actor {
         void update() override;
         void draw() override;
 
+        void setSpeed(float speed);
+        float getSpeed() const;
+
        private:
         float speed;
 };

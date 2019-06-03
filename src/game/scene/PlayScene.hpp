@@ -14,6 +14,7 @@ class PlayScene : public gel::IScene {
         static float BLOCK_SCALE;
         static float TANK_SCALE;
         static float BULLET_SCALE;
+        static float BULLET_SPEED;
         static float MOVE_SPEED;
         static float ROTATE_SPEED;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,

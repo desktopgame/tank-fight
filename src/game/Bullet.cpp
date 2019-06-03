@@ -31,3 +31,11 @@ void Bullet::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
 }
+
+void Bullet::setSpeed(float speed) {
+        this->speed =speed;
+}
+
+float Bullet::getSpeed() const {
+        return speed;
+}
