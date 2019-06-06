@@ -14,7 +14,7 @@ void MyGame::init() {
         sceneManager.put(
             "play", std::make_shared<PlayScene>(gameDevice->getTextureManager(),
                                                 gameDevice->getModelManager()));
-        sceneManager.bind("play");
+        sceneManager.bind("title");
 
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glEnable(GL_BLEND);

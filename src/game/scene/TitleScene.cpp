@@ -1,5 +1,6 @@
 #include "TitleScene.hpp"
 #include <glut.h>
+#include "../../gel/device/Graphics.hpp"
 TitleScene::TitleScene(
     const std::shared_ptr<gel::TextureManager>& textureManager,
     const std::shared_ptr<gel::ModelManager>& modelManager)
@@ -13,6 +14,7 @@ void TitleScene::show() {}
 void TitleScene::update() {}
 
 void TitleScene::draw() {
+        // gel::viewPerspective();
         ::glPushMatrix();
         ::gluLookAt(0, 0, 0, 0, 0, -1, 0, 1, 0);
 
@@ -24,6 +26,8 @@ void TitleScene::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
         tankRotate += 0.02f;
+        auto tex = textureManager->getTexture("./assets/image/sample.png");
+        gel::drawTexture(gel::Vector2(640, 480), gel::Vector2(0, 0), tex);
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }
