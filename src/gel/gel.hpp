@@ -11,6 +11,7 @@
 #include "device/ModelManager.hpp"
 #include "device/TextureManager.hpp"
 #include "gsystem/Camera.hpp"
+#include "gsystem/Duration.hpp"
 #include "gsystem/Random.hpp"
 #include "gsystem/Timer.hpp"
 #include "gsystem/Transform.hpp"
