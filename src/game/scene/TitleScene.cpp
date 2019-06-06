@@ -10,9 +10,14 @@ TitleScene::TitleScene(
       tankRotate(0),
       alphaDuration(1) {}
 
-void TitleScene::show() {}
+void TitleScene::show() { this->finished = false; }
 
-void TitleScene::update() {}
+void TitleScene::update() {
+        if (glfwGetKey(gel::Game::getInstance()->getWindow(), GLFW_KEY_SPACE) ==
+            GLFW_PRESS) {
+                this->finished = true;
+        }
+}
 
 void TitleScene::draw() {
         // gel::viewPerspective();
@@ -44,6 +49,6 @@ void TitleScene::draw() {
 
 std::string TitleScene::getNextScene() const { return "play"; }
 
-bool TitleScene::isFinished() const { finished; }
+bool TitleScene::isFinished() const { return finished; }
 
 void TitleScene::hide() {}

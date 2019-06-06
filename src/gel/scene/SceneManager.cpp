@@ -15,9 +15,17 @@ void SceneManager::bind(const std::string& name) { this->mCurrent = name; }
 
 void SceneManager::update() {
         auto sceneOpt = getScene();
-        if (sceneOpt) {
-                auto v = *sceneOpt;
-                v->update();
+        if (!sceneOpt) {
+                return;
+        }
+        auto v = *sceneOpt;
+        v->update();
+        if (v->isFinished()) {
+                auto nname = v->getNextScene();
+                auto n = mSceneMap[nname];
+                v->hide();
+                n->show();
+                this->mCurrent = nname;
         }
 }
 
