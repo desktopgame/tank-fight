@@ -1,28 +1,71 @@
 #include "Graphics.hpp"
 #include <GLFW/glfw3.h>
+#include <glut.h>
 namespace gel {
-void drawTexture(Vector2 leftBottom, Vector2 leftTop, Vector2 rightTop,
-                 Vector2 rightBottom, unsigned int tid) {
+void drawTexture(const Vector2& screen, const Vector2& position,
+                 std::shared_ptr<ITexture> texture) {
+        ::glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
+        ::glDisable(GL_CULL_FACE);
+        ::glDisable(GL_LIGHTING);
+        ::glDisable(GL_DEPTH_TEST);
         ::glEnable(GL_TEXTURE_2D);
+
+        ::glMatrixMode(GL_PROJECTION);
+        ::glPushMatrix();
+        ::glLoadIdentity();
+        ::gluOrtho2D(0, screen.x, screen.y, 0);
+
+        ::glMatrixMode(GL_MODELVIEW);
+        ::glPushMatrix();
+        // glLoadMatrixf((GLfloat*)&desc.matrix);
+        ::glLoadIdentity();
+
+        // glTranslatef(-desc.center.x, -desc.center.y, 0);
+        //::glTranslatef(position.x, position.y, 0);
+
+        float w = texture->getWidth();
+        float h = texture->getHeight();
+        Rect dstRect(0, 0, w, h);
+        Rect srcRect(0, 0, w, h);
+        renderTexture(dstRect, srcRect, Color4(1, 1, 1, 1), texture->getID());
+
+        ::glPopMatrix();
+
+        ::glMatrixMode(GL_PROJECTION);
+        ::glPopMatrix();
+
+        ::glMatrixMode(GL_MODELVIEW);
+        ::glPopAttrib();
+}
+
+void renderTexture(const Rect& dstRect, const Rect& srcRect,
+                   const Color4& color, unsigned int tid) {
+        // gsBindTexture(id);
         ::glBindTexture(GL_TEXTURE_2D, tid);
-        ::glEnable(GL_ALPHA_TEST);
-        // glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        ::glBegin(GL_POLYGON);
-        // left bottom
-        ::glTexCoord2f(0.0f, 1.0f);
-        ::glVertex2d(leftBottom.x, leftBottom.y);
-        // left top
-        ::glTexCoord2f(0.0f, 0.0f);
-        ::glVertex2d(leftTop.x, leftTop.y);
-        // right top
-        ::glTexCoord2f(1.0f, 0.0f);
-        ::glVertex2d(rightTop.x, rightTop.y);
-        // right bottom
-        ::glTexCoord2f(1.0f, 1.0f);
-        ::glVertex2d(rightBottom.x, rightBottom.y);
+
+        GLsizei texWidth;
+        ::glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH,
+                                   &texWidth);
+
+        GLsizei texHeight;
+        ::glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT,
+                                   &texHeight);
+
+        Rect texCoord(srcRect.left() / texWidth, srcRect.top() / texHeight,
+                      srcRect.right() / texWidth, srcRect.bottom() / texHeight);
+        ::glBegin(GL_QUADS);
+        ::glColor4fv((GLfloat*)&color);
+        ::glTexCoord2f(texCoord.left(), texCoord.top());
+        ::glVertex2f(dstRect.left(), dstRect.top());
+        ::glTexCoord2f(texCoord.left(), texCoord.bottom());
+        ::glVertex2f(dstRect.left(), dstRect.bottom());
+        ::glTexCoord2f(texCoord.right(), texCoord.bottom());
+        ::glVertex2f(dstRect.right(), dstRect.bottom());
+        ::glTexCoord2f(texCoord.right(), texCoord.top());
+        ::glVertex2f(dstRect.right(), dstRect.top());
         ::glEnd();
-        ::glDisable(GL_ALPHA_TEST);
-        ::glDisable(GL_TEXTURE_2D);
+
+        // glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void drawField(std::shared_ptr<IModel> model, Vector3 scale, int gridSize,
