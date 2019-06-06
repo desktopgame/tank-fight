@@ -3,15 +3,15 @@
 #include <glut.h>
 #include "../Game.hpp"
 namespace gel {
-void drawTexture(const Vector2& position,
+void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture) {
         int w = texture->getWidth();
         int h = texture->getHeight();
-        drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h),
+        drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h), color,
                     texture);
 }
 
-void drawTexture(const Rect& dstRect, const Rect& srcRect,
+void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
                  const std::shared_ptr<ITexture>& texture) {
         int width = Game::getInstance()->getWindowWidth();
         int height = Game::getInstance()->getWindowHeight();
@@ -38,7 +38,7 @@ void drawTexture(const Rect& dstRect, const Rect& srcRect,
         // float h = texture->getHeight();
         // Rect dstRect(0, 0, w, h);
         // Rect srcRect(0, 0, w, h);
-        renderTexture(dstRect, srcRect, Color4(1, 1, 1, 1), texture->getID());
+        renderTexture(dstRect, srcRect, color, texture->getID());
 
         ::glPopMatrix();
 

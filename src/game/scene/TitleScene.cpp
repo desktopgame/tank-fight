@@ -31,12 +31,12 @@ void TitleScene::draw() {
         auto wsize = gel::Game::getInstance()->getWindowSize();
         auto centerPos = (wsize - tex->getSize()) / 2;
         centerPos.y = 0;
-        gel::drawTexture(centerPos, tex);
+        gel::drawTexture(centerPos, gel::Color4(1, 1, 1, 1), tex);
         // draw `start in space key`
         tex = textureManager->getTexture("./assets/image/StartInSpaceKey.png");
         centerPos = (wsize - tex->getSize()) / 2;
         centerPos.y = wsize.y - tex->getHeight();
-        gel::drawTexture(centerPos, tex);
+        gel::drawTexture(centerPos, gel::Color4(1, 1, 1, 1), tex);
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }
