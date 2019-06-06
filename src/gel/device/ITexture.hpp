@@ -2,6 +2,7 @@
 #define GEL_DEVICE_ITEXTURE_HPP
 #include <GLFW/glfw3.h>
 #include <string>
+#include "../model/Vector2.hpp"
 namespace gel {
 class ITexture {
        public:
@@ -13,6 +14,7 @@ class ITexture {
         virtual unsigned char* getData() const = 0;
         virtual int getWidth() const = 0;
         virtual int getHeight() const = 0;
+        virtual Vector2 getSize() const = 0;
 };
 }  // namespace gel
 #endif

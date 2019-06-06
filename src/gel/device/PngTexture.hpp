@@ -1,5 +1,6 @@
 #ifndef GEL_DEVICE_PNGTEXTURE_HPP
 #define GEL_DEVICE_PNGTEXTURE_HPP
+#include "../model/Vector2.hpp"
 #include "ITexture.hpp"
 namespace gel {
 
@@ -12,6 +13,7 @@ class PngTexture : public ITexture {
         unsigned char* getData() const override;
         int getWidth() const override;
         int getHeight() const override;
+        Vector2 getSize() const override;
 
        private:
         unsigned int width;

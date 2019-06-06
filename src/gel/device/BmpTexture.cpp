@@ -23,6 +23,8 @@ int BmpTexture::getWidth() const { return this->width; }
 
 int BmpTexture::getHeight() const { return this->height; }
 
+Vector2 BmpTexture::getSize() const { return Vector2(width, height); }
+
 // private
 void BmpTexture::readBMP(const char* filename) {
         int i;

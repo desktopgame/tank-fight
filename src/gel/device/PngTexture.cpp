@@ -77,4 +77,6 @@ int PngTexture::getWidth() const { return width; }
 
 int PngTexture::getHeight() const { return height; }
 
+Vector2 PngTexture::getSize() const { return Vector2(width, height); }
+
 }  // namespace gel

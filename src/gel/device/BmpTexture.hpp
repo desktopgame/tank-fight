@@ -11,6 +11,7 @@ class BmpTexture : public ITexture {
         unsigned char* getData() const override;
         int getWidth() const override;
         int getHeight() const override;
+        Vector2 getSize() const override;
 
        private:
         void readBMP(const char* filename);
