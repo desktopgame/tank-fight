@@ -26,8 +26,11 @@ void TitleScene::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
         tankRotate += 0.02f;
-        auto tex = textureManager->getTexture("./assets/image/sample.png");
-        gel::drawTexture(gel::Vector2(640, 480), gel::Vector2(0, 0), tex);
+        auto tex = textureManager->getTexture("./assets/image/Title.png");
+        auto wsize = gel::Game::getInstance()->getWindowSize();
+        auto centerPos = (wsize - tex->getSize()) / 2;
+        centerPos.y = 0;
+        gel::drawTexture(centerPos, tex);
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }
