@@ -78,6 +78,8 @@ int Game::getWindowWidth() const { return mWidth; }
 
 int Game::getWindowHeight() const { return mHeight; }
 
+Vector2 Game::getWindowSize() const { return Vector2(mWidth, mHeight); }
+
 // protected
 void Game::init() {
         glClearColor(1.0, 1.0, 1.0, 1.0);

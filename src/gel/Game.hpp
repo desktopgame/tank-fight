@@ -1,6 +1,7 @@
 #ifndef GEL_GAME_HPP
 #define GEL_GAME_HPP
 #include <GLFW/glfw3.h>
+#include "model/Vector2.hpp"
 namespace gel {
 /**
  * Game is provide mainloop and many callback.
@@ -41,6 +42,12 @@ class Game {
          * @return
          */
         int getWindowHeight() const;
+
+        /**
+         * return a window size.
+         * @return
+         */
+        Vector2 getWindowSize() const;
 
         /**
          * return a delta time.
