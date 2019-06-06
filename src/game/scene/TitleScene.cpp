@@ -26,10 +26,16 @@ void TitleScene::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
         tankRotate += 0.02f;
+        // draw `tank fight`
         auto tex = textureManager->getTexture("./assets/image/Title.png");
         auto wsize = gel::Game::getInstance()->getWindowSize();
         auto centerPos = (wsize - tex->getSize()) / 2;
         centerPos.y = 0;
+        gel::drawTexture(centerPos, tex);
+        // draw `start in space key`
+        tex = textureManager->getTexture("./assets/image/StartInSpaceKey.png");
+        centerPos = (wsize - tex->getSize()) / 2;
+        centerPos.y = wsize.y - tex->getHeight();
         gel::drawTexture(centerPos, tex);
 }
 
