@@ -1,9 +1,20 @@
 #include "Graphics.hpp"
 #include <GLFW/glfw3.h>
 #include <glut.h>
+#include "../Game.hpp"
 namespace gel {
-void drawTexture(const Vector2& screen, const Vector2& position,
-                 std::shared_ptr<ITexture> texture) {
+void drawTexture(const Vector2& position,
+                 const std::shared_ptr<ITexture>& texture) {
+        int w = texture->getWidth();
+        int h = texture->getHeight();
+        drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h),
+                    texture);
+}
+
+void drawTexture(const Rect& dstRect, const Rect& srcRect,
+                 const std::shared_ptr<ITexture>& texture) {
+        int width = Game::getInstance()->getWindowWidth();
+        int height = Game::getInstance()->getWindowHeight();
         ::glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
         ::glDisable(GL_CULL_FACE);
         ::glDisable(GL_LIGHTING);
@@ -13,7 +24,7 @@ void drawTexture(const Vector2& screen, const Vector2& position,
         ::glMatrixMode(GL_PROJECTION);
         ::glPushMatrix();
         ::glLoadIdentity();
-        ::gluOrtho2D(0, screen.x, screen.y, 0);
+        ::gluOrtho2D(0, width, height, 0);
 
         ::glMatrixMode(GL_MODELVIEW);
         ::glPushMatrix();
@@ -23,10 +34,10 @@ void drawTexture(const Vector2& screen, const Vector2& position,
         // glTranslatef(-desc.center.x, -desc.center.y, 0);
         //::glTranslatef(position.x, position.y, 0);
 
-        float w = texture->getWidth();
-        float h = texture->getHeight();
-        Rect dstRect(0, 0, w, h);
-        Rect srcRect(0, 0, w, h);
+        // float w = texture->getWidth();
+        // float h = texture->getHeight();
+        // Rect dstRect(0, 0, w, h);
+        // Rect srcRect(0, 0, w, h);
         renderTexture(dstRect, srcRect, Color4(1, 1, 1, 1), texture->getID());
 
         ::glPopMatrix();

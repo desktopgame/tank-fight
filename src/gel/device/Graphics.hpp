@@ -8,8 +8,12 @@
 #include "IModel.hpp"
 #include "ITexture.hpp"
 namespace gel {
-void drawTexture(const Vector2& screen, const Vector2& position,
-                 std::shared_ptr<ITexture> texture);
+
+void drawTexture(const Vector2& position,
+                 const std::shared_ptr<ITexture>& texture);
+
+void drawTexture(const Rect& dstRect, const Rect& srcRect,
+                 const std::shared_ptr<ITexture>& texture);
 
 void renderTexture(const Rect& dstRect, const Rect& srcRect,
                    const Color4& color, unsigned int tid);
