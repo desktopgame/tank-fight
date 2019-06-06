@@ -82,4 +82,21 @@ void drawField(std::shared_ptr<IModel> model, Vector3 scale, int gridSize,
                 }
         }
 }
+
+void viewOrthoFixed(int width, int height) {
+        ::glMatrixMode(GL_PROJECTION);
+        ::glPushMatrix();
+        ::glLoadIdentity();
+        ::glOrtho(0, width, height, 0, -1, 1);
+        ::glMatrixMode(GL_MODELVIEW);
+        ::glPushMatrix();
+        ::glLoadIdentity();
+}
+
+void viewPerspective() {
+        ::glMatrixMode(GL_PROJECTION);
+        ::glPopMatrix();
+        ::glMatrixMode(GL_MODELVIEW);
+        ::glPopMatrix();
+}
 }  // namespace gel

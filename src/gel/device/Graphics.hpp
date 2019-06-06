@@ -10,5 +10,9 @@ void drawTexture(Vector2 leftBottom, Vector2 leftTop, Vector2 rightTop,
 
 void drawField(std::shared_ptr<IModel> model, Vector3 scale, int gridSize,
                int height);
+
+void viewOrthoFixed(int width, int height);
+
+void viewPerspective();
 }  // namespace gel
 #endif
