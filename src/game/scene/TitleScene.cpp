@@ -7,7 +7,8 @@ TitleScene::TitleScene(
     : textureManager(textureManager),
       modelManager(modelManager),
       finished(false),
-      tankRotate(0) {}
+      tankRotate(0),
+      alphaDuration(1) {}
 
 void TitleScene::show() {}
 
@@ -26,6 +27,8 @@ void TitleScene::draw() {
         ::glPopMatrix();
         ::glPopMatrix();
         tankRotate += 0.02f;
+        alphaDuration.update();
+        float alpha = alphaDuration.progress();
         // draw `tank fight`
         auto tex = textureManager->getTexture("./assets/image/Title.png");
         auto wsize = gel::Game::getInstance()->getWindowSize();
@@ -36,7 +39,7 @@ void TitleScene::draw() {
         tex = textureManager->getTexture("./assets/image/StartInSpaceKey.png");
         centerPos = (wsize - tex->getSize()) / 2;
         centerPos.y = wsize.y - tex->getHeight();
-        gel::drawTexture(centerPos, gel::Color4(1, 1, 1, 1), tex);
+        gel::drawTexture(centerPos, gel::Color4(1, 1, 1, alpha), tex);
 }
 
 std::string TitleScene::getNextScene() const { return "play"; }

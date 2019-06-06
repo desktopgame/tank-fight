@@ -16,6 +16,7 @@ class TitleScene : public gel::IScene {
        private:
         float tankRotate;
         bool finished;
+        gel::Duration alphaDuration;
         std::shared_ptr<gel::TextureManager> textureManager;
         std::shared_ptr<gel::ModelManager> modelManager;
 };
