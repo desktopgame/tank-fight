@@ -2,6 +2,7 @@
 #define GEL_GSYSTEM_NUMBER_HPP
 #include <array>
 #include <functional>
+#include <string>
 #include "../model/Vector2.hpp"
 namespace gel {
 class TextureManager;
@@ -10,10 +11,6 @@ class TextureManager;
  */
 class Number {
        public:
-        /**
-         * @param drawFn
-         */
-        explicit Number(std::function<void(Vector2, int)> drawFn);
         /**
          * @param textureManager
          * @param files
@@ -27,7 +24,9 @@ class Number {
         Vector2 position;
 
        private:
-        std::function<void(Vector2, int)> drawFn;
+        std::shared_ptr<TextureManager> textureManager;
+        std::array<std::string, 10> files;
+        void drawTexture(const Vector2& pos, int index);
 };
 }  // namespace gel
 #endif
