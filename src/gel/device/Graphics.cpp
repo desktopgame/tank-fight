@@ -8,11 +8,11 @@ void drawTexture(const Vector2& position, const Color4& color,
         int w = texture->getWidth();
         int h = texture->getHeight();
         drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h), color,
-                    texture);
+                    texture->getID());
 }
 
 void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
-                 const std::shared_ptr<ITexture>& texture) {
+                 unsigned int tid) {
         int width = Game::getInstance()->getWindowWidth();
         int height = Game::getInstance()->getWindowHeight();
         ::glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
@@ -38,7 +38,7 @@ void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
         // float h = texture->getHeight();
         // Rect dstRect(0, 0, w, h);
         // Rect srcRect(0, 0, w, h);
-        renderTexture(dstRect, srcRect, color, texture->getID());
+        renderTexture(dstRect, srcRect, color, tid);
 
         ::glPopMatrix();
 

@@ -9,11 +9,11 @@
 #include "ITexture.hpp"
 namespace gel {
 
-void drawTexture(const Vector2& position,const Color4& color,
+void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture);
 
 void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
-                 const std::shared_ptr<ITexture>& texture);
+                 unsigned int tid);
 
 void renderTexture(const Rect& dstRect, const Rect& srcRect,
                    const Color4& color, unsigned int tid);
