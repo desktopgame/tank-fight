@@ -3,6 +3,19 @@
 #include <glut.h>
 #include "../Game.hpp"
 namespace gel {
+void drawTextureCell(const Vector2& position, const Color4& color, int row,
+                     int column, int rowMax, int columnMax,
+                     const std::shared_ptr<ITexture>& texture) {
+        int w = texture->getWidth();
+        int h = texture->getHeight();
+        int cw = w / columnMax;
+        int ch = h / rowMax;
+        int x = column * cw;
+        int y = row * ch;
+        Rect dstRect = Rect(position.x, position.y, cw, ch);
+        drawTexture(dstRect, Rect(x, y, cw, ch), color, texture->getID());
+}
+
 void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture) {
         drawTexture(position, color, texture->getWidth(), texture->getHeight(),

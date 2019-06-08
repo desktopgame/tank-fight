@@ -9,6 +9,10 @@
 #include "ITexture.hpp"
 namespace gel {
 
+void drawTextureCell(const Vector2& position, const Color4& color, int row,
+                     int column, int rowMax, int columnMax,
+                     const std::shared_ptr<ITexture>& texture);
+
 void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture);
 
