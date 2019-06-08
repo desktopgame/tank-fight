@@ -51,4 +51,4 @@ std::string TitleScene::getNextScene() const { return "play"; }
 
 bool TitleScene::isFinished() const { return finished; }
 
-void TitleScene::hide() {}
+void TitleScene::hide() { this->finished = false; }

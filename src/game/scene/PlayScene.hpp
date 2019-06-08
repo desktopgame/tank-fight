@@ -17,6 +17,7 @@ class PlayScene : public gel::IScene {
         static float BULLET_SPEED;
         static float MOVE_SPEED;
         static float ROTATE_SPEED;
+        static int PLAY_TIME;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                   const std::shared_ptr<gel::ModelManager>& modelManager);
         void show() override;
@@ -45,6 +46,7 @@ class PlayScene : public gel::IScene {
         void spawn(int n);
         void movePlayer();
         void fireBullet();
+        void checkPlayTime();
         std::shared_ptr<Bullet> newBullet();
         void drawIMGUI();
 
@@ -55,6 +57,9 @@ class PlayScene : public gel::IScene {
         gel::Random random;
         gel::Timer spawnTimer;
         gel::Timer fireTimer;
+        gel::Timer playTimer;
+        int playTime;
+        gel::Number playTimeUI;
         gel::Vector3 blockAABBSize;
         std::vector<std::shared_ptr<Bullet> > bullets;
         std::vector<std::shared_ptr<Enemy> > enemies;

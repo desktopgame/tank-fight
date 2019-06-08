@@ -8,6 +8,7 @@ float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
 float PlayScene::BULLET_SPEED = 2;
 float PlayScene::MOVE_SPEED = 0.009f;
 float PlayScene::ROTATE_SPEED = 2.0f;
+int PlayScene::PLAY_TIME = 100;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                      const std::shared_ptr<gel::ModelManager>& modelManager)
@@ -19,6 +20,20 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       enemies(),
       spawnTimer(10),
       fireTimer(1),
+      playTimer(1),
+      playTime(PLAY_TIME),
+      playTimeUI(
+          textureManager,
+          std::array<std::string, 10>{"./assets/image/number/0_W25x25.png",
+                                      "./assets/image/number/1_W25x25.png",
+                                      "./assets/image/number/2_W25x25.png",
+                                      "./assets/image/number/3_W25x25.png",
+                                      "./assets/image/number/4_W25x25.png",
+                                      "./assets/image/number/5_W25x25.png",
+                                      "./assets/image/number/6_W25x25.png",
+                                      "./assets/image/number/7_W25x25.png",
+                                      "./assets/image/number/8_W25x25.png",
+                                      "./assets/image/number/9_W25x25.png"}),
       fired(false),
       bullets(),
       random() {
@@ -34,7 +49,10 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
         spawn(5);
 }
 
-void PlayScene::show() {}
+void PlayScene::show() {
+        this->mFinished = false;
+        this->playTime = PLAY_TIME;
+}
 
 void PlayScene::update() {
         for (int i = 0; i < enemies.size(); i++) {
@@ -78,6 +96,7 @@ void PlayScene::update() {
         remove_if(bullets);
         movePlayer();
         fireBullet();
+        checkPlayTime();
 }
 
 void PlayScene::draw() {
@@ -105,12 +124,13 @@ void PlayScene::draw() {
         }
         camera.endDraw();
         drawIMGUI();
+        playTimeUI.draw(playTime);
 }
 
-std::string PlayScene::getNextScene() const { return "play"; }
+std::string PlayScene::getNextScene() const { return "title"; }
 
 bool PlayScene::isFinished() const { return mFinished; }
-void PlayScene::hide() {}
+void PlayScene::hide() { this->mFinished = false; }
 
 // private
 void PlayScene::initSpawners(float blockScale) {
@@ -149,6 +169,18 @@ void PlayScene::initSpawners(float blockScale) {
 }
 
 void PlayScene::spawn() {
+        auto iter = spawners.begin();
+        auto end = spawners.end();
+        while (iter != end) {
+                auto v = *iter;
+                if (v->isUsed()) {
+                        break;
+                }
+                ++iter;
+        }
+        if (iter == end) {
+                return;
+        }
         while (enemies.size() < spawners.size()) {
                 auto i = random.generate(0, spawners.size() - 1);
                 if (spawners[i]->isUsed()) {
@@ -219,6 +251,20 @@ void PlayScene::fireBullet() {
                 this->fired = true;
                 auto bullet = newBullet();
                 bullets.push_back(bullet);
+        }
+}
+
+void PlayScene::checkPlayTime() {
+        if (this->playTime == 0) {
+                return;
+        }
+        playTimer.update();
+        if (playTimer.isElapsed()) {
+                playTimer.reset();
+                this->playTime--;
+        }
+        if (this->playTime == 0) {
+                this->mFinished = true;
         }
 }
 
