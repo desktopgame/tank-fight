@@ -8,6 +8,8 @@ struct Color4 {
         float g;
         float b;
         float a;
+        static Color4 white(float a);
+        static Color4 black(float a);
 };
 }  // namespace gel
 
