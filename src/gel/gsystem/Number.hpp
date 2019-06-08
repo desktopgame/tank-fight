@@ -21,6 +21,11 @@ class Number {
          * @param i
          */
         void draw(int i);
+        /**
+         * @param i
+         * @return
+         */
+        Vector2 calcSize(int i) const;
         Vector2 position;
 
        private:
