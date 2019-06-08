@@ -12,6 +12,9 @@ namespace gel {
 void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture);
 
+void drawTexture(const Vector2& position, const Color4& color, int w, int h,
+                 unsigned int tid);
+
 void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
                  unsigned int tid);
 

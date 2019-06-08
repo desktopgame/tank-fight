@@ -5,10 +5,14 @@
 namespace gel {
 void drawTexture(const Vector2& position, const Color4& color,
                  const std::shared_ptr<ITexture>& texture) {
-        int w = texture->getWidth();
-        int h = texture->getHeight();
-        drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h), color,
+        drawTexture(position, color, texture->getWidth(), texture->getHeight(),
                     texture->getID());
+}
+
+void drawTexture(const Vector2& position, const Color4& color, int w, int h,
+                 unsigned int tid) {
+        drawTexture(Rect(position.x, position.y, w, h), Rect(0, 0, w, h), color,
+                    tid);
 }
 
 void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
