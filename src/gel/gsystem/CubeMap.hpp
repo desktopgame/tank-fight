@@ -1,10 +1,12 @@
 #ifndef GEL_GSYSTEM_CUBEMAP_HPP
 #define GEL_GSYSTEM_CUBEMAP_HPP
+#include "../model/Vector3.hpp"
 namespace gel {
 class CubeMap {
        public:
         explicit CubeMap();
-        void draw(float size);
+        void draw(const Vector3& size);
+        Vector3 position;
         unsigned int posX;
         unsigned int negX;
         unsigned int posY;
