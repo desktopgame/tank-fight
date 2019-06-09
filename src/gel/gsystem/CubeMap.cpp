@@ -33,13 +33,13 @@ void CubeMap::draw(const Vector3& size) {
         ::glBindTexture(GL_TEXTURE_2D, posZ);
         ::glBegin(GL_QUADS);
         ::glTexCoord2f(0, 0);
-        ::glVertex3f(size.x, -size.y, size.z);
-        ::glTexCoord2f(1, 0);
-        ::glVertex3f(size.x, -size.y, -size.z);
-        ::glTexCoord2f(1, 1);
         ::glVertex3f(size.x, size.y, -size.z);
-        ::glTexCoord2f(0, 1);
+        ::glTexCoord2f(1, 0);
         ::glVertex3f(size.x, size.y, size.z);
+        ::glTexCoord2f(1, 1);
+        ::glVertex3f(size.x, -size.y, size.z);
+        ::glTexCoord2f(0, 1);
+        ::glVertex3f(size.x, -size.y, -size.z);
         ::glEnd();
 
         //-x方向
@@ -59,13 +59,13 @@ void CubeMap::draw(const Vector3& size) {
         ::glBindTexture(GL_TEXTURE_2D, negZ);
         ::glBegin(GL_QUADS);
         ::glTexCoord2f(0, 0);
-        ::glVertex3f(-size.x, -size.y, -size.z);
-        ::glTexCoord2f(1, 0);
-        ::glVertex3f(-size.x, -size.y, size.z);
-        ::glTexCoord2f(1, 1);
         ::glVertex3f(-size.x, size.y, size.z);
-        ::glTexCoord2f(0, 1);
+        ::glTexCoord2f(1, 0);
         ::glVertex3f(-size.x, size.y, -size.z);
+        ::glTexCoord2f(1, 1);
+        ::glVertex3f(-size.x, -size.y, -size.z);
+        ::glTexCoord2f(0, 1);
+        ::glVertex3f(-size.x, -size.y, size.z);
         ::glEnd();
 
         //+y方向
