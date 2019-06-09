@@ -47,6 +47,10 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                                 blockAABBSize.z * 24 * BLOCK_SCALE);
         skybox.position = pos;
         camera.transform.position = pos;
+        this->stageMinX = 0.1f;
+        this->stageMaxX = (46 * blockAABBSize.x * BLOCK_SCALE);
+        this->stageMinZ = (-2 * blockAABBSize.z * BLOCK_SCALE);
+        this->stageMaxZ = (46 * blockAABBSize.z * BLOCK_SCALE);
         initSkyBox();
         initSpawners(BLOCK_SCALE);
         spawn(5);
@@ -273,6 +277,7 @@ void PlayScene::movePlayer() {
                                              camera.transform.right() *
                                              MOVE_SPEED;
         }
+        camera.transform.position = camera.transform.position.clampXZ(gel::Vector3(stageMinX,0,stageMinZ),gel::Vector3(stageMaxX,0,stageMaxZ));
 }
 
 void PlayScene::fireBullet() {

@@ -33,10 +33,8 @@ class PlayScene : public gel::IScene {
                 auto end = std::remove_if(v.begin(), v.end(), [&](auto& e) {
                         auto pos = e->getPosition();
                         return e->isDestroyed() ||
-                               (pos.x < (-2 * blockAABBSize.x * BLOCK_SCALE) ||
-                                pos.x > (46 * blockAABBSize.x * BLOCK_SCALE) ||
-                                pos.z < (-2 * blockAABBSize.z * BLOCK_SCALE) ||
-                                pos.z > (46 * blockAABBSize.z * BLOCK_SCALE));
+                               (pos.x < stageMinX || pos.x > stageMaxX ||
+                                pos.z < stageMinZ || pos.z > stageMaxZ);
                 });
                 v.erase(end, v.end());
         }
@@ -55,6 +53,10 @@ class PlayScene : public gel::IScene {
             const std::vector<std::shared_ptr<Actor> > actors, float scale);
 
         bool fired;
+        float stageMinX;
+        float stageMaxX;
+        float stageMinZ;
+        float stageMaxZ;
         gel::Random random;
         gel::Timer spawnTimer;
         gel::Timer fireTimer;
