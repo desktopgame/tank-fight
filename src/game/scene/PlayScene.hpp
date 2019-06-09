@@ -41,6 +41,7 @@ class PlayScene : public gel::IScene {
                 v.erase(end, v.end());
         }
 
+        void initSkyBox();
         void initSpawners(float blockScale);
         void spawn();
         void spawn(int n);
@@ -58,6 +59,7 @@ class PlayScene : public gel::IScene {
         gel::Timer spawnTimer;
         gel::Timer fireTimer;
         gel::Timer playTimer;
+        gel::CubeMap skybox;
         int playTime;
         gel::Number playTimeUI;
         gel::Vector3 blockAABBSize;

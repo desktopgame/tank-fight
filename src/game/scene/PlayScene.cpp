@@ -36,7 +36,8 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                                       "./assets/image/number/9_W25x25.png"}),
       fired(false),
       bullets(),
-      random() {
+      random(),
+      skybox() {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
@@ -44,7 +45,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
         auto pos = gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE,
                                 blockAABBSize.y * BLOCK_SCALE * 2,
                                 blockAABBSize.z * 24 * BLOCK_SCALE);
+        skybox.position = pos;
         camera.transform.position = pos;
+        initSkyBox();
         initSpawners(BLOCK_SCALE);
         spawn(5);
 }
@@ -107,6 +110,8 @@ void PlayScene::draw() {
                                    msize.z * 12 * BLOCK_SCALE);
         camera.beginDraw();
         ::glPushMatrix();
+        skybox.draw(gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE, 1,
+                                 blockAABBSize.z * 24 * BLOCK_SCALE));
         gel::drawField(mModelManager->getModel(path),
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
                        0);
@@ -125,6 +130,28 @@ void PlayScene::draw() {
         camera.endDraw();
         drawIMGUI();
         playTimeUI.draw(playTime);
+        //::glPushMatrix();
+        //::glLoadIdentity();
+        //::glTranslatef(0, 0, 0);
+//::glPopMatrix();
+#if DEBUG
+        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
+                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+
+        ImGui::Begin("config 1");
+        ImGui::Text("X %f", camera.transform.position.x);
+        ImGui::Text("Y %f", camera.transform.position.y);
+        ImGui::Text("Z %f", camera.transform.position.z);
+
+        ImGui::End();
+
+        ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
+        gel::gui::render();
+#endif
 }
 
 std::string PlayScene::getNextScene() const { return "title"; }
@@ -133,6 +160,27 @@ bool PlayScene::isFinished() const { return mFinished; }
 void PlayScene::hide() { this->mFinished = false; }
 
 // private
+void PlayScene::initSkyBox() {
+        auto negXTex =
+            mTextureManager->getTexture("./assets/image/skybox/RIGHT.png");
+        auto negYTex =
+            mTextureManager->getTexture("./assets/image/skybox/BOTTOM.png");
+        auto negZTex =
+            mTextureManager->getTexture("./assets/image/skybox/FORWARD.png");
+        auto posXTex =
+            mTextureManager->getTexture("./assets/image/skybox/LEFT.png");
+        auto posYTex =
+            mTextureManager->getTexture("./assets/image/skybox/TOP.png");
+        auto posZTex =
+            mTextureManager->getTexture("./assets/image/skybox/BACK.png");
+        skybox.posX = posXTex->getID();
+        skybox.posY = posYTex->getID();
+        skybox.posZ = posZTex->getID();
+        skybox.negX = negXTex->getID();
+        skybox.negY = negYTex->getID();
+        skybox.negZ = negZTex->getID();
+}
+
 void PlayScene::initSpawners(float blockScale) {
         auto msize = mModelManager->getModel("./assets/model/Block.fbx")
                          ->getAABB()
@@ -169,21 +217,16 @@ void PlayScene::initSpawners(float blockScale) {
 }
 
 void PlayScene::spawn() {
-        auto iter = spawners.begin();
-        auto end = spawners.end();
-        while (iter != end) {
-                auto v = *iter;
-                if (v->isUsed()) {
-                        break;
-                }
-                ++iter;
-        }
-        if (iter == end) {
-                return;
-        }
+        std::vector<bool> bitmap;
+        for (int i = 0; i < spawners.size(); i++) bitmap.push_back(false);
         while (enemies.size() < spawners.size()) {
                 auto i = random.generate(0, spawners.size() - 1);
                 if (spawners[i]->isUsed()) {
+                        bitmap[i] = true;
+                        if (std::count(bitmap.begin(), bitmap.end(), true) ==
+                            bitmap.size()) {
+                                break;
+                        }
                         continue;
                 }
                 spawners[i]->use();
@@ -211,11 +254,6 @@ void PlayScene::movePlayer() {
                 camera.transform.rotation.x += ROTATE_SPEED;
         } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 camera.transform.rotation.x -= ROTATE_SPEED;
-        }
-        if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
-                camera.transform.rotation.y += ROTATE_SPEED;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                camera.transform.rotation.y -= ROTATE_SPEED;
         }
         if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
                 camera.transform.position += gel::Vector3(1, 0, 1) *
