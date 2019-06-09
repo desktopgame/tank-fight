@@ -7,17 +7,44 @@
 #include <string>
 #include <stdexcept>
 namespace gel {
+/**
+ * ScoreTable is ranking of score.
+ * @type D
+ * - required[TYPE]				value_t
+ * - required[STATIC MEMBER]	compare(a, b)
+ * - required[STATIC MEMBER]	write(data)
+ * - required[STATIC MEMBER]	read(line)
+ */
 template<typename D, int N>
 class ScoreTable {
 	public:
 	explicit ScoreTable();
+	/**
+	 * clear all score.
+	 */
 	void reset();
+	/**
+	 * insert a new data
+	 * @param data
+	 */
 	void insert(const D data);
+	/**
+	 * return a data by rank.
+	 * @return
+	 */
 	template<int Index>
 	std::optional<D> at() const;
 
+	/**
+	 * @param filename
+	 * @return
+	 */
 	static ScoreTable<D, N> read(const std::string& filename);
 
+	/**
+	 * @param filename
+	 * @param data
+	 */
 	static void write(const std::string& filename, const ScoreTable<D, N>& data);
 
 	private:
@@ -48,7 +75,6 @@ inline void ScoreTable<D, N>::insert(const D data) {
 	}
 	if(r == N) {
 		for(int i=N-1; i>=0; i++) {
-			auto ev = ((*table[i]).value);
 			//if(data.value > ev) {
 			if(D::compare(data, *table[i]) > 0) {
 				for(int j=N-1; j>i; j--) {
