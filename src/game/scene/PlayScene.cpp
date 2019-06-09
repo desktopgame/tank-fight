@@ -133,7 +133,7 @@ void PlayScene::draw() {
         }
         camera.endDraw();
         drawIMGUI();
-        playTimeUI.draw(playTime);
+        drawTime();
         //::glPushMatrix();
         //::glLoadIdentity();
         //::glTranslatef(0, 0, 0);
@@ -321,6 +321,15 @@ std::shared_ptr<Bullet> PlayScene::newBullet() {
 }
 
 void PlayScene::drawIMGUI() {}
+
+void PlayScene::drawTime() {
+        auto size = playTimeUI.calcSize(playTime);
+        auto wsize = gel::Game::getInstance()->getWindowSize();
+        auto npos = (wsize - size) / 2;
+        npos.y = 0;
+        playTimeUI.position = npos;
+        playTimeUI.draw(playTime);
+}
 
 std::vector<HitCache> PlayScene::actorToCache(
     const std::vector<std::shared_ptr<Actor> > actors, float scale) {
