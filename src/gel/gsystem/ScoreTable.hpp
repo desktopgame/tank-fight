@@ -1,5 +1,5 @@
-#ifndef GEL_GSYSTEM_RANKTABLE_HPP
-#define GEL_GSYSTEM_RANKTABLE_HPP
+#ifndef GEL_GSYSTEM_SCORETABLE_HPP
+#define GEL_GSYSTEM_SCORETABLE_HPP
 #include <array>
 #include <fstream>
 #include <algorithm>
@@ -8,17 +8,17 @@
 #include <stdexcept>
 namespace gel {
 template<typename D, int N>
-class RankTable {
+class ScoreTable {
 	public:
-	explicit RankTable();
+	explicit ScoreTable();
 	void reset();
 	void insert(const D data);
 	template<int Index>
 	std::optional<D> at() const;
 
-	static RankTable<D, N> read(const std::string& filename);
+	static ScoreTable<D, N> read(const std::string& filename);
 
-	static void write(const std::string& filename, const RankTable<D, N>& data);
+	static void write(const std::string& filename, const ScoreTable<D, N>& data);
 
 	private:
 	// D required value_t
@@ -27,17 +27,17 @@ class RankTable {
 };
 
 template<typename D, int N>
-inline RankTable<D, N>::RankTable() : table() {
+inline ScoreTable<D, N>::ScoreTable() : table() {
 	reset();
 }
 
 template<typename D, int N>
-inline void RankTable<D, N>::reset() {
+inline void ScoreTable<D, N>::reset() {
 	std::fill(table.begin(), table.end(), std::nullopt);
 }
 
 template<typename D, int N>
-inline void RankTable<D, N>::insert(const D data) {
+inline void ScoreTable<D, N>::insert(const D data) {
 	int r = N;
 	for(int i=0; i<N; i++) {
 		if(!table[i]) {
@@ -76,13 +76,13 @@ inline void RankTable<D, N>::insert(const D data) {
 
 template<typename D, int N>
 template<int Index>
-inline std::optional<D> RankTable<D,N>::at() const {
+inline std::optional<D> ScoreTable<D,N>::at() const {
 	return table[Index];
 }
 
 template<typename D, int N>
-inline RankTable<D,N> RankTable<D,N>::read(const std::string& filename) {
-	RankTable<D, N> rdata;
+inline ScoreTable<D,N> ScoreTable<D,N>::read(const std::string& filename) {
+	ScoreTable<D, N> rdata;
 	std::ifstream ifs(filename);
 	// read item count
 	std::string line;
@@ -111,7 +111,7 @@ inline RankTable<D,N> RankTable<D,N>::read(const std::string& filename) {
 	return rdata;
 }
 template<typename D, int N>
-inline void RankTable<D,N>::write(const std::string& filename, const RankTable<D, N>& data) {
+inline void ScoreTable<D,N>::write(const std::string& filename, const ScoreTable<D, N>& data) {
 	std::ofstream ofs(filename);
 	ofs << N << std::endl;
 	for(int i=0; i<N; i++) {

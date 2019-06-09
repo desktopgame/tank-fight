@@ -17,7 +17,7 @@
 #include "gsystem/Transform.hpp"
 #include "gsystem/Number.hpp"
 #include "gsystem/CubeMap.hpp"
-#include "gsystem/RankTable.hpp"
+#include "gsystem/ScoreTable.hpp"
 #include "model/AABB.hpp"
 #include "model/Color4.hpp"
 #include "model/Matrix4.hpp"
