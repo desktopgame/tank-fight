@@ -26,5 +26,8 @@ still not playable
 * exit a game
   * Escape
 
+* fire a bullet
+    * Z
+
 # screen shot
 ![TitleImage](image/TankFightTitle.png)
