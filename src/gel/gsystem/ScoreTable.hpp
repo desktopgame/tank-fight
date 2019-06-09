@@ -10,7 +10,6 @@ namespace gel {
 /**
  * ScoreTable is ranking of score.
  * @type D
- * - required[TYPE]				value_t
  * - required[STATIC MEMBER]	compare(a, b)
  * - required[STATIC MEMBER]	write(data)
  * - required[STATIC MEMBER]	read(line)
@@ -48,8 +47,6 @@ class ScoreTable {
 	static void write(const std::string& filename, const ScoreTable<D, N>& data);
 
 	private:
-	// D required value_t
-	// example: class HogeData { using value_t = float; }
 	std::array<std::optional<D>, N> table;
 };
 
@@ -155,7 +152,6 @@ struct NumericScore {
 	T value;
 	// converting constructor
 	NumericScore(const T value);
-	using value_t = T;
 	static int compare(const NumericScore<T>& a, const NumericScore<T>& b);
 	static std::string write(const NumericScore<T>& data);
 	static NumericScore<T> read(const std::string& line);
