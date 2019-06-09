@@ -38,7 +38,8 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       bullets(),
       random(),
       skybox(),
-      playResult(playResult) {
+      playResult(playResult),
+      kill(0) {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
@@ -60,6 +61,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
 void PlayScene::show() {
         this->mFinished = false;
         this->playTime = PLAY_TIME;
+        this->kill = 0;
 }
 
 void PlayScene::update() {
@@ -96,6 +98,7 @@ void PlayScene::update() {
                                 continue;
                         }
                         */
+                       kill += 100;
                         eCache.actor->destroy();
                         bCache.actor->destroy();
                 }
@@ -162,7 +165,9 @@ void PlayScene::draw() {
 std::string PlayScene::getNextScene() const { return "result"; }
 
 bool PlayScene::isFinished() const { return mFinished; }
-void PlayScene::hide() { this->mFinished = false; }
+void PlayScene::hide() { 
+        playResult.record(kill);
+        this->mFinished = false; }
 
 // private
 void PlayScene::initSkyBox() {
