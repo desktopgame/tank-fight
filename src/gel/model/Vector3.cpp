@@ -1,5 +1,6 @@
 #include "Vector3.hpp"
 #include <cmath>
+#include <algorithm>
 namespace gel {
 Vector3::Vector3() : x(0), y(0), z(0) {}
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
@@ -32,6 +33,20 @@ float Vector3::distance(const Vector3& a, const Vector3& b) {
         float dy = a.y - b.y;
         float dz = a.z - b.z;
         return (float)::sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+Vector3 Vector3::clamp(const Vector3& min, const Vector3& max) const {
+        Vector3 v;
+        v.x = std::min(max.x, std::max(min.x, x));
+        v.y = std::min(max.y, std::max(min.y, y));
+        v.z = std::min(max.z, std::max(min.z, z));
+        return v;
+}
+
+Vector3 Vector3::clampXZ(const Vector3& min, const Vector3& max) const {
+        Vector3 v = clamp(min, max);
+        v.y = y;
+        return v;
 }
 
 Vector3 Vector3::operator-() const {

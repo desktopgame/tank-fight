@@ -36,6 +36,13 @@ struct Vector2 {
          */
         static float distance(const Vector2& a, const Vector2& b);
 
+        /**
+         * @param min
+         * @param max
+         * @return
+         */
+        Vector2 clamp(const Vector2& min, const Vector2& max) const;
+
         Vector2 operator-() const;
         Vector2& operator*=(float scale);
         Vector2& operator/=(float scale);

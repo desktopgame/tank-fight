@@ -40,6 +40,21 @@ struct Vector3 {
          * @return
          */
         static float distance(const Vector3& a, const Vector3& b);
+
+        /**
+         * @param min
+         * @param max
+         * @return
+         */
+        Vector3 clamp(const Vector3& min, const Vector3& max) const;
+
+        /**
+         * @param min
+         * @param max
+         * @return
+         */
+        Vector3 clampXZ(const Vector3& min, const Vector3& max) const;
+
         Vector3 operator-() const;
         Vector3& operator*=(float scale);
         Vector3& operator/=(float scale);
