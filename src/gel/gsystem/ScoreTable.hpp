@@ -35,6 +35,12 @@ class ScoreTable {
 	std::optional<D> at() const;
 
 	/**
+	 * @param index
+	 * @return
+	 */
+	std::optional<D> at(int index) const;
+
+	/**
 	 * @param filename
 	 * @return
 	 */
@@ -101,6 +107,11 @@ template<typename D, int N>
 template<int Index>
 inline std::optional<D> ScoreTable<D,N>::at() const {
 	return table[Index];
+}
+
+template<typename D, int N>
+std::optional<D> ScoreTable<D,N>::at(int index) const {
+	return table[index];
 }
 
 template<typename D, int N>
