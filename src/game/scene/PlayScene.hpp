@@ -7,6 +7,7 @@
 #include "../Enemy.hpp"
 #include "../HitCache.hpp"
 #include "../Spawner.hpp"
+#include "../PlayResult.hpp"
 class TextureManager;
 class ModelManager;
 class PlayScene : public gel::IScene {
@@ -19,7 +20,7 @@ class PlayScene : public gel::IScene {
         static float ROTATE_SPEED;
         static int PLAY_TIME;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                  const std::shared_ptr<gel::ModelManager>& modelManager);
+                  const std::shared_ptr<gel::ModelManager>& modelManager, PlayResult& playResult);
         void show() override;
         void update() override;
         void draw() override;
@@ -58,6 +59,7 @@ class PlayScene : public gel::IScene {
         float stageMaxX;
         float stageMinZ;
         float stageMaxZ;
+        PlayResult& playResult;
         gel::Random random;
         gel::Timer spawnTimer;
         gel::Timer fireTimer;

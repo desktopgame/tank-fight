@@ -8,10 +8,10 @@ float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
 float PlayScene::BULLET_SPEED = 2;
 float PlayScene::MOVE_SPEED = 0.009f;
 float PlayScene::ROTATE_SPEED = 2.0f;
-int PlayScene::PLAY_TIME = 100;
+int PlayScene::PLAY_TIME = 10;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                     const std::shared_ptr<gel::ModelManager>& modelManager)
+                     const std::shared_ptr<gel::ModelManager>& modelManager, PlayResult& playResult)
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
@@ -37,7 +37,8 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       fired(false),
       bullets(),
       random(),
-      skybox() {
+      skybox(),
+      playResult(playResult) {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
@@ -158,7 +159,7 @@ void PlayScene::draw() {
 #endif
 }
 
-std::string PlayScene::getNextScene() const { return "title"; }
+std::string PlayScene::getNextScene() const { return "result"; }
 
 bool PlayScene::isFinished() const { return mFinished; }
 void PlayScene::hide() { this->mFinished = false; }

@@ -3,8 +3,9 @@
 #include "scene/ModelDebugScene.hpp"
 #include "scene/PlayScene.hpp"
 #include "scene/TitleScene.hpp"
+#include "scene/ResultScene.hpp"
 MyGame::MyGame()
-    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) {}
+    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) , playResult(){}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
@@ -13,7 +14,10 @@ void MyGame::init() {
                                       gameDevice->getModelManager()));
         sceneManager.put(
             "play", std::make_shared<PlayScene>(gameDevice->getTextureManager(),
-                                                gameDevice->getModelManager()));
+                                                gameDevice->getModelManager(), playResult));
+        sceneManager.put(
+            "result", std::make_shared<ResultScene>(gameDevice->getTextureManager(),
+                                               playResult));
         sceneManager.bind("title");
 
         glClearColor(0.0, 0.0, 0.0, 1.0);
