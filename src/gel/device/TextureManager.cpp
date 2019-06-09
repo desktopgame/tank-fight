@@ -28,6 +28,5 @@ void TextureManager::unload(const std::string& path) {
         if (texMap.count(path)) {
                 texMap.at(path)->unload(path);
         }
-        ::abort();
 }
 }  // namespace gel

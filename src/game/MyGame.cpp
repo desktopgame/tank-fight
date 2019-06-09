@@ -5,7 +5,7 @@
 #include "scene/TitleScene.hpp"
 #include "scene/ResultScene.hpp"
 MyGame::MyGame()
-    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) , playResult(){}
+    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) , playResult(), isExitNow(false) {}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
@@ -35,9 +35,21 @@ void MyGame::init() {
         glCullFace(GL_BACK);
 }
 
-void MyGame::update() { sceneManager.update(); }
+void MyGame::update() {
+    auto win = gel::Game::getInstance()->getWindow();
+    if(glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        gameDevice->getContentManager()->unload();
+        glfwSetWindowShouldClose(win, GL_TRUE);
+        isExitNow = true;
+        return;
+    }
+     sceneManager.update();
+}
 
 void MyGame::draw() {
+        if(isExitNow) {
+            return;
+        }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // glViewport(0, 0, 640, 480);
         glMatrixMode(GL_PROJECTION);

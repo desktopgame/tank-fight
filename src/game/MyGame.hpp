@@ -10,6 +10,7 @@ class MyGame : public gel::Game {
         void init() override;
         void update() override;
         void draw() override;
+        bool isExitNow;
         PlayResult playResult;
         gel::SceneManager sceneManager;
         std::shared_ptr<gel::GameDevice> gameDevice;
