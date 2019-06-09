@@ -125,50 +125,50 @@ inline void ScoreTable<D,N>::write(const std::string& filename, const ScoreTable
 }
 
 template<typename T>
-struct NumericRData {
+struct NumericScore {
 	T value;
 	// converting constructor
-	NumericRData(const T value);
+	NumericScore(const T value);
 	using value_t = T;
-	static int compare(const NumericRData<T>& a, const NumericRData<T>& b);
-	static std::string write(const NumericRData<T>& data);
-	static NumericRData<T> read(const std::string& line);
+	static int compare(const NumericScore<T>& a, const NumericScore<T>& b);
+	static std::string write(const NumericScore<T>& data);
+	static NumericScore<T> read(const std::string& line);
 };
 template<typename T>
-inline NumericRData<T>::NumericRData(const T value) : value(value) {
+inline NumericScore<T>::NumericScore(const T value) : value(value) {
 }
 
 
 template<typename T>
-inline int NumericRData<T>::compare(const NumericRData<T>& a, const NumericRData<T>& b)  {
+inline int NumericScore<T>::compare(const NumericScore<T>& a, const NumericScore<T>& b)  {
 	return a.value - b.value;
 }
 
 template<typename T>
-inline std::string NumericRData<T>::write(const NumericRData<T>& data) {
+inline std::string NumericScore<T>::write(const NumericScore<T>& data) {
 	return std::to_string(data.value);
 }
 
 template<>
-inline NumericRData<int> NumericRData<int>::read(const std::string& line) {
-	NumericRData<int> d(0);
+inline NumericScore<int> NumericScore<int>::read(const std::string& line) {
+	NumericScore<int> d(0);
 	d.value = std::stoi(line);
 	return d;
 }
 template<>
-inline NumericRData<float> NumericRData<float>::read(const std::string& line) {
-	NumericRData<float> d(0);
+inline NumericScore<float> NumericScore<float>::read(const std::string& line) {
+	NumericScore<float> d(0);
 	d.value = std::stof(line);
 	return d;
 }
 template<>
-inline NumericRData<double> NumericRData<double>::read(const std::string& line) {
-	NumericRData<double> d(0);
+inline NumericScore<double> NumericScore<double>::read(const std::string& line) {
+	NumericScore<double> d(0);
 	d.value = std::stod(line);
 	return d;
 }
-using IntegerRData = NumericRData<int>;
-using FloatRData = NumericRData<float>;
-using DoubleRData = NumericRData<double>;
+using IntegerScore = NumericScore<int>;
+using FloatScore = NumericScore<float>;
+using DoubleScore = NumericScore<double>;
 }
 #endif
