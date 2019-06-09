@@ -12,5 +12,19 @@ still not playable
 * FBXSDK
 * libpng
 
+# controls
+* move key
+  * W
+  * A
+  * S
+  * D
+
+* rotate key
+  * ArrowLeft
+  * ArrowRight
+
+* exit a game
+  * Escape
+
 # screen shot
 ![TitleImage](image/TankFightTitle.png)
