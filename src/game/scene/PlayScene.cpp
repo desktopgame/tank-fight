@@ -8,7 +8,7 @@ float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
 float PlayScene::BULLET_SPEED = 2;
 float PlayScene::MOVE_SPEED = 0.009f;
 float PlayScene::ROTATE_SPEED = 2.0f;
-int PlayScene::PLAY_TIME = 10;
+int PlayScene::PLAY_TIME = 100;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                      const std::shared_ptr<gel::ModelManager>& modelManager,
