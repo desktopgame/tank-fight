@@ -21,16 +21,16 @@ void TitleScene::update() {
 
 void TitleScene::draw() {
         // gel::viewPerspective();
-        ::glPushMatrix();
-        ::gluLookAt(0, 0, 0, 0, 0, -1, 0, 1, 0);
+        glPushMatrix();
+        gluLookAt(0, 0, 0, 0, 0, -1, 0, 1, 0);
 
-        ::glPushMatrix();
-        ::glTranslatef(0.2, 0, -1);
-        ::glRotatef(tankRotate, 0, 1, 0);
-        ::glScalef(0.001f, 0.001f, 0.001f);
+        glPushMatrix();
+        glTranslatef(0.2, 0, -1);
+        glRotatef(tankRotate, 0, 1, 0);
+        glScalef(0.001f, 0.001f, 0.001f);
         modelManager->getModel("./assets/model/Tank.fbx")->draw();
-        ::glPopMatrix();
-        ::glPopMatrix();
+        glPopMatrix();
+        glPopMatrix();
         tankRotate += 0.02f;
         alphaDuration.update();
         float alpha = alphaDuration.progress();

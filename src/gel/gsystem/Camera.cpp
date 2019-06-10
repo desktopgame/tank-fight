@@ -8,20 +8,20 @@ namespace gel {
 Camera::Camera() : transform() {}
 
 void Camera::beginDraw() const {
-        ::glPushMatrix();
-        ::glLoadIdentity();
+        glPushMatrix();
+        glLoadIdentity();
         auto pos = transform.position;
         auto lookat = pos + transform.forward();
-        //::glTranslatef(pos.x, pos.y, pos.z);
-        //::glRotatef(transform.rotation.y, 0, 1, 0);
-        //::glRotatef(transform.rotation.x, 1, 0, 0);
-        //::glRotatef(transform.angleZ, 0, 0, 1);
-        //::glTranslatef(-pos.x, -pos.y, -pos.z);
-        ::gluLookAt(pos.x, pos.y, pos.z, lookat.x, lookat.y, lookat.z, 0.0, 1.0,
-                    0.0);
+        // glTranslatef(pos.x, pos.y, pos.z);
+        // glRotatef(transform.rotation.y, 0, 1, 0);
+        // glRotatef(transform.rotation.x, 1, 0, 0);
+        // glRotatef(transform.angleZ, 0, 0, 1);
+        // glTranslatef(-pos.x, -pos.y, -pos.z);
+        gluLookAt(pos.x, pos.y, pos.z, lookat.x, lookat.y, lookat.z, 0.0, 1.0,
+                  0.0);
 }
 
-void Camera::endDraw() const { ::glPopMatrix(); }
+void Camera::endDraw() const { glPopMatrix(); }
 
 void Camera::debugControl() {
         float increase = 0.001f;

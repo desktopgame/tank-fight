@@ -18,24 +18,20 @@ void Bullet::update() {
 }
 
 void Bullet::draw() {
-        ::glPushMatrix();
-        ::glPushMatrix();
-        ::glTranslatef(transform.position.x, transform.position.y,
-                       transform.position.z);
-        //::glRotatef(transform.rotation.y, 0, 1, 0);
-        ::glScalef(transform.scale.x, transform.scale.y, transform.scale.z);
+        glPushMatrix();
+        glPushMatrix();
+        glTranslatef(transform.position.x, transform.position.y,
+                     transform.position.z);
+        // glRotatef(transform.rotation.y, 0, 1, 0);
+        glScalef(transform.scale.x, transform.scale.y, transform.scale.z);
         model->draw();
 #if DEBUG
         aabb.drawFrame();
 #endif
-        ::glPopMatrix();
-        ::glPopMatrix();
+        glPopMatrix();
+        glPopMatrix();
 }
 
-void Bullet::setSpeed(float speed) {
-        this->speed =speed;
-}
+void Bullet::setSpeed(float speed) { this->speed = speed; }
 
-float Bullet::getSpeed() const {
-        return speed;
-}
+float Bullet::getSpeed() const { return speed; }

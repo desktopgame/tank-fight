@@ -7,7 +7,7 @@ Number::Number(const std::shared_ptr<TextureManager>& textureManager,
                const std::array<std::string, 10>& files)
     : textureManager(textureManager), files(files) {}
 void Number::draw(int i) {
-        ::glPushMatrix();
+        glPushMatrix();
         if (i <= 9) {
                 this->drawTexture(position, i);
         } else {
@@ -20,7 +20,7 @@ void Number::draw(int i) {
                         temp.x += (tex->getWidth());
                 }
         }
-        ::glPopMatrix();
+        glPopMatrix();
 }
 Vector2 Number::calcSize(int i) const {
         if (i <= 9) {

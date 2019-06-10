@@ -11,7 +11,8 @@ float PlayScene::ROTATE_SPEED = 2.0f;
 int PlayScene::PLAY_TIME = 10;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                     const std::shared_ptr<gel::ModelManager>& modelManager, PlayResult& playResult)
+                     const std::shared_ptr<gel::ModelManager>& modelManager,
+                     PlayResult& playResult)
     : mFinished(false),
       mTextureManager(textureManager),
       mModelManager(modelManager),
@@ -98,7 +99,7 @@ void PlayScene::update() {
                                 continue;
                         }
                         */
-                       kill += 100;
+                        kill += 100;
                         eCache.actor->destroy();
                         bCache.actor->destroy();
                 }
@@ -117,13 +118,13 @@ void PlayScene::draw() {
                                    (msize.y * BLOCK_SCALE * 3),
                                    msize.z * 12 * BLOCK_SCALE);
         camera.beginDraw();
-        ::glPushMatrix();
+        glPushMatrix();
         skybox.draw(gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE, 1,
                                  blockAABBSize.z * 24 * BLOCK_SCALE));
         gel::drawField(mModelManager->getModel(path),
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
                        0);
-        ::glPopMatrix();
+        glPopMatrix();
         for (int i = 0; i < enemies.size(); i++) {
                 enemies[i]->draw();
         }
@@ -138,10 +139,10 @@ void PlayScene::draw() {
         camera.endDraw();
         drawIMGUI();
         drawTime();
-        //::glPushMatrix();
-        //::glLoadIdentity();
-        //::glTranslatef(0, 0, 0);
-//::glPopMatrix();
+        // glPushMatrix();
+        // glLoadIdentity();
+        // glTranslatef(0, 0, 0);
+// glPopMatrix();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
@@ -165,9 +166,10 @@ void PlayScene::draw() {
 std::string PlayScene::getNextScene() const { return "result"; }
 
 bool PlayScene::isFinished() const { return mFinished; }
-void PlayScene::hide() { 
+void PlayScene::hide() {
         playResult.record(kill);
-        this->mFinished = false; }
+        this->mFinished = false;
+}
 
 // private
 void PlayScene::initSkyBox() {
@@ -283,7 +285,9 @@ void PlayScene::movePlayer() {
                                              camera.transform.right() *
                                              MOVE_SPEED;
         }
-        camera.transform.position = camera.transform.position.clampXZ(gel::Vector3(stageMinX,0,stageMinZ),gel::Vector3(stageMaxX,0,stageMaxZ));
+        camera.transform.position = camera.transform.position.clampXZ(
+            gel::Vector3(stageMinX, 0, stageMinZ),
+            gel::Vector3(stageMaxX, 0, stageMaxZ));
 }
 
 void PlayScene::fireBullet() {
