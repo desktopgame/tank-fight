@@ -45,16 +45,8 @@ void drawTexture(const Rect& dstRect, const Rect& srcRect, const Color4& color,
 
         ::glMatrixMode(GL_MODELVIEW);
         ::glPushMatrix();
-        // glLoadMatrixf((GLfloat*)&desc.matrix);
         ::glLoadIdentity();
 
-        // glTranslatef(-desc.center.x, -desc.center.y, 0);
-        //::glTranslatef(position.x, position.y, 0);
-
-        // float w = texture->getWidth();
-        // float h = texture->getHeight();
-        // Rect dstRect(0, 0, w, h);
-        // Rect srcRect(0, 0, w, h);
         renderTexture(dstRect, srcRect, color, tid);
 
         ::glPopMatrix();
