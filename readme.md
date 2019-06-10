@@ -1,6 +1,6 @@
 # tank-fight
 this project is my first 3d game in C++.  
-still not playable
+~~still not playable~~
 
 # used library in this project
 * OpenGL
