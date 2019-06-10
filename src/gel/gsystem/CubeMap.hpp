@@ -6,6 +6,7 @@ class CubeMap {
        public:
         explicit CubeMap();
         void draw(const Vector3& size);
+        bool flip;
         Vector3 position;
         unsigned int posX;
         unsigned int negX;

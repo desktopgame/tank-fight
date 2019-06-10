@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "../model/Color4.hpp"
 namespace gel {
-CubeMap::CubeMap() : position(0, 0, 0) {}
+CubeMap::CubeMap() : position(0, 0, 0), flip(false) {}
 
 void CubeMap::draw(const Vector3& size) {
         glPushMatrix();
@@ -13,7 +13,11 @@ void CubeMap::draw(const Vector3& size) {
         glDisable(GL_LIGHTING);
         glDisable(GL_BLEND);
         glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
+        if (!flip) {
+                glCullFace(GL_FRONT);
+        } else {
+                glCullFace(GL_BACK);
+        }
         glColor4f(1, 1, 1, 1);
 
         //+x方向
@@ -96,6 +100,10 @@ void CubeMap::draw(const Vector3& size) {
 
         glPopAttrib();  //各種Enable系をもどす
         glPopMatrix();
-        glCullFace(GL_BACK);
+        if (!flip) {
+                glCullFace(GL_BACK);
+        } else {
+                glCullFace(GL_FRONT);
+        }
 }
 }  // namespace gel
