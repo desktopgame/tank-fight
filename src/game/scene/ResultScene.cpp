@@ -26,9 +26,6 @@ ResultScene::ResultScene(
                                       "./assets/image/number/9_R50x50.png"}),
       alphaDuration(1) {}
 void ResultScene::show() {
-        yourScoreTimer.reset();
-        isTimer.reset();
-        scoreTimer.reset();
         this->phase = 0;
         this->transStart = false;
 }
@@ -36,21 +33,25 @@ void ResultScene::update() {
         if (phase == 0) {
                 yourScoreTimer.update();
                 if (yourScoreTimer.isElapsed()) {
+                        yourScoreTimer.reset();
                         this->phase = 1;
                 }
         } else if (phase == 1) {
                 isTimer.update();
                 if (isTimer.isElapsed()) {
+                        isTimer.reset();
                         this->phase = 2;
                 }
         } else if (phase == 2) {
                 scoreTimer.update();
                 if (scoreTimer.isElapsed()) {
+                        scoreTimer.reset();
                         this->phase = 3;
                 }
         } else if (phase == 3) {
                 returnTimer.update();
                 if (returnTimer.isElapsed()) {
+                        returnTimer.reset();
                         this->phase = 4;
                 }
         }
