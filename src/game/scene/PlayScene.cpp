@@ -19,8 +19,8 @@ const int PlayScene::SPAWN_MAX = 4;
 PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
                      PlayResult& playResult)
     : mFinished(false),
-      mTextureManager(gameDevice->getTextureManager()),
-      mModelManager(gameDevice->getModelManager()),
+      textureManager(gameDevice->getTextureManager()),
+      modelManager(gameDevice->getModelManager()),
       audioManager(gameDevice->getAudioManager()),
       camera(),
       spawners(),
@@ -51,10 +51,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
           "./assets/audio/bgm_maoudamashii_cyber44.wav")),
       explosionSrc(audioManager->getSource(
           "./assets/audio/se_maoudamashii_explosion06.wav")) {
-        this->blockAABBSize =
-            mModelManager->getModel("./assets/model/Block.fbx")
-                ->getAABB()
-                .getSize();
+        this->blockAABBSize = modelManager->getModel("./assets/model/Block.fbx")
+                                  ->getAABB()
+                                  .getSize();
         auto pos = gel::Vector3(blockAABBSize.x * STAGE_CENTER_X * BLOCK_SCALE,
                                 blockAABBSize.y * BLOCK_SCALE * 2,
                                 blockAABBSize.z * STAGE_CENTER_Z * BLOCK_SCALE);
@@ -122,13 +121,13 @@ void PlayScene::update() {
 
 void PlayScene::draw() {
         auto path = "./assets/model/Block.fbx";
-        auto msize = mModelManager->getModel(path)->getAABB().getSize();
+        auto msize = modelManager->getModel(path)->getAABB().getSize();
         camera.beginDraw();
         glPushMatrix();
         skybox.draw(
             gel::Vector3(blockAABBSize.x * STAGE_CENTER_X * BLOCK_SCALE, 1,
                          blockAABBSize.z * STAGE_CENTER_Z * BLOCK_SCALE));
-        gel::drawField(mModelManager->getModel(path),
+        gel::drawField(modelManager->getModel(path),
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE),
                        STAGE_SIZE, 0);
         glPopMatrix();
@@ -178,17 +177,17 @@ void PlayScene::hide() {
 // private
 void PlayScene::initSkyBox() {
         auto negXTex =
-            mTextureManager->getTexture("./assets/image/skybox/RIGHT.png");
+            textureManager->getTexture("./assets/image/skybox/RIGHT.png");
         auto negYTex =
-            mTextureManager->getTexture("./assets/image/skybox/BOTTOM.png");
+            textureManager->getTexture("./assets/image/skybox/BOTTOM.png");
         auto negZTex =
-            mTextureManager->getTexture("./assets/image/skybox/FORWARD.png");
+            textureManager->getTexture("./assets/image/skybox/FORWARD.png");
         auto posXTex =
-            mTextureManager->getTexture("./assets/image/skybox/LEFT.png");
+            textureManager->getTexture("./assets/image/skybox/LEFT.png");
         auto posYTex =
-            mTextureManager->getTexture("./assets/image/skybox/TOP.png");
+            textureManager->getTexture("./assets/image/skybox/TOP.png");
         auto posZTex =
-            mTextureManager->getTexture("./assets/image/skybox/BACK.png");
+            textureManager->getTexture("./assets/image/skybox/BACK.png");
         skybox.posX = posXTex->getID();
         skybox.posY = posYTex->getID();
         skybox.posZ = posZTex->getID();
@@ -198,7 +197,7 @@ void PlayScene::initSkyBox() {
 }
 
 void PlayScene::initSpawners(float blockScale) {
-        auto msize = mModelManager->getModel("./assets/model/Block.fbx")
+        auto msize = modelManager->getModel("./assets/model/Block.fbx")
                          ->getAABB()
                          .getSize();
         auto interval = (msize.x * blockScale) * ((float)STAGE_SIZE / 8.f);
@@ -247,7 +246,7 @@ void PlayScene::spawn() {
                 }
                 spawners[i]->use();
                 auto enemy = std::make_shared<Enemy>(
-                    mModelManager->getModel("./assets/model/Tank.fbx"),
+                    modelManager->getModel("./assets/model/Tank.fbx"),
                     spawners[i]->getPosition(), spawners[i]->getRotation(),
                     spawners[i]->getDirection());
                 enemies.push_back(enemy);
@@ -332,7 +331,7 @@ void PlayScene::checkPlayTime() {
 }
 
 std::shared_ptr<Bullet> PlayScene::newBullet() {
-        auto model = mModelManager->getModel("./assets/model/Ball.fbx");
+        auto model = modelManager->getModel("./assets/model/Ball.fbx");
         auto bullet = std::make_shared<Bullet>(
             model, camera.transform.position, camera.transform.rotation,
             gel::Vector3(1, 0, 1) * camera.transform.forward());

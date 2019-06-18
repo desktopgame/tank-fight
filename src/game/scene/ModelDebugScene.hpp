@@ -18,8 +18,8 @@ class ModelDebugScene : public gel::IScene {
         void hide() override;
 
        private:
-        std::shared_ptr<gel::TextureManager> mTextureManager;
-        std::shared_ptr<gel::ModelManager> mModelManager;
+        std::shared_ptr<gel::TextureManager> textureManager;
+        std::shared_ptr<gel::ModelManager> modelManager;
         gel::Camera camera;
         bool mFinished;
 };

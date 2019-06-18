@@ -5,8 +5,8 @@ ModelDebugScene::ModelDebugScene(
     const std::shared_ptr<gel::TextureManager>& textureManager,
     const std::shared_ptr<gel::ModelManager>& modelManager)
     : mFinished(false),
-      mTextureManager(textureManager),
-      mModelManager(modelManager),
+      textureManager(textureManager),
+      modelManager(modelManager),
       camera() {}
 void ModelDebugScene::show() {}
 void ModelDebugScene::update() {}
@@ -15,7 +15,7 @@ void ModelDebugScene::draw() {
         glPushMatrix();
         glLoadIdentity();
         auto scale = 0.1f;
-        auto model = mModelManager->getModel("./assets/model/TankCat.fbx");
+        auto model = modelManager->getModel("./assets/model/TankCat.fbx");
         auto size = model->getAABB().getSize() * scale;
         gluLookAt(0, size.y, 0, 0, 0, 0, 0, 1, 0);
         glPushMatrix();

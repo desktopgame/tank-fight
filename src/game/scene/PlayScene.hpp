@@ -58,8 +58,8 @@ class PlayScene : public gel::IScene {
         void drawIMGUI();
         void drawTime();
         std::shared_ptr<gel::AudioManager> audioManager;
-        std::shared_ptr<gel::TextureManager> mTextureManager;
-        std::shared_ptr<gel::ModelManager> mModelManager;
+        std::shared_ptr<gel::TextureManager> textureManager;
+        std::shared_ptr<gel::ModelManager> modelManager;
 
         std::vector<HitCache> actorToCache(
             const std::vector<std::shared_ptr<Actor> > actors, float scale);
