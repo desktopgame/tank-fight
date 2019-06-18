@@ -132,6 +132,10 @@ const Vector3 operator*(const Vector3& v, const Matrix4& m) {
 std::array<std::array<float, 4>, 4> Matrix4::Multiply(const Matrix4& m1,
                                                       const Matrix4& m2) {
         std::array<std::array<float, 4>, 4> ret;
+        std::fill(ret[0].begin(), ret[0].end(), 0);
+        std::fill(ret[1].begin(), ret[1].end(), 0);
+        std::fill(ret[2].begin(), ret[2].end(), 0);
+        std::fill(ret[3].begin(), ret[3].end(), 0);
         int n = 4;
         int m = 4;
         int l = 4;
