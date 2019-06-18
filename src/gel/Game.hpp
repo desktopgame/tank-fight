@@ -63,8 +63,8 @@ class Game {
        protected:
         static Game* instance;
         GLFWwindow* window;
-        int mWidth;
-        int mHeight;
+        int width;
+        int height;
         double oldTime;
         float deltaTime;
         static void bridgeMouseButton(GLFWwindow* window, int button,

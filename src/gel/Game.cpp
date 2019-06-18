@@ -20,8 +20,8 @@ Game::~Game() {}
 
 int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                    int height) {
-        this->mWidth = width;
-        this->mHeight = height;
+        this->width = width;
+        this->height = height;
         if (!glfwInit()) return -1;
         if (!alutInit(&argc, argv)) return -1;
         // create window
@@ -74,11 +74,11 @@ float Game::getDeltaTime() const { return this->deltaTime; }
 
 Game* Game::getInstance() { return instance; }
 
-int Game::getWindowWidth() const { return mWidth; }
+int Game::getWindowWidth() const { return width; }
 
-int Game::getWindowHeight() const { return mHeight; }
+int Game::getWindowHeight() const { return height; }
 
-Vector2 Game::getWindowSize() const { return Vector2(mWidth, mHeight); }
+Vector2 Game::getWindowSize() const { return Vector2(width, height); }
 
 // protected
 void Game::init() {
@@ -145,8 +145,8 @@ void Game::onChar(GLFWwindow* window, unsigned int codePoint) {}
 void Game::onError(int error, const char* description) {}
 
 void Game::onResize(GLFWwindow* window, int width, int height) {
-        this->mWidth = width;
-        this->mHeight = height;
+        this->width = width;
+        this->height = height;
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
