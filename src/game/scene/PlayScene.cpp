@@ -135,25 +135,6 @@ void PlayScene::draw() {
         camera.endDraw();
         drawIMGUI();
         drawTime();
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        glPushMatrix();
-        glLoadIdentity();
-        auto ec = actorToCache(std::vector<std::shared_ptr<Actor> >(
-                                   enemies.begin(), enemies.end()),
-                               TANK_SCALE);
-        for (auto e : ec) {
-                e.aabb.drawFrame();
-        }
-        glPopMatrix();
-        // glPushMatrix();
-        // glLoadIdentity();
-        // glTranslatef(0, 0, 0);
-// glPopMatrix();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
