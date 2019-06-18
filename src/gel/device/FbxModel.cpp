@@ -241,7 +241,7 @@ FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
                 FbxMaterial mtl;
                 FbxSurfaceMaterial* material = node->GetMaterial(i);
                 FbxSurfacePhong* phong =
-                    dynamic_cast<FbxSurfacePhong*>(material);
+                    static_cast<FbxSurfacePhong*>(material);
                 FbxPropertyT<FbxDouble3> d3ambient = phong->Ambient;
                 mtl.color.ambient.r = (float)d3ambient.Get()[0];
                 mtl.color.ambient.g = (float)d3ambient.Get()[1];
