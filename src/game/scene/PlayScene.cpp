@@ -256,26 +256,26 @@ void PlayScene::spawn(int n) {
 }
 
 void PlayScene::movePlayer() {
-        auto mWindow = gel::Game::getInstance()->getWindow();
-        if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        auto window = gel::Game::getInstance()->getWindow();
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 camera.transform.rotation.x += ROTATE_SPEED;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        } else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 camera.transform.rotation.x -= ROTATE_SPEED;
         }
-        if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'W') == GLFW_PRESS) {
                 camera.transform.position += gel::Vector3(1, 0, 1) *
                                              camera.transform.forward() *
                                              MOVE_SPEED;
-        } else if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
+        } else if (glfwGetKey(window, 'S') == GLFW_PRESS) {
                 camera.transform.position += gel::Vector3(1, 0, 1) *
                                              camera.transform.backward() *
                                              MOVE_SPEED;
         }
-        if (glfwGetKey(mWindow, 'A') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'A') == GLFW_PRESS) {
                 camera.transform.position += gel::Vector3(1, 0, 1) *
                                              camera.transform.left() *
                                              MOVE_SPEED;
-        } else if (glfwGetKey(mWindow, 'D') == GLFW_PRESS) {
+        } else if (glfwGetKey(window, 'D') == GLFW_PRESS) {
                 camera.transform.position += gel::Vector3(1, 0, 1) *
                                              camera.transform.right() *
                                              MOVE_SPEED;
@@ -286,7 +286,7 @@ void PlayScene::movePlayer() {
 }
 
 void PlayScene::fireBullet() {
-        auto mWindow = gel::Game::getInstance()->getWindow();
+        auto window = gel::Game::getInstance()->getWindow();
         if (fired) {
                 fireTimer.update();
                 if (fireTimer.isElapsed()) {
@@ -295,7 +295,7 @@ void PlayScene::fireBullet() {
                 }
                 return;
         }
-        if (glfwGetKey(mWindow, 'Z') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'Z') == GLFW_PRESS) {
                 this->fired = true;
                 auto bullet = newBullet();
                 bullets.push_back(bullet);
@@ -312,8 +312,8 @@ void PlayScene::checkPlayTime() {
                 this->playTime--;
         }
 #if DEBUG
-        auto mWindow = gel::Game::getInstance()->getWindow();
-        if (glfwGetKey(mWindow, 'T') == GLFW_PRESS) {
+        auto window = gel::Game::getInstance()->getWindow();
+        if (glfwGetKey(window, 'T') == GLFW_PRESS) {
                 this->playTime = 10;
         }
 #endif

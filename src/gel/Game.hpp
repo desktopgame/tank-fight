@@ -62,7 +62,7 @@ class Game {
 
        protected:
         static Game* instance;
-        GLFWwindow* mWindow;
+        GLFWwindow* window;
         int mWidth;
         int mHeight;
         double oldTime;

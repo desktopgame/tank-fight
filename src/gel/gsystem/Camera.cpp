@@ -25,37 +25,37 @@ void Camera::endDraw() const { glPopMatrix(); }
 
 void Camera::debugControl() {
         float increase = 0.001f;
-        GLFWwindow* mWindow = Game::getInstance()->getWindow();
-        if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT)) {
+        GLFWwindow* window = Game::getInstance()->getWindow();
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
                 increase = 0.5;
         }
-        if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 transform.rotation.x += increase * 50;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        } else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 transform.rotation.x -= increase * 50;
         }
-        if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
                 transform.rotation.y += increase * 50;
-        } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
                 transform.rotation.y -= increase * 50;
         }
-        if (glfwGetKey(mWindow, 'X') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'X') == GLFW_PRESS) {
                 transform.position.y -= 0.02f;
         }
-        if (glfwGetKey(mWindow, 'Z') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'Z') == GLFW_PRESS) {
                 transform.position.y += 0.02f;
         }
-        if (glfwGetKey(mWindow, 'W') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'W') == GLFW_PRESS) {
                 transform.position +=
                     Vector3(1, 0, 1) * transform.forward() * 0.1f;
-        } else if (glfwGetKey(mWindow, 'S') == GLFW_PRESS) {
+        } else if (glfwGetKey(window, 'S') == GLFW_PRESS) {
                 transform.position +=
                     Vector3(1, 0, 1) * transform.backward() * 0.1f;
         }
-        if (glfwGetKey(mWindow, 'A') == GLFW_PRESS) {
+        if (glfwGetKey(window, 'A') == GLFW_PRESS) {
                 transform.position +=
                     Vector3(1, 0, 1) * transform.left() * 0.1f;
-        } else if (glfwGetKey(mWindow, 'D') == GLFW_PRESS) {
+        } else if (glfwGetKey(window, 'D') == GLFW_PRESS) {
                 transform.position +=
                     Vector3(1, 0, 1) * transform.right() * 0.1f;
         }

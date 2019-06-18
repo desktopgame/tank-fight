@@ -66,6 +66,6 @@ void MyGame::draw() {
         // glRotatef(gRotateY, 0, 1.0f, 0);
         sceneManager.draw();
 
-        glfwSwapBuffers(mWindow);
+        glfwSwapBuffers(window);
         glfwPollEvents();
 }

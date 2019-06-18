@@ -26,7 +26,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         if (!alutInit(&argc, argv)) return -1;
         // create window
         GLFWwindow* window = glfwCreateWindow(width, height, title, NULL, NULL);
-        this->mWindow = window;
+        this->window = window;
         if (!window) {
                 glfwTerminate();
                 return -1;
@@ -68,7 +68,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         return 0;
 }
 
-GLFWwindow* Game::getWindow() const { return this->mWindow; }
+GLFWwindow* Game::getWindow() const { return this->window; }
 
 float Game::getDeltaTime() const { return this->deltaTime; }
 
