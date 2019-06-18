@@ -93,15 +93,10 @@ void PlayScene::update() {
                                 continue;
                         }
                         auto bPos = bCache.actor->getPosition();
-                        if (!(gel::Vector3::distance(ePos, bPos) < 1.0f)) {
-                                continue;
-                        }
-                        /*
                         if (!gel::AABB::isIntersects(eCache.aabb,
                                                      bCache.aabb)) {
                                 continue;
                         }
-                        */
                         kill += 100;
                         eCache.actor->destroy();
                         bCache.actor->destroy();
@@ -140,6 +135,21 @@ void PlayScene::draw() {
         camera.endDraw();
         drawIMGUI();
         drawTime();
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        glPushMatrix();
+        glLoadIdentity();
+        auto ec = actorToCache(std::vector<std::shared_ptr<Actor> >(
+                                   enemies.begin(), enemies.end()),
+                               TANK_SCALE);
+        for (auto e : ec) {
+                e.aabb.drawFrame();
+        }
+        glPopMatrix();
         // glPushMatrix();
         // glLoadIdentity();
         // glTranslatef(0, 0, 0);
@@ -354,19 +364,27 @@ std::vector<HitCache> PlayScene::actorToCache(
         for (int i = 0; i < actors.size(); i++) {
                 auto act = actors[i];
                 auto actAABB = act->getAABB();
+                auto projMat = gel::Matrix4();
+                projMat.setPerspective(30.0, 640.0f / 480.0f, 0.1, 2000.0);
+                auto viewMat = gel::Matrix4();
+                viewMat.setLookAt(camera.transform.position, camera.getLook(),
+                                  camera.getUp());
                 auto actMoveMat = gel::Matrix4();
                 actMoveMat.setTranslate(act->getPosition());
                 auto actScaleMat = gel::Matrix4();
                 actScaleMat.setScale(gel::Vector3::one() * scale);
-                auto actRotMat = gel::Matrix4();
-                actRotMat.setRotateX(act->getRotation().x);
-                actRotMat.setRotateY(act->getRotation().y);
-                actRotMat.setRotateZ(act->getRotation().z);
+                auto actRotXMat = gel::Matrix4();
+                auto actRotYMat = gel::Matrix4();
+                auto actRotZMat = gel::Matrix4();
+                actRotXMat.setRotateX(act->getRotation().x * (3.14f / 180.0f));
+                actRotYMat.setRotateY(act->getRotation().y * (3.14f / 180.0f));
+                actRotZMat.setRotateZ(act->getRotation().z * (3.14f / 180.0f));
                 auto actRMoveMat = gel::Matrix4();
                 actRMoveMat.setTranslate(-act->getPosition());
-                auto actMat =
-                    actMoveMat * actRotMat * actScaleMat * actRMoveMat;
-                actAABB = actAABB.transform(actMat);
+                auto modelMat = actScaleMat *
+                                (actRotZMat * actRotXMat * actRotYMat) *
+                                actMoveMat;
+                actAABB = actAABB.transform(modelMat);
                 v.push_back(HitCache(act, actAABB));
         }
         return v;

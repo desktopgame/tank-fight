@@ -55,7 +55,7 @@ class PlayScene : public gel::IScene {
         void drawIMGUI();
         void drawTime();
 
-        static std::vector<HitCache> actorToCache(
+        std::vector<HitCache> actorToCache(
             const std::vector<std::shared_ptr<Actor> > actors, float scale);
 
         int kill;

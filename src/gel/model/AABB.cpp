@@ -183,9 +183,8 @@ AABB AABB::transform(const Matrix4& m) const {
 }
 
 bool AABB::isIntersects(const AABB& a, const AABB& b) {
-        return (a.minX <= b.maxX && a.maxX >= b.minX) &&
-               (a.minY <= b.maxY && a.maxY >= b.minY) &&
-               (a.minZ <= b.maxZ && a.maxZ >= b.minZ);
+        return (a.maxX > b.minX && a.minX < b.maxX && a.maxY > b.minY &&
+                a.minY < b.maxY && a.maxZ > b.minZ && a.minZ < b.maxZ);
 }
 
 void AABB::init() {
