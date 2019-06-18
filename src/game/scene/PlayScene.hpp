@@ -6,8 +6,8 @@
 #include "../Bullet.hpp"
 #include "../Enemy.hpp"
 #include "../HitCache.hpp"
-#include "../Spawner.hpp"
 #include "../PlayResult.hpp"
+#include "../Spawner.hpp"
 class TextureManager;
 class ModelManager;
 class PlayScene : public gel::IScene {
@@ -19,10 +19,12 @@ class PlayScene : public gel::IScene {
         static const float MOVE_SPEED;
         static const float ROTATE_SPEED;
         static const int PLAY_TIME;
+        static const int STAGE_SIZE;
         static const int STAGE_CENTER_X;
         static const int STAGE_CENTER_Z;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                  const std::shared_ptr<gel::ModelManager>& modelManager, PlayResult& playResult);
+                  const std::shared_ptr<gel::ModelManager>& modelManager,
+                  PlayResult& playResult);
         void show() override;
         void update() override;
         void draw() override;

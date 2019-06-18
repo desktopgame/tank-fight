@@ -9,6 +9,7 @@ const float PlayScene::BULLET_SPEED = 2;
 const float PlayScene::MOVE_SPEED = 0.009f;
 const float PlayScene::ROTATE_SPEED = 2.0f;
 const int PlayScene::PLAY_TIME = 100;
+const int PlayScene::STAGE_SIZE = 48;
 const int PlayScene::STAGE_CENTER_X = 24;
 const int PlayScene::STAGE_CENTER_Z = 24;
 
@@ -122,8 +123,8 @@ void PlayScene::draw() {
             gel::Vector3(blockAABBSize.x * STAGE_CENTER_X * BLOCK_SCALE, 1,
                          blockAABBSize.z * STAGE_CENTER_Z * BLOCK_SCALE));
         gel::drawField(mModelManager->getModel(path),
-                       gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
-                       0);
+                       gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE),
+                       STAGE_SIZE, 0);
         glPopMatrix();
         for (int i = 0; i < enemies.size(); i++) {
                 enemies[i]->draw();
@@ -197,7 +198,7 @@ void PlayScene::initSpawners(float blockScale) {
         auto msize = mModelManager->getModel("./assets/model/Block.fbx")
                          ->getAABB()
                          .getSize();
-        auto interval = (msize.x * blockScale) * (48.f / 8.f);
+        auto interval = (msize.x * blockScale) * ((float)STAGE_SIZE / 8.f);
         auto baseY = (msize.y * blockScale * 3);
         for (int i = 1; i < 8; i++) {
                 auto pos = gel::Vector3(interval * i, baseY, 0);
