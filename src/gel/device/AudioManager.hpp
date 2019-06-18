@@ -1,5 +1,6 @@
 #ifndef GEL_DEVICE_AUDIOMANAGER_HPP
 #define GEL_DEVICE_AUDIOMANAGER_HPP
+#include <AL/alut.h>
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <string>
@@ -31,14 +32,14 @@ class AudioManager {
          * @param path
          * @return
          */
-        GLuint getBuffer(const std::string& path) const;
+        ALuint getBuffer(const std::string& path) const;
 
         /**
          * return a source of OpenAL.
          * @param path
          * @return
          */
-        GLuint getSource(const std::string& path) const;
+        ALuint getSource(const std::string& path) const;
 
         /**
          * unload audio.

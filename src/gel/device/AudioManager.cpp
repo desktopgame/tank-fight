@@ -15,14 +15,14 @@ void AudioManager::play(const std::string& path) const {
         }
 }
 
-GLuint AudioManager::getBuffer(const std::string& path) const {
+ALuint AudioManager::getBuffer(const std::string& path) const {
         if (audioMap.count(path)) {
                 return audioMap.at(path)->getBuffer();
         }
         ::abort();
 }
 
-GLuint AudioManager::getSource(const std::string& path) const {
+ALuint AudioManager::getSource(const std::string& path) const {
         if (audioMap.count(path)) {
                 return audioMap.at(path)->getSource();
         }

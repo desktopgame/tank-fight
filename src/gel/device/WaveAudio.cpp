@@ -8,9 +8,9 @@ void WaveAudio::load(const std::string& path) {
 
 void WaveAudio::play() const { alSourcePlay(this->src); }
 
-GLuint WaveAudio::getBuffer() const { return this->buf; }
+ALuint WaveAudio::getBuffer() const { return this->buf; }
 
-GLuint WaveAudio::getSource() const { return this->src; }
+ALuint WaveAudio::getSource() const { return this->src; }
 
 void WaveAudio::unload(const std::string& path) {
         alDeleteBuffers(1, &(this->buf));

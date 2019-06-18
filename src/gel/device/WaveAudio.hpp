@@ -9,8 +9,8 @@ class WaveAudio : public IPlayableAudio {
         WaveAudio() = default;
         void load(const std::string& path) override;
         void play() const override;
-        GLuint getBuffer() const override;
-        GLuint getSource() const override;
+        ALuint getBuffer() const override;
+        ALuint getSource() const override;
         void unload(const std::string& path) override;
 
        private:
