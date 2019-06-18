@@ -114,9 +114,6 @@ void PlayScene::update() {
 void PlayScene::draw() {
         auto path = "./assets/model/Block.fbx";
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
-        auto gunPos = gel::Vector3(msize.x * 12 * BLOCK_SCALE,
-                                   (msize.y * BLOCK_SCALE * 3),
-                                   msize.z * 12 * BLOCK_SCALE);
         camera.beginDraw();
         glPushMatrix();
         skybox.draw(gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE, 1,
