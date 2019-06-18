@@ -1,8 +1,8 @@
 #include "ResultScene.hpp"
-ResultScene::ResultScene(
-    const std::shared_ptr<gel::TextureManager>& textureManager,
-    PlayResult& playResult)
-    : textureManager(textureManager),
+ResultScene::ResultScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
+                         PlayResult& playResult)
+    : textureManager(gameDevice->getTextureManager()),
+      audioManager(gameDevice->getAudioManager()),
       playResult(playResult),
       finished(false),
       yourScoreTimer(2),
@@ -47,6 +47,8 @@ void ResultScene::update() {
                 if (scoreTimer.isElapsed()) {
                         scoreTimer.reset();
                         this->phase = 3;
+                        alSourcePlay(audioManager->getSource(
+                            "./assets/audio/se_maoudamashii_onepoint05.wav"));
                 }
         } else if (phase == 3) {
                 returnTimer.update();

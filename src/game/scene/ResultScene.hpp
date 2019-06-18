@@ -5,9 +5,8 @@
 #include "../PlayResult.hpp"
 class ResultScene : public gel::IScene {
        public:
-        explicit ResultScene(
-            const std::shared_ptr<gel::TextureManager>& textureManager,
-            PlayResult& playResult);
+        explicit ResultScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
+                             PlayResult& playResult);
         void show() override;
         void update() override;
         void draw() override;
@@ -18,6 +17,7 @@ class ResultScene : public gel::IScene {
        private:
         void checkSpaceKey();
         std::shared_ptr<gel::TextureManager> textureManager;
+        std::shared_ptr<gel::AudioManager> audioManager;
         gel::Timer yourScoreTimer;
         gel::Timer isTimer;
         gel::Timer scoreTimer;

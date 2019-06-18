@@ -18,8 +18,7 @@ void MyGame::init() {
         sceneManager.put("play",
                          std::make_shared<PlayScene>(gameDevice, playResult));
         sceneManager.put("result",
-                         std::make_shared<ResultScene>(
-                             gameDevice->getTextureManager(), playResult));
+                         std::make_shared<ResultScene>(gameDevice, playResult));
         sceneManager.bind("title");
 
         glClearColor(0.0, 0.0, 0.0, 1.0);
