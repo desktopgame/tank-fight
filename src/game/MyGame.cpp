@@ -42,7 +42,6 @@ void MyGame::init() {
 void MyGame::update() {
         auto win = gel::Game::getInstance()->getWindow();
         if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-                gameDevice->getContentManager()->unload();
                 glfwSetWindowShouldClose(win, GL_TRUE);
                 isExitNow = true;
                 return;
@@ -69,3 +68,5 @@ void MyGame::draw() {
         glfwSwapBuffers(window);
         glfwPollEvents();
 }
+
+void MyGame::onExit() { gameDevice->getContentManager()->unload(); }
