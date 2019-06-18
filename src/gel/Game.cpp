@@ -38,6 +38,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         glfwSetScrollCallback(window, Game::bridgeScroll);
         glfwSetKeyCallback(window, Game::bridgeKey);
         glfwSetCharCallback(window, Game::bridgeChar);
+        glfwSetWindowSizeCallback(window, Game::bridgeResize);
         init();
         glfwSetTime(0.0);
         // init Imgui
@@ -147,10 +148,9 @@ void Game::onError(int error, const char* description) {}
 void Game::onResize(GLFWwindow* window, int width, int height) {
         this->width = width;
         this->height = height;
-        glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-1.0, 1.0, -1.0, 0.0, 1.0, -1.0);
+        gluPerspective(30.0, (float)width / (float)height, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 }
