@@ -316,6 +316,12 @@ void PlayScene::checkPlayTime() {
                 playTimer.reset();
                 this->playTime--;
         }
+#if DEBUG
+        auto mWindow = gel::Game::getInstance()->getWindow();
+        if (glfwGetKey(mWindow, 'T') == GLFW_PRESS) {
+                this->playTime = 10;
+        }
+#endif
         if (this->playTime == 0) {
                 this->mFinished = true;
         }
