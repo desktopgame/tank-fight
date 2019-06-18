@@ -1,5 +1,4 @@
 #include "PlayScene.hpp"
-#include <alut.h>
 #include "../../gel/ui/imgui/imgui_impl_glfw.h"
 #include "../../gel/ui/imgui/imgui_impl_opengl2.h"
 
@@ -47,7 +46,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
       random(),
       skybox(),
       playResult(playResult),
-      kill(0) {
+      kill(0),
+      bgmSrc(audioManager->getSource(
+          "./assets/audio/bgm_maoudamashii_cyber44.wav")) {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
@@ -70,6 +71,9 @@ void PlayScene::show() {
         this->mFinished = false;
         this->playTime = PLAY_TIME;
         this->kill = 0;
+        alSourcei(bgmSrc, AL_LOOPING, AL_TRUE);
+        alSourcei(bgmSrc, AL_GAIN, 0.5f);
+        alSourcePlay(bgmSrc);
 }
 
 void PlayScene::update() {
@@ -165,6 +169,7 @@ bool PlayScene::isFinished() const { return mFinished; }
 void PlayScene::hide() {
         playResult.record(kill);
         this->mFinished = false;
+        alSourceStop(bgmSrc);
 }
 
 // private

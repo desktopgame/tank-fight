@@ -1,5 +1,6 @@
 #ifndef GAME_SCENE_PLAYSCENE_HPP
 #define GAME_SCENE_PLAYSCENE_HPP
+#include <alut.h>
 #include <memory>
 #include <vector>
 #include "../../gel/gel.hpp"
@@ -56,6 +57,9 @@ class PlayScene : public gel::IScene {
         std::shared_ptr<Bullet> newBullet();
         void drawIMGUI();
         void drawTime();
+        std::shared_ptr<gel::AudioManager> audioManager;
+        std::shared_ptr<gel::TextureManager> mTextureManager;
+        std::shared_ptr<gel::ModelManager> mModelManager;
 
         std::vector<HitCache> actorToCache(
             const std::vector<std::shared_ptr<Actor> > actors, float scale);
@@ -66,6 +70,8 @@ class PlayScene : public gel::IScene {
         float stageMaxX;
         float stageMinZ;
         float stageMaxZ;
+        ALuint bgmSrc;
+        ALuint explosionSrc;
         PlayResult& playResult;
         gel::Random random;
         gel::Timer spawnTimer;
@@ -78,9 +84,6 @@ class PlayScene : public gel::IScene {
         std::vector<std::shared_ptr<Bullet> > bullets;
         std::vector<std::shared_ptr<Enemy> > enemies;
         std::vector<std::shared_ptr<Spawner> > spawners;
-        std::shared_ptr<gel::AudioManager> audioManager;
-        std::shared_ptr<gel::TextureManager> mTextureManager;
-        std::shared_ptr<gel::ModelManager> mModelManager;
         gel::Camera camera;
         bool mFinished;
 };
