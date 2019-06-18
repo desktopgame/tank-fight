@@ -13,7 +13,10 @@ void BmpTexture::load(const std::string& path) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
-void BmpTexture::unload(const std::string& path) { delete[] data; }
+void BmpTexture::unload(const std::string& path) {
+        delete[] data;
+        glDeleteTextures(1, &tid);
+}
 
 GLuint BmpTexture::getID() const { return this->tid; }
 

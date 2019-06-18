@@ -67,7 +67,10 @@ void PngTexture::load(const std::string& path) {
         fclose(fp);
 }
 
-void PngTexture::unload(const std::string& path) { ::free(this->data); }
+void PngTexture::unload(const std::string& path) {
+        ::free(this->data);
+        glDeleteTextures(1, &textureId);
+}
 
 GLuint PngTexture::getID() const { return textureId; }
 
