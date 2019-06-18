@@ -8,6 +8,8 @@ class Camera {
         void beginDraw() const;
         void endDraw() const;
         void debugControl();
+        Vector3 getLook() const;
+        Vector3 getUp() const;
         Transform transform;
 };
 }  // namespace gel

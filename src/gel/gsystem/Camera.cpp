@@ -62,4 +62,8 @@ void Camera::debugControl() {
         transform.rotation.y =
             std::max(-90.f, std::min(90.f, transform.rotation.y));
 }
+Vector3 Camera::getLook() const {
+        return transform.position + transform.forward();
+}
+Vector3 Camera::getUp() const { return gel::Vector3(0, 1, 0); }
 }  // namespace gel
