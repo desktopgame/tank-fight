@@ -48,7 +48,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
       playResult(playResult),
       kill(0),
       bgmSrc(audioManager->getSource(
-          "./assets/audio/bgm_maoudamashii_cyber44.wav")) {
+          "./assets/audio/bgm_maoudamashii_cyber44.wav")),
+      explosionSrc(audioManager->getSource(
+          "./assets/audio/se_maoudamashii_explosion06.wav")) {
         this->blockAABBSize =
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
@@ -108,6 +110,7 @@ void PlayScene::update() {
                         kill += KILL_POINT;
                         eCache.actor->destroy();
                         bCache.actor->destroy();
+                        alSourcePlay(explosionSrc);
                 }
         }
         remove_if(enemies);
