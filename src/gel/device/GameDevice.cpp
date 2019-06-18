@@ -3,6 +3,7 @@
 #include "../content/ContentManager.hpp"
 #include "../content/EchoPipeline.hpp"
 #include "../content/FbxPipeline.hpp"
+#include "../content/MP3Pipeline.hpp"
 #include "../content/ObjPipeline.hpp"
 #include "../content/PngPipeline.hpp"
 #include "../content/ProxyPipeline.hpp"
@@ -17,6 +18,9 @@ GameDevice::GameDevice(const std::string& assetRootDir)
         contentManager->add(
             std::make_shared<gel::ProxyPipeline<gel::WavePipeline> >(
                 ".wav", audioManager));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::MP3Pipeline> >(
+                ".mp3", audioManager));
         contentManager->add(
             std::make_shared<gel::ProxyPipeline<gel::BmpPipeline> >(
                 ".bmp", textureManager));
