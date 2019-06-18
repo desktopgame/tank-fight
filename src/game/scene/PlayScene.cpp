@@ -345,11 +345,6 @@ std::vector<HitCache> PlayScene::actorToCache(
         for (int i = 0; i < actors.size(); i++) {
                 auto act = actors[i];
                 auto actAABB = act->getAABB();
-                auto projMat = gel::Matrix4();
-                projMat.setPerspective(30.0, 640.0f / 480.0f, 0.1, 2000.0);
-                auto viewMat = gel::Matrix4();
-                viewMat.setLookAt(camera.transform.position, camera.getLook(),
-                                  camera.getUp());
                 auto actMoveMat = gel::Matrix4();
                 actMoveMat.setTranslate(act->getPosition());
                 auto actScaleMat = gel::Matrix4();
