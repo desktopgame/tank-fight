@@ -153,12 +153,14 @@ FbxMesh* FbxModel::mapVertex(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
                 float z = (float)coord[i][2];
                 dest.vertex.push_back(Vector3(x, y, z));
         }
+        return fbxMesh;
 }
 FbxMesh* FbxModel::mapVertexIndex(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         int* vindex = fbxMesh->GetPolygonVertices();
         for (int i = 0; i < fbxMesh->GetPolygonCount() * 3; i++) {
                 dest.vertexIndex.push_back(vindex[i]);
         }
+        return fbxMesh;
 }
 FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxLayerElementNormal* elementNormal =
@@ -202,6 +204,7 @@ FbxMesh* FbxModel::mapNormal(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         } else {
                 throw std::logic_error("unsupported file structure");
         }
+        return fbxMesh;
 }
 FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxLayerElementUV* uvs = fbxMesh->GetLayer(0)->GetUVs();
@@ -230,6 +233,7 @@ FbxMesh* FbxModel::mapUV(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         } else {
                 throw std::logic_error("unsupported file structure");
         }
+        return fbxMesh;
 }
 FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         FbxNode* node = fbxMesh->GetNode();
@@ -271,6 +275,7 @@ FbxMesh* FbxModel::mapMaterial(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
                 dest.materials.push_back(mtl);
                 assert(!dest.materials.empty());
         }
+        return fbxMesh;
 }
 FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
         assert(!dest.materials.empty());
@@ -306,5 +311,6 @@ FbxMesh* FbxModel::mapSide(FbxMesh* fbxMesh, FbxMeshInfo& dest) {
                         throw std::logic_error("unsupported file structure");
                 }
         }
+        return fbxMesh;
 }
 }  // namespace gel
