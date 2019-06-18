@@ -22,10 +22,11 @@ void FbxModel::load(const std::string& path) {
         collectMesh(rootNode, meshes);
         std::sort(meshes.begin(), meshes.end());
         meshes.erase(std::unique(meshes.begin(), meshes.end()), meshes.end());
-        std::cout << path << std::endl;
+        // std::cout << path << std::endl;
         int size = meshes.size();
         for (int i = 0; i < meshes.size(); i++) {
-                std::cout << "mesh:     " << meshes[i]->GetName() << std::endl;
+                // std::cout << "mesh:     " << meshes[i]->GetName() <<
+                // std::endl;
                 FbxMeshInfo meshInfo;
                 mapVertex(meshes[i], meshInfo);
                 mapVertexIndex(meshes[i], meshInfo);
