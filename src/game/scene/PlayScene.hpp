@@ -12,13 +12,15 @@ class TextureManager;
 class ModelManager;
 class PlayScene : public gel::IScene {
        public:
-        static float BLOCK_SCALE;
-        static float TANK_SCALE;
-        static float BULLET_SCALE;
-        static float BULLET_SPEED;
-        static float MOVE_SPEED;
-        static float ROTATE_SPEED;
-        static int PLAY_TIME;
+        static const float BLOCK_SCALE;
+        static const float TANK_SCALE;
+        static const float BULLET_SCALE;
+        static const float BULLET_SPEED;
+        static const float MOVE_SPEED;
+        static const float ROTATE_SPEED;
+        static const int PLAY_TIME;
+        static const int STAGE_CENTER_X;
+        static const int STAGE_CENTER_Z;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                   const std::shared_ptr<gel::ModelManager>& modelManager, PlayResult& playResult);
         void show() override;

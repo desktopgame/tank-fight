@@ -2,13 +2,15 @@
 #include "../../gel/ui/imgui/imgui_impl_glfw.h"
 #include "../../gel/ui/imgui/imgui_impl_opengl2.h"
 
-float PlayScene::BLOCK_SCALE = 0.1f;
-float PlayScene::TANK_SCALE = 0.001f;
-float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
-float PlayScene::BULLET_SPEED = 2;
-float PlayScene::MOVE_SPEED = 0.009f;
-float PlayScene::ROTATE_SPEED = 2.0f;
-int PlayScene::PLAY_TIME = 100;
+const float PlayScene::BLOCK_SCALE = 0.1f;
+const float PlayScene::TANK_SCALE = 0.001f;
+const float PlayScene::BULLET_SCALE = 0.001f * 0.1f;
+const float PlayScene::BULLET_SPEED = 2;
+const float PlayScene::MOVE_SPEED = 0.009f;
+const float PlayScene::ROTATE_SPEED = 2.0f;
+const int PlayScene::PLAY_TIME = 100;
+const int PlayScene::STAGE_CENTER_X = 24;
+const int PlayScene::STAGE_CENTER_Z = 24;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                      const std::shared_ptr<gel::ModelManager>& modelManager,
@@ -45,9 +47,9 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
             mModelManager->getModel("./assets/model/Block.fbx")
                 ->getAABB()
                 .getSize();
-        auto pos = gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE,
+        auto pos = gel::Vector3(blockAABBSize.x * STAGE_CENTER_X * BLOCK_SCALE,
                                 blockAABBSize.y * BLOCK_SCALE * 2,
-                                blockAABBSize.z * 24 * BLOCK_SCALE);
+                                blockAABBSize.z * STAGE_CENTER_Z * BLOCK_SCALE);
         skybox.position = pos;
         camera.transform.position = pos;
         this->stageMinX = 0.1f;
@@ -116,8 +118,9 @@ void PlayScene::draw() {
         auto msize = mModelManager->getModel(path)->getAABB().getSize();
         camera.beginDraw();
         glPushMatrix();
-        skybox.draw(gel::Vector3(blockAABBSize.x * 24 * BLOCK_SCALE, 1,
-                                 blockAABBSize.z * 24 * BLOCK_SCALE));
+        skybox.draw(
+            gel::Vector3(blockAABBSize.x * STAGE_CENTER_X * BLOCK_SCALE, 1,
+                         blockAABBSize.z * STAGE_CENTER_Z * BLOCK_SCALE));
         gel::drawField(mModelManager->getModel(path),
                        gel::Vector3(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE), 48,
                        0);
