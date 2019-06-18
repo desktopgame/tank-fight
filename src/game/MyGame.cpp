@@ -2,10 +2,13 @@
 #include <glut.h>
 #include "scene/ModelDebugScene.hpp"
 #include "scene/PlayScene.hpp"
-#include "scene/TitleScene.hpp"
 #include "scene/ResultScene.hpp"
+#include "scene/TitleScene.hpp"
 MyGame::MyGame()
-    : sceneManager(), gameDevice(gel::GameDevice::make_shared("./assets")) , playResult(), isExitNow(false) {}
+    : sceneManager(),
+      gameDevice(gel::GameDevice::make_shared("./assets")),
+      playResult(),
+      isExitNow(false) {}
 
 void MyGame::init() {
         gameDevice->getContentManager()->load();
@@ -14,10 +17,11 @@ void MyGame::init() {
                                       gameDevice->getModelManager()));
         sceneManager.put(
             "play", std::make_shared<PlayScene>(gameDevice->getTextureManager(),
-                                                gameDevice->getModelManager(), playResult));
-        sceneManager.put(
-            "result", std::make_shared<ResultScene>(gameDevice->getTextureManager(),
-                                               playResult));
+                                                gameDevice->getModelManager(),
+                                                playResult));
+        sceneManager.put("result",
+                         std::make_shared<ResultScene>(
+                             gameDevice->getTextureManager(), playResult));
         sceneManager.bind("title");
 
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -36,19 +40,19 @@ void MyGame::init() {
 }
 
 void MyGame::update() {
-    auto win = gel::Game::getInstance()->getWindow();
-    if(glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        gameDevice->getContentManager()->unload();
-        glfwSetWindowShouldClose(win, GL_TRUE);
-        isExitNow = true;
-        return;
-    }
-     sceneManager.update();
+        auto win = gel::Game::getInstance()->getWindow();
+        if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+                gameDevice->getContentManager()->unload();
+                glfwSetWindowShouldClose(win, GL_TRUE);
+                isExitNow = true;
+                return;
+        }
+        sceneManager.update();
 }
 
 void MyGame::draw() {
-        if(isExitNow) {
-            return;
+        if (isExitNow) {
+                return;
         }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // glViewport(0, 0, 640, 480);
@@ -57,7 +61,7 @@ void MyGame::draw() {
         gluPerspective(30.0, mWidth / mHeight, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(0.0, 0.1, -5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        ;
         // glTranslatef(gScrollX, gScrollY, gScrollZ);
         // glRotatef(gRotateY, 0, 1.0f, 0);
         sceneManager.draw();

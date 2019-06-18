@@ -21,6 +21,7 @@ void TitleScene::update() {
 
 void TitleScene::draw() {
         // gel::viewPerspective();
+        gluLookAt(0.0, 0.1, -5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
         glPushMatrix();
         gluLookAt(0, 0, 0, 0, 0, -1, 0, 1, 0);
 
