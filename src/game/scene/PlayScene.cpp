@@ -12,6 +12,9 @@ const int PlayScene::PLAY_TIME = 100;
 const int PlayScene::STAGE_SIZE = 48;
 const int PlayScene::STAGE_CENTER_X = 24;
 const int PlayScene::STAGE_CENTER_Z = 24;
+const int PlayScene::KILL_POINT = 100;
+const int PlayScene::SPAWN_MIN = 1;
+const int PlayScene::SPAWN_MAX = 4;
 
 PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                      const std::shared_ptr<gel::ModelManager>& modelManager,
@@ -97,7 +100,7 @@ void PlayScene::update() {
                                                      bCache.aabb)) {
                                 continue;
                         }
-                        kill += 100;
+                        kill += KILL_POINT;
                         eCache.actor->destroy();
                         bCache.actor->destroy();
                 }
@@ -130,7 +133,7 @@ void PlayScene::draw() {
         spawnTimer.update();
         if (spawnTimer.isElapsed()) {
                 spawnTimer.reset();
-                spawn(random.generate(1, 4));
+                spawn(random.generate(SPAWN_MIN, SPAWN_MAX));
         }
         camera.endDraw();
         drawIMGUI();

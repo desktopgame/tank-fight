@@ -22,6 +22,9 @@ class PlayScene : public gel::IScene {
         static const int STAGE_SIZE;
         static const int STAGE_CENTER_X;
         static const int STAGE_CENTER_Z;
+        static const int KILL_POINT;
+        static const int SPAWN_MIN;
+        static const int SPAWN_MAX;
         PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
                   const std::shared_ptr<gel::ModelManager>& modelManager,
                   PlayResult& playResult);
