@@ -1,4 +1,5 @@
 #include "PlayScene.hpp"
+#include <alut.h>
 #include "../../gel/ui/imgui/imgui_impl_glfw.h"
 #include "../../gel/ui/imgui/imgui_impl_opengl2.h"
 
@@ -16,12 +17,12 @@ const int PlayScene::KILL_POINT = 100;
 const int PlayScene::SPAWN_MIN = 1;
 const int PlayScene::SPAWN_MAX = 4;
 
-PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                     const std::shared_ptr<gel::ModelManager>& modelManager,
+PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
                      PlayResult& playResult)
     : mFinished(false),
-      mTextureManager(textureManager),
-      mModelManager(modelManager),
+      mTextureManager(gameDevice->getTextureManager()),
+      mModelManager(gameDevice->getModelManager()),
+      audioManager(gameDevice->getAudioManager()),
       camera(),
       spawners(),
       enemies(),
@@ -30,7 +31,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
       playTimer(1),
       playTime(PLAY_TIME),
       playTimeUI(
-          textureManager,
+          gameDevice->getTextureManager(),
           std::array<std::string, 10>{"./assets/image/number/0_W25x25.png",
                                       "./assets/image/number/1_W25x25.png",
                                       "./assets/image/number/2_W25x25.png",

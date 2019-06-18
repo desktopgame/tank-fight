@@ -15,10 +15,8 @@ void MyGame::init() {
         sceneManager.put("title", std::make_shared<TitleScene>(
                                       gameDevice->getTextureManager(),
                                       gameDevice->getModelManager()));
-        sceneManager.put(
-            "play", std::make_shared<PlayScene>(gameDevice->getTextureManager(),
-                                                gameDevice->getModelManager(),
-                                                playResult));
+        sceneManager.put("play",
+                         std::make_shared<PlayScene>(gameDevice, playResult));
         sceneManager.put("result",
                          std::make_shared<ResultScene>(
                              gameDevice->getTextureManager(), playResult));

@@ -25,8 +25,7 @@ class PlayScene : public gel::IScene {
         static const int KILL_POINT;
         static const int SPAWN_MIN;
         static const int SPAWN_MAX;
-        PlayScene(const std::shared_ptr<gel::TextureManager>& textureManager,
-                  const std::shared_ptr<gel::ModelManager>& modelManager,
+        PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice,
                   PlayResult& playResult);
         void show() override;
         void update() override;
@@ -79,6 +78,7 @@ class PlayScene : public gel::IScene {
         std::vector<std::shared_ptr<Bullet> > bullets;
         std::vector<std::shared_ptr<Enemy> > enemies;
         std::vector<std::shared_ptr<Spawner> > spawners;
+        std::shared_ptr<gel::AudioManager> audioManager;
         std::shared_ptr<gel::TextureManager> mTextureManager;
         std::shared_ptr<gel::ModelManager> mModelManager;
         gel::Camera camera;
