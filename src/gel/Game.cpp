@@ -64,6 +64,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
 #if DEBUG
         gui::internal::destroy();
 #endif
+        onExit();
         alutExit();
         glfwTerminate();
         return 0;
@@ -153,5 +154,9 @@ void Game::onResize(GLFWwindow* window, int width, int height) {
         gluPerspective(30.0, (float)width / (float)height, 0.1, 2000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+}
+
+void Game::onExit() {
+
 }
 }  // namespace  gel

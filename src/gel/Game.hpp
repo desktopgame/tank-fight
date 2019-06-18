@@ -93,6 +93,7 @@ class Game {
         virtual void init();
         virtual void update();
         virtual void draw();
+        virtual void onExit();
 };
 }  // namespace gel
 #endif
